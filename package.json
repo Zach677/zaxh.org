@@ -63,7 +63,7 @@
     "eslint": "^9.23.0",
     "eslint-config-hyoban": "^3.2.2",
     "happy-dom": "^15.11.7",
-    "jsdom": "^25.0.1",
+    "jsdom": "^26.1.0",
     "lint-staged": "^15.5.1",
     "nbump": "^2.0.10",
     "postcss": "^8.5.3",
