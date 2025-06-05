@@ -61,7 +61,7 @@
     "daisyui": "^4.12.24",
     "dayjs": "^1.11.13",
     "eslint": "^9.23.0",
-    "eslint-config-hyoban": "^3.2.2",
+    "eslint-config-hyoban": "^4.0.8",
     "happy-dom": "^15.11.7",
     "jsdom": "^25.0.1",
     "lint-staged": "^15.5.1",
