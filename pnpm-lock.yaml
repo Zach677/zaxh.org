@@ -97,8 +97,8 @@ importers:
         specifier: ^3.2.2
         version: 3.2.2(@types/estree@1.0.6)(@typescript-eslint/eslint-plugin@8.28.0(@typescript-eslint/parser@8.28.0(eslint@9.23.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.23.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.23.0(jiti@2.4.2))(tailwindcss@3.4.17)(ts-api-utils@2.1.0(typescript@5.8.3))(typescript@5.8.3)
       happy-dom:
-        specifier: ^15.11.7
-        version: 15.11.7
+        specifier: ^18.0.1
+        version: 18.0.1
       jsdom:
         specifier: ^25.0.1
         version: 25.0.1
@@ -134,10 +134,10 @@ importers:
         version: 5.8.3
       vitest:
         specifier: ^2.1.9
-        version: 2.1.9(@types/node@20.17.30)(happy-dom@15.11.7)(jsdom@25.0.1)
+        version: 2.1.9(@types/node@20.17.30)(happy-dom@18.0.1)(jsdom@25.0.1)
       vitest-canvas-mock:
         specifier: ^0.3.3
-        version: 0.3.3(vitest@2.1.9(@types/node@20.17.30)(happy-dom@15.11.7)(jsdom@25.0.1))
+        version: 0.3.3(vitest@2.1.9(@types/node@20.17.30)(happy-dom@18.0.1)(jsdom@25.0.1))
 
 packages:
 
@@ -1128,6 +1128,9 @@ packages:
 
   '@types/semver@7.5.8':
     resolution: {integrity: sha512-I8EUhyrgfLrcTkzV3TSsGyl1tSuPrEDzr0yd5m90UgNxQkyDXULk3b6MlQqTCpZpNtWe1K0hzclnZkTcLBe2UQ==}
+
+  '@types/whatwg-mimetype@3.0.2':
+    resolution: {integrity: sha512-c2AKvDT8ToxLIOUlN51gTiHXflsfIFisS4pO7pDPoKouJCESkhZnEy623gwP9laCy5lnLDAw1vAzu2vM2YLOrA==}
 
   '@typescript-eslint/eslint-plugin@8.28.0':
     resolution: {integrity: sha512-lvFK3TCGAHsItNdWZ/1FkvpzCxTHUVuFrdnOGLMa0GGCFIbCgQWVk3CzCGdA7kM3qGVc+dfW9tr0Z/sHnGDFyg==}
@@ -2334,9 +2337,9 @@ packages:
     engines: {node: '>=0.4.7'}
     hasBin: true
 
-  happy-dom@15.11.7:
-    resolution: {integrity: sha512-KyrFvnl+J9US63TEzwoiJOQzZBJY7KgBushJA8X61DMbNsH+2ONkDuLDnCnwUiPTF42tLoEmrPyoqbenVA5zrg==}
-    engines: {node: '>=18.0.0'}
+  happy-dom@18.0.1:
+    resolution: {integrity: sha512-qn+rKOW7KWpVTtgIUi6RVmTBZJSe2k0Db0vh1f7CWrWclkkc7/Q+FrOfkZIb2eiErLyqu5AXEzE7XthO9JVxRA==}
+    engines: {node: '>=20.0.0'}
 
   has-flag@4.0.0:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
@@ -4766,6 +4769,8 @@ snapshots:
 
   '@types/semver@7.5.8': {}
 
+  '@types/whatwg-mimetype@3.0.2': {}
+
   '@typescript-eslint/eslint-plugin@8.28.0(@typescript-eslint/parser@8.28.0(eslint@9.23.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.23.0(jiti@2.4.2))(typescript@5.8.3)':
     dependencies:
       '@eslint-community/regexpp': 4.12.1
@@ -6174,10 +6179,10 @@ snapshots:
     optionalDependencies:
       uglify-js: 3.19.3
 
-  happy-dom@15.11.7:
+  happy-dom@18.0.1:
     dependencies:
-      entities: 4.5.0
-      webidl-conversions: 7.0.0
+      '@types/node': 20.17.30
+      '@types/whatwg-mimetype': 3.0.2
       whatwg-mimetype: 3.0.0
 
   has-flag@4.0.0: {}
@@ -7359,12 +7364,12 @@ snapshots:
       '@types/node': 20.17.30
       fsevents: 2.3.3
 
-  vitest-canvas-mock@0.3.3(vitest@2.1.9(@types/node@20.17.30)(happy-dom@15.11.7)(jsdom@25.0.1)):
+  vitest-canvas-mock@0.3.3(vitest@2.1.9(@types/node@20.17.30)(happy-dom@18.0.1)(jsdom@25.0.1)):
     dependencies:
       jest-canvas-mock: 2.5.2
-      vitest: 2.1.9(@types/node@20.17.30)(happy-dom@15.11.7)(jsdom@25.0.1)
+      vitest: 2.1.9(@types/node@20.17.30)(happy-dom@18.0.1)(jsdom@25.0.1)
 
-  vitest@2.1.9(@types/node@20.17.30)(happy-dom@15.11.7)(jsdom@25.0.1):
+  vitest@2.1.9(@types/node@20.17.30)(happy-dom@18.0.1)(jsdom@25.0.1):
     dependencies:
       '@vitest/expect': 2.1.9
       '@vitest/mocker': 2.1.9(vite@5.4.14(@types/node@20.17.30))
@@ -7388,7 +7393,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 20.17.30
-      happy-dom: 15.11.7
+      happy-dom: 18.0.1
       jsdom: 25.0.1
     transitivePeerDependencies:
       - less
