@@ -7,15 +7,25 @@ interface BlogCardProps {
 
 export function BlogCard({ post }: BlogCardProps) {
   return (
-    <article className="mb-4">
-      <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+    <article className="mb-8 pb-6 border-b border-gray-100 dark:border-gray-800 last:border-b-0 last:pb-0">
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
         <Link
           to={`/posts/${post.slug}`}
-          className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+          className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors block py-1"
         >
           {post.title}
         </Link>
       </h2>
+      <time
+        className="text-xs text-gray-500 dark:text-gray-500"
+        dateTime={post.date}
+      >
+        {new Date(post.date).toLocaleDateString('zh-CN', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })}
+      </time>
     </article>
   )
 }
