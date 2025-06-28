@@ -44,11 +44,11 @@ export default function Post({ loaderData }: Route.ComponentProps) {
       <main className="max-w-4xl mx-auto px-4 py-12 pt-32">
         <article className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-8">
           <header className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            <h1 className="text-h1 text-gray-900 dark:text-white mb-4">
               {post.title}
             </h1>
 
-            <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+            <div className="flex items-center justify-between text-body-sm text-gray-500 dark:text-gray-400 mb-4">
               <time dateTime={post.date}>
                 {new Date(post.date).toLocaleDateString('en-US', {
                   year: 'numeric',
@@ -61,7 +61,7 @@ export default function Post({ loaderData }: Route.ComponentProps) {
           </header>
 
           <div
-            className="prose prose-gray dark:prose-invert max-w-none"
+            className="prose-enhanced max-w-none"
             dangerouslySetInnerHTML={{ __html: htmlContent }}
           />
         </article>

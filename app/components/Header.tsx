@@ -27,20 +27,20 @@ export function Header() {
         <nav className="flex justify-between items-center">
           <Link
             to="/"
-            className="text-2xl font-bold text-gray-900 dark:text-white"
+            className="text-h4 text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
           >
             Zach's Blog
           </Link>
-          <div className="flex space-x-6">
+          <div className="flex space-x-8">
             <Link
               to="/"
-              className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+              className="text-body text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors font-medium"
             >
               Home
             </Link>
             <Link
               to="/about"
-              className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+              className="text-body text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors font-medium"
             >
               About
             </Link>

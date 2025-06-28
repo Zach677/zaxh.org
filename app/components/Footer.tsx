@@ -28,7 +28,7 @@ export function Footer() {
     <footer className="mt-4">
       <div className="max-w-4xl mx-auto px-4 py-4">
         <div className="flex flex-col items-start space-y-3">
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-body-sm text-gray-500 dark:text-gray-400">
             © 2025 Zach
           </p>
           <div className="flex space-x-6">
