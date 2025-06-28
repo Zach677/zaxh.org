@@ -2,7 +2,7 @@ import type { Route } from './+types/home'
 import { Header } from '../components/Header'
 import { Footer } from '../components/Footer'
 import { BlogCard } from '../components/BlogCard'
-import { getAllPosts } from '../data/posts'
+import { getAllPosts } from '../data/posts.server'
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -15,8 +15,13 @@ export function meta({}: Route.MetaArgs) {
   ]
 }
 
-export default function Home() {
+export async function loader() {
   const posts = getAllPosts()
+  return { posts }
+}
+
+export default function Home({ loaderData }: Route.ComponentProps) {
+  const { posts } = loaderData
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
