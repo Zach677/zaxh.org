@@ -4,7 +4,6 @@ export interface BlogPost {
   excerpt: string
   content: string
   date: string
-  tags: string[]
   readTime: number
 }
 

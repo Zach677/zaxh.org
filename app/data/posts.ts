@@ -1,12 +1,13 @@
 import type { BlogPost } from '../types/blog'
 
+// 这是客户端版本，用于构建时的静态数据
+// 服务器端应该使用 posts.server.ts
 export const posts: BlogPost[] = [
   {
     slug: 'welcome-to-my-blog',
     title: '欢迎来到我的博客',
     excerpt: '这是我的第一篇博客文章，分享一些关于技术和生活的思考。',
-    content: `
-# 欢迎来到我的博客
+    content: `# 欢迎来到我的博客
 
 这是我的第一篇博客文章。在这里，我将分享一些关于技术、编程和生活的思考。
 
@@ -26,10 +27,8 @@ export const posts: BlogPost[] = [
 - 学习笔记和心得
 - 生活感悟
 
-感谢你的阅读，希望我的分享对你有所帮助！
-    `,
+感谢你的阅读，希望我的分享对你有所帮助！`,
     date: '2024-01-15',
-    tags: ['随笔', '开始'],
     readTime: 3,
   },
   {
@@ -37,8 +36,7 @@ export const posts: BlogPost[] = [
     title: 'React Router v7 实践指南',
     excerpt:
       '深入了解 React Router v7 的新特性和最佳实践，构建现代化的单页应用。',
-    content: `
-# React Router v7 实践指南
+    content: `# React Router v7 实践指南
 
 React Router v7 带来了许多令人兴奋的新特性，让我们一起探索这些改进。
 
@@ -70,10 +68,8 @@ v7 提供了更好的 TypeScript 支持，包括自动生成的类型定义。
 2. **合理使用 Loader**：在路由级别预加载数据
 3. **错误边界**：为每个路由添加适当的错误处理
 
-React Router v7 是一个强大的升级，值得每个 React 开发者学习和使用。
-    `,
+React Router v7 是一个强大的升级，值得每个 React 开发者学习和使用。`,
     date: '2024-01-10',
-    tags: ['React', 'Router', '前端'],
     readTime: 8,
   },
   {
@@ -81,8 +77,7 @@ React Router v7 是一个强大的升级，值得每个 React 开发者学习和
     title: '现代 CSS 技巧分享',
     excerpt:
       '探索 CSS Grid、Flexbox、自定义属性等现代 CSS 技术，提升网页设计能力。',
-    content: `
-# 现代 CSS 技巧分享
+    content: `# 现代 CSS 技巧分享
 
 CSS 在过去几年中发展迅速，让我们看看一些现代化的技巧。
 
@@ -126,10 +121,8 @@ CSS Grid 是构建复杂布局的强大工具：
 }
 \`\`\`
 
-这些现代 CSS 技术让我们能够创建更加灵活和强大的用户界面。
-    `,
+这些现代 CSS 技术让我们能够创建更加灵活和强大的用户界面。`,
     date: '2024-01-05',
-    tags: ['CSS', '前端', '设计'],
     readTime: 6,
   },
 ]

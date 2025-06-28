@@ -3,6 +3,7 @@ import type { Route } from './+types/post'
 import { Header } from '../components/Header'
 import { Footer } from '../components/Footer'
 import { getPostBySlug } from '../data/posts'
+import { marked } from 'marked'
 
 export async function loader({ params }: Route.LoaderArgs) {
   const post = getPostBySlug(params.slug)
@@ -28,95 +29,13 @@ export function meta({ data }: Route.MetaArgs) {
 export default function Post({ loaderData }: Route.ComponentProps) {
   const { post } = loaderData
 
-  // Simple markdown-like content renderer
-  const renderContent = (content: string) => {
-    return content.split('\n').map((line, index) => {
-      // Headers
-      if (line.startsWith('# ')) {
-        return (
-          <h1
-            key={index}
-            className="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4"
-          >
-            {line.replace('# ', '')}
-          </h1>
-        )
-      }
-      if (line.startsWith('## ')) {
-        return (
-          <h2
-            key={index}
-            className="text-2xl font-semibold text-gray-900 dark:text-white mt-6 mb-3"
-          >
-            {line.replace('## ', '')}
-          </h2>
-        )
-      }
-      if (line.startsWith('### ')) {
-        return (
-          <h3
-            key={index}
-            className="text-xl font-semibold text-gray-900 dark:text-white mt-4 mb-2"
-          >
-            {line.replace('### ', '')}
-          </h3>
-        )
-      }
+  // Configure marked options
+  marked.setOptions({
+    breaks: true,
+    gfm: true,
+  })
 
-      // Code blocks
-      if (line.startsWith('```')) {
-        return null // Handle in a more sophisticated way if needed
-      }
-
-      // Lists
-      if (line.startsWith('- ')) {
-        return (
-          <li key={index} className="text-gray-600 dark:text-gray-300 ml-4">
-            {line.replace('- ', '')}
-          </li>
-        )
-      }
-
-      // Regular paragraphs
-      if (line.trim() === '') {
-        return <br key={index} />
-      }
-
-      // Code inline
-      const codeRegex = /`([^`]+)`/g
-      if (codeRegex.test(line)) {
-        const parts = line.split(codeRegex)
-        return (
-          <p
-            key={index}
-            className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed"
-          >
-            {parts.map((part, i) =>
-              i % 2 === 1 ? (
-                <code
-                  key={i}
-                  className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm font-mono"
-                >
-                  {part}
-                </code>
-              ) : (
-                part
-              ),
-            )}
-          </p>
-        )
-      }
-
-      return (
-        <p
-          key={index}
-          className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed"
-        >
-          {line}
-        </p>
-      )
-    })
-  }
+  const htmlContent = marked(post.content)
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -139,22 +58,12 @@ export default function Post({ loaderData }: Route.ComponentProps) {
               </time>
               <span>{post.readTime} 分钟阅读</span>
             </div>
-
-            <div className="flex flex-wrap gap-2 mb-6">
-              {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-3 py-1 text-sm bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
           </header>
 
-          <div className="prose prose-gray dark:prose-invert max-w-none">
-            {renderContent(post.content)}
-          </div>
+          <div
+            className="prose prose-gray dark:prose-invert max-w-none"
+            dangerouslySetInnerHTML={{ __html: htmlContent }}
+          />
         </article>
       </main>
 
