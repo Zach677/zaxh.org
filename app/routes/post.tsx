@@ -52,7 +52,7 @@ export default function Post({ loaderData }: Route.ComponentProps) {
               <time dateTime={post.date}>
                 {new Date(post.date).toLocaleDateString('en-US', {
                   year: 'numeric',
-                  month: 'long',
+                  month: 'short',
                   day: 'numeric',
                 })}
               </time>

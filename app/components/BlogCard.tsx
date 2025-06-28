@@ -20,9 +20,9 @@ export function BlogCard({ post }: BlogCardProps) {
         className="text-xs text-gray-500 dark:text-gray-500"
         dateTime={post.date}
       >
-        {new Date(post.date).toLocaleDateString('zh-CN', {
+        {new Date(post.date).toLocaleDateString('en-US', {
           year: 'numeric',
-          month: 'long',
+          month: 'short',
           day: 'numeric',
         })}
       </time>
