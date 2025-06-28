@@ -7,7 +7,7 @@ interface BlogCardProps {
 
 export function BlogCard({ post }: BlogCardProps) {
   return (
-    <article className="mb-8 pb-6">
+    <article className="mb-4 pb-2">
       <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
         <Link
           to={`/posts/${post.slug}`}

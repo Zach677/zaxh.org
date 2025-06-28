@@ -25,9 +25,12 @@ const iconComponents = {
 
 export function Footer() {
   return (
-    <footer className="mt-16">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="flex flex-col items-center space-y-4">
+    <footer className="mt-4">
+      <div className="max-w-4xl mx-auto px-4 py-4">
+        <div className="flex flex-col items-start space-y-3">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            © 2025 Zach
+          </p>
           <div className="flex space-x-6">
             {socialLinks.map((link) => {
               const IconComponent =
@@ -46,9 +49,6 @@ export function Footer() {
               )
             })}
           </div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            © 2024 Zach's Blog. All rights reserved.
-          </p>
         </div>
       </div>
     </footer>
