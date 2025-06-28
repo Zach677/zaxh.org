@@ -32,13 +32,13 @@ export function Header() {
               to="/"
               className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
             >
-              首页
+              Home
             </Link>
             <Link
               to="/about"
               className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
             >
-              关于
+              About
             </Link>
           </div>
         </nav>

@@ -1,18 +1,18 @@
 ---
-title: React Router v7 实践指南
-excerpt: 深入了解 React Router v7 的新特性和最佳实践，构建现代化的单页应用。
+title: React Router v7 Practical Guide
+excerpt: Deep dive into React Router v7 new features and best practices for building modern single-page applications.
 date: 2024-01-10
 readTime: 8
 ---
 
-# React Router v7 实践指南
+# React Router v7 Practical Guide
 
-React Router v7 带来了许多令人兴奋的新特性，让我们一起探索这些改进。
+React Router v7 brings many exciting new features, let's explore these improvements together.
 
-## 主要新特性
+## Main New Features
 
-### 1. 简化的路由配置
-新版本提供了更简洁的路由配置方式：
+### 1. Simplified Route Configuration
+The new version provides a more concise way to configure routes:
 
 ```typescript
 import { type RouteConfig, index, route } from "@react-router/dev/routes";
@@ -23,18 +23,18 @@ export default [
 ] satisfies RouteConfig;
 ```
 
-### 2. 改进的类型支持
-v7 提供了更好的 TypeScript 支持，包括自动生成的类型定义。
+### 2. Improved Type Support
+v7 provides better TypeScript support, including auto-generated type definitions.
 
-### 3. 性能优化
-- 更好的代码分割
-- 优化的预加载机制
-- 减少的包体积
+### 3. Performance Optimizations
+- Better code splitting
+- Optimized preloading mechanism
+- Reduced bundle size
 
-## 最佳实践
+## Best Practices
 
-1. **使用文件系统路由**：利用约定优于配置的原则
-2. **合理使用 Loader**：在路由级别预加载数据
-3. **错误边界**：为每个路由添加适当的错误处理
+1. **Use File System Routing**: Leverage convention over configuration principles
+2. **Proper Use of Loaders**: Preload data at the route level
+3. **Error Boundaries**: Add appropriate error handling for each route
 
-React Router v7 是一个强大的升级，值得每个 React 开发者学习和使用。 
+React Router v7 is a powerful upgrade, worth learning and using for every React developer. 

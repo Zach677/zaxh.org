@@ -1,17 +1,17 @@
 ---
-title: 现代 CSS 技巧分享
-excerpt: 探索 CSS Grid、Flexbox、自定义属性等现代 CSS 技术，提升网页设计能力。
+title: Modern CSS Techniques Sharing
+excerpt: Explore modern CSS technologies like CSS Grid, Flexbox, custom properties, and improve web design capabilities.
 date: 2024-01-05
 readTime: 6
 ---
 
-# 现代 CSS 技巧分享
+# Modern CSS Techniques Sharing
 
-CSS 在过去几年中发展迅速，让我们看看一些现代化的技巧。
+CSS has evolved rapidly in recent years, let's look at some modern techniques.
 
-## CSS Grid 布局
+## CSS Grid Layout
 
-CSS Grid 是构建复杂布局的强大工具：
+CSS Grid is a powerful tool for building complex layouts:
 
 ```css
 .grid-container {
@@ -21,9 +21,9 @@ CSS Grid 是构建复杂布局的强大工具：
 }
 ```
 
-## CSS 自定义属性
+## CSS Custom Properties
 
-使用 CSS 变量让样式更加灵活：
+Using CSS variables makes styles more flexible:
 
 ```css
 :root {
@@ -37,9 +37,9 @@ CSS Grid 是构建复杂布局的强大工具：
 }
 ```
 
-## 容器查询
+## Container Queries
 
-响应式设计的新维度：
+A new dimension of responsive design:
 
 ```css
 @container (min-width: 400px) {
@@ -49,4 +49,4 @@ CSS Grid 是构建复杂布局的强大工具：
 }
 ```
 
-这些现代 CSS 技术让我们能够创建更加灵活和强大的用户界面。 
+These modern CSS technologies allow us to create more flexible and powerful user interfaces. 

@@ -17,7 +17,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 
 export function meta({ data }: Route.MetaArgs) {
   if (!data?.post) {
-    return [{ title: "文章未找到 - Zach's Blog" }]
+    return [{ title: "Article Not Found - Zach's Blog" }]
   }
 
   return [
@@ -50,13 +50,13 @@ export default function Post({ loaderData }: Route.ComponentProps) {
 
             <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
               <time dateTime={post.date}>
-                {new Date(post.date).toLocaleDateString('zh-CN', {
+                {new Date(post.date).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
                 })}
               </time>
-              <span>{post.readTime} 分钟阅读</span>
+              <span>{post.readTime} min read</span>
             </div>
           </header>
 

@@ -1,49 +1,50 @@
 import type { BlogPost } from '../types/blog'
 
-// 这是客户端版本，用于构建时的静态数据
-// 服务器端应该使用 posts.server.ts
+// This is the client version, used for static data at build time
+// Server-side should use posts.server.ts
 export const posts: BlogPost[] = [
   {
     slug: 'welcome-to-my-blog',
-    title: '欢迎来到我的博客',
-    excerpt: '这是我的第一篇博客文章，分享一些关于技术和生活的思考。',
-    content: `# 欢迎来到我的博客
+    title: 'Welcome to My Blog',
+    excerpt:
+      'This is my first blog post, sharing some thoughts about technology and life.',
+    content: `# Welcome to My Blog
 
-这是我的第一篇博客文章。在这里，我将分享一些关于技术、编程和生活的思考。
+This is my first blog post. Here, I will share some thoughts about technology, programming, and life.
 
-## 为什么写博客
+## Why Write a Blog
 
-写博客可以帮助我：
-- 整理和记录学习过程
-- 分享有用的技术知识
-- 与同行交流和讨论
-- 提升写作和表达能力
+Writing a blog can help me:
+- Organize and record the learning process
+- Share useful technical knowledge
+- Communicate and discuss with peers
+- Improve writing and expression skills
 
-## 博客内容
+## Blog Content
 
-这个博客将主要包含：
-- 前端开发技术分享
-- 项目实践经验
-- 学习笔记和心得
-- 生活感悟
+This blog will mainly include:
+- Frontend development technology sharing
+- Project practice experience
+- Study notes and insights
+- Life reflections
 
-感谢你的阅读，希望我的分享对你有所帮助！`,
+Thank you for reading, I hope my sharing is helpful to you!`,
     date: '2024-01-15',
     readTime: 3,
   },
   {
     slug: 'react-router-v7-guide',
-    title: 'React Router v7 实践指南',
+    title: 'React Router v7 Practical Guide',
     excerpt:
-      '深入了解 React Router v7 的新特性和最佳实践，构建现代化的单页应用。',
-    content: `# React Router v7 实践指南
+      'Deep dive into React Router v7 new features and best practices for building modern single-page applications.',
+    content: `# React Router v7 Practical Guide
 
-React Router v7 带来了许多令人兴奋的新特性，让我们一起探索这些改进。
+React Router v7 brings many exciting new features, let's explore these improvements together.
 
-## 主要新特性
+## Main New Features
 
-### 1. 简化的路由配置
-新版本提供了更简洁的路由配置方式：
+### 1. Simplified Route Configuration
+The new version provides a more concise way to configure routes:
 
 \`\`\`typescript
 import { type RouteConfig, index, route } from "@react-router/dev/routes";
@@ -54,36 +55,36 @@ export default [
 ] satisfies RouteConfig;
 \`\`\`
 
-### 2. 改进的类型支持
-v7 提供了更好的 TypeScript 支持，包括自动生成的类型定义。
+### 2. Improved Type Support
+v7 provides better TypeScript support, including auto-generated type definitions.
 
-### 3. 性能优化
-- 更好的代码分割
-- 优化的预加载机制
-- 减少的包体积
+### 3. Performance Optimizations
+- Better code splitting
+- Optimized preloading mechanism
+- Reduced bundle size
 
-## 最佳实践
+## Best Practices
 
-1. **使用文件系统路由**：利用约定优于配置的原则
-2. **合理使用 Loader**：在路由级别预加载数据
-3. **错误边界**：为每个路由添加适当的错误处理
+1. **Use File System Routing**: Leverage convention over configuration principles
+2. **Proper Use of Loaders**: Preload data at the route level
+3. **Error Boundaries**: Add appropriate error handling for each route
 
-React Router v7 是一个强大的升级，值得每个 React 开发者学习和使用。`,
+React Router v7 is a powerful upgrade, worth learning and using for every React developer.`,
     date: '2024-01-10',
     readTime: 8,
   },
   {
     slug: 'modern-css-techniques',
-    title: '现代 CSS 技巧分享',
+    title: 'Modern CSS Techniques Sharing',
     excerpt:
-      '探索 CSS Grid、Flexbox、自定义属性等现代 CSS 技术，提升网页设计能力。',
-    content: `# 现代 CSS 技巧分享
+      'Explore modern CSS technologies like CSS Grid, Flexbox, custom properties, and improve web design capabilities.',
+    content: `# Modern CSS Techniques Sharing
 
-CSS 在过去几年中发展迅速，让我们看看一些现代化的技巧。
+CSS has evolved rapidly in recent years, let's look at some modern techniques.
 
-## CSS Grid 布局
+## CSS Grid Layout
 
-CSS Grid 是构建复杂布局的强大工具：
+CSS Grid is a powerful tool for building complex layouts:
 
 \`\`\`css
 .grid-container {
@@ -93,9 +94,9 @@ CSS Grid 是构建复杂布局的强大工具：
 }
 \`\`\`
 
-## CSS 自定义属性
+## CSS Custom Properties
 
-使用 CSS 变量让样式更加灵活：
+Using CSS variables makes styles more flexible:
 
 \`\`\`css
 :root {
@@ -109,9 +110,9 @@ CSS Grid 是构建复杂布局的强大工具：
 }
 \`\`\`
 
-## 容器查询
+## Container Queries
 
-响应式设计的新维度：
+A new dimension of responsive design:
 
 \`\`\`css
 @container (min-width: 400px) {
@@ -121,7 +122,7 @@ CSS Grid 是构建复杂布局的强大工具：
 }
 \`\`\`
 
-这些现代 CSS 技术让我们能够创建更加灵活和强大的用户界面。`,
+These modern CSS technologies allow us to create more flexible and powerful user interfaces.`,
     date: '2024-01-05',
     readTime: 6,
   },

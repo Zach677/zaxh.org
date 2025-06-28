@@ -1,28 +1,28 @@
 ---
-title: 欢迎来到我的博客
-excerpt: 这是我的第一篇博客文章，分享一些关于技术和生活的思考。
+title: Welcome to My Blog
+excerpt: This is my first blog post, sharing some thoughts about technology and life.
 date: 2024-01-15
 readTime: 3
 ---
 
-# 欢迎来到我的博客
+# Welcome to My Blog
 
-这是我的第一篇博客文章。在这里，我将分享一些关于技术、编程和生活的思考。
+This is my first blog post. Here, I will share some thoughts about technology, programming, and life.
 
-## 为什么写博客
+## Why Write a Blog
 
-写博客可以帮助我：
-- 整理和记录学习过程
-- 分享有用的技术知识
-- 与同行交流和讨论
-- 提升写作和表达能力
+Writing a blog can help me:
+- Organize and record the learning process
+- Share useful technical knowledge
+- Communicate and discuss with peers
+- Improve writing and expression skills
 
-## 博客内容
+## Blog Content
 
-这个博客将主要包含：
-- 前端开发技术分享
-- 项目实践经验
-- 学习笔记和心得
-- 生活感悟
+This blog will mainly include:
+- Frontend development technology sharing
+- Project practice experience
+- Study notes and insights
+- Life reflections
 
-感谢你的阅读，希望我的分享对你有所帮助！ 
+Thank you for reading, I hope my sharing is helpful to you! 
