@@ -23,15 +23,10 @@ export function Header() {
           : 'border-transparent'
       }`}
     >
-      <div className="max-w-4xl mx-auto px-4 py-6">
-        <nav className="flex justify-between items-center">
-          <Link
-            to="/"
-            className="text-h4 text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-          >
-            Zach's Blog
-          </Link>
-          <div className="flex space-x-8">
+      <div className="max-w-3xl mx-auto px-6 py-4">
+        <nav className="flex items-center relative">
+          <span className="text-h4 text-gray-900 dark:text-white">Zach_</span>
+          <div className="flex space-x-6 absolute right-0">
             <Link
               to="/"
               className="text-body text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors font-medium"

@@ -27,7 +27,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       <Header />
 
-      <main className="max-w-4xl mx-auto px-4 pt-32 pb-2">
+      <main className="max-w-3xl mx-auto px-6 pt-32 pb-2">
         <section>
           <h2 className="text-h2 text-gray-900 dark:text-white mb-8">
             All Posts
