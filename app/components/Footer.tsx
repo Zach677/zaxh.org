@@ -25,7 +25,7 @@ const iconComponents = {
 
 export function Footer() {
   return (
-    <footer className="border-t border-gray-200 dark:border-gray-800 mt-16">
+    <footer className="mt-16">
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex flex-col items-center space-y-4">
           <div className="flex space-x-6">
