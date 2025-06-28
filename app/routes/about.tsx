@@ -14,7 +14,7 @@ export default function About() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       <Header />
 
-      <main className="max-w-4xl mx-auto px-4 py-12">
+      <main className="max-w-4xl mx-auto px-4 py-12 pt-32">
         <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
             About Me

@@ -22,7 +22,7 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       <Header />
 
-      <main className="max-w-4xl mx-auto px-4 py-12">
+      <main className="max-w-4xl mx-auto px-4 py-12 pt-32">
         <section>
           <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-8">
             All Posts
