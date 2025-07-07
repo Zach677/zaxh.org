@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { LiquidGlass, LiquidButton } from './LiquidGlass'
 
 type Theme = 'light' | 'dark' | 'system'
 
@@ -119,21 +118,13 @@ export const ThemeToggle = () => {
       onMouseEnter={() => setShowLabel(true)}
       onMouseLeave={() => setShowLabel(false)}
     >
-      <LiquidGlass
-        variant="default"
-        blur="md"
-        className="relative inline-flex items-center rounded-full p-1 shadow-xl shadow-black/10 dark:shadow-black/20"
-      >
+      <div className="relative inline-flex items-center bg-gray-200 dark:bg-gray-800 rounded-full p-1 shadow-lg">
         {/* 滑动指示器 */}
         <div
-          className="absolute top-1 bottom-1 bg-white/90 dark:bg-white/20 rounded-full shadow-lg transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] backdrop-blur-sm border border-white/30 dark:border-white/10"
+          className="absolute top-1 bottom-1 bg-white dark:bg-gray-700 rounded-full shadow-md transition-all duration-300 ease-out"
           style={{
             left: `${getSliderPosition()}px`,
             width: '32px',
-            background:
-              'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 100%)',
-            boxShadow:
-              '0 4px 20px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.8)',
           }}
         />
 
@@ -143,36 +134,16 @@ export const ThemeToggle = () => {
             key={key}
             onClick={() => setTheme(key)}
             title={title}
-            className={`relative z-10 flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300 ease-out group ${
+            className={`relative z-10 flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300 ease-out ${
               theme === key
                 ? 'text-gray-800 dark:text-white'
                 : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
             }`}
           >
-            {/* 图标容器 */}
-            <div
-              className={`transition-all duration-300 ${
-                theme === key
-                  ? 'scale-110 drop-shadow-sm'
-                  : 'scale-100 group-hover:scale-105'
-              }`}
-            >
-              {icon}
-            </div>
-
-            {/* 活跃状态光晕 */}
-            {theme === key && (
-              <div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/10 to-transparent opacity-60 pointer-events-none" />
-            )}
-
-            {/* 点击涟漪效果 */}
-            <div className="absolute inset-0 rounded-full opacity-0 group-active:opacity-30 transition-opacity duration-200 bg-white/20 dark:bg-white/10 pointer-events-none" />
+            {icon}
           </button>
         ))}
-
-        {/* 环境光效果 */}
-        <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-blue-500/8 via-purple-500/8 to-pink-500/8 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-sm -z-10" />
-      </LiquidGlass>
+      </div>
 
       {/* 当前模式标签 */}
       <div
