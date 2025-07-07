@@ -14,17 +14,11 @@ export const Header = () => {
           </Link>
 
           {/* Navigation Links */}
-          <div className="flex items-center space-x-2">
-            <Link
-              to="/posts"
-              className="px-4 py-2 text-body-sm text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
-            >
+          <div className="flex items-center space-x-6">
+            <Link to="/posts" className="nav-link">
               Posts
             </Link>
-            <Link
-              to="/about"
-              className="px-4 py-2 text-body-sm text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
-            >
+            <Link to="/about" className="nav-link">
               About
             </Link>
           </div>
