@@ -42,7 +42,7 @@ const Post = ({ loaderData }: Route.ComponentProps) => {
 
       <main className="max-w-3xl mx-auto px-6 py-12 pt-32">
         <article>
-          <Header className="mb-8">
+          <header className="mb-8">
             <h1 className="text-h1 text-gray-900 dark:text-white mb-4">
               {post.title}
             </h1>
@@ -57,7 +57,7 @@ const Post = ({ loaderData }: Route.ComponentProps) => {
               </time>
               <span>{post.readTime} min read</span>
             </div>
-          </Header>
+          </header>
 
           <div
             className="prose-enhanced max-w-none"
