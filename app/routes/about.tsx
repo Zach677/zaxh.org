@@ -1,12 +1,12 @@
-import { Header } from '@/components/header'
-import { Footer } from '@/components/footer'
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 
 export const meta = () => {
   return [
     { title: "About Me - Zach's Blog" },
-    { name: 'description', content: 'Learn more about the blog author' },
-  ]
-}
+    { name: "description", content: "Learn more about the blog author" },
+  ];
+};
 
 const About = () => {
   return (
@@ -101,7 +101,7 @@ const About = () => {
             </p>
 
             <p className="text-body text-gray-600 dark:text-gray-300">
-              Email:{' '}
+              Email:{" "}
               <a
                 href="mailto:your-email@example.com"
                 className="text-blue-600 dark:text-blue-400 hover:underline"
@@ -115,7 +115,7 @@ const About = () => {
 
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default About
+export default About;
