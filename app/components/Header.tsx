@@ -16,9 +16,9 @@ export const Header = () => {
 
           {/* Navigation Links */}
           <div className="flex items-center space-x-2">
-            <Link to="/">
+            <Link to="/posts">
               <LiquidButton variant="ghost" size="sm">
-                Home
+                Posts
               </LiquidButton>
             </Link>
             <Link to="/about">
