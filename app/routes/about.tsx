@@ -15,11 +15,11 @@ const About = () => {
 
       <main className="max-w-3xl mx-auto px-6 py-12 pt-32">
         <article>
-          <header className="mb-8">
+          <Header className="mb-8">
             <h1 className="text-h1 text-gray-900 dark:text-white mb-4">
               About Me
             </h1>
-          </header>
+          </Header>
 
           <div className="prose-enhanced max-w-none">
             <p className="text-body-lg text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
