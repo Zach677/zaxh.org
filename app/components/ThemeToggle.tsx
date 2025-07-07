@@ -1,10 +1,17 @@
 import { useEffect, useState } from 'react'
+import {
+  LiquidGlass,
+  LiquidSlider,
+  LiquidButton,
+  LiquidLabel,
+} from './LiquidGlass'
 
 type Theme = 'light' | 'dark' | 'system'
 
 export const ThemeToggle = () => {
   const [theme, setTheme] = useState<Theme>('system')
   const [mounted, setMounted] = useState(false)
+  const [showLabel, setShowLabel] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -39,7 +46,7 @@ export const ThemeToggle = () => {
     }
   }, [theme, mounted])
 
-  if (!mounted) return <div className="w-32 h-10" />
+  if (!mounted) return <div className="w-32 h-11" />
 
   const themes = [
     {
@@ -101,23 +108,50 @@ export const ThemeToggle = () => {
     },
   ] as const
 
+  const getActiveIndex = () => {
+    return themes.findIndex((t) => t.key === theme)
+  }
+
+  const getSliderPosition = () => {
+    const buttonWidth = 36 // w-9 = 36px
+    const padding = 4 // p-1 = 4px
+    return padding + getActiveIndex() * buttonWidth
+  }
+
   return (
-    <div className="inline-flex items-center bg-gray-100 dark:bg-gray-800 rounded-full p-1 border border-gray-200 dark:border-gray-700 shadow-sm">
-      {themes.map(({ key, icon, title }) => (
-        <button
-          key={key}
-          onClick={() => setTheme(key)}
-          className={`relative p-2.5 rounded-full transition-all duration-200 ease-in-out ${
-            theme === key
-              ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-md transform scale-105'
-              : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50'
-          }`}
-          title={title}
-          aria-label={title}
-        >
-          {icon}
-        </button>
-      ))}
+    <div
+      className="relative"
+      onMouseEnter={() => setShowLabel(true)}
+      onMouseLeave={() => setShowLabel(false)}
+    >
+      <LiquidGlass
+        variant="default"
+        blur="md"
+        className="relative inline-flex items-center rounded-full p-1 shadow-xl shadow-black/10 dark:shadow-black/20"
+      >
+        {/* 滑动指示器 */}
+        <LiquidSlider position={getSliderPosition()} width={32} />
+
+        {/* 按钮组 */}
+        {themes.map(({ key, icon, title }) => (
+          <LiquidButton
+            key={key}
+            onClick={() => setTheme(key)}
+            active={theme === key}
+            title={title}
+          >
+            {icon}
+          </LiquidButton>
+        ))}
+
+        {/* 环境光效果 */}
+        <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-blue-500/8 via-purple-500/8 to-pink-500/8 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-sm -z-10" />
+      </LiquidGlass>
+
+      {/* 当前模式标签 */}
+      <LiquidLabel visible={showLabel}>
+        {themes.find((t) => t.key === theme)?.title}
+      </LiquidLabel>
     </div>
   )
 }
