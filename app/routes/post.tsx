@@ -42,7 +42,7 @@ const Post = ({ loaderData }: Route.ComponentProps) => {
       <Header />
 
       <main className="max-w-3xl mx-auto px-6 py-12 pt-32">
-        <article className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-8">
+        <article>
           <header className="mb-8">
             <h1 className="text-h1 text-gray-900 dark:text-white mb-4">
               {post.title}
@@ -66,8 +66,6 @@ const Post = ({ loaderData }: Route.ComponentProps) => {
           />
         </article>
       </main>
-
-      <Footer />
     </div>
   )
 }
