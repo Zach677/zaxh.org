@@ -9,7 +9,7 @@ export const meta = ({}: Route.MetaArgs) => {
     {
       name: 'description',
       content:
-        'Personal blog sharing frontend development technology, programming experience, and life insights',
+        'Personal blog sharing software architecture, backend development technology, programming experience, and life insights',
     },
   ]
 }
@@ -29,9 +29,9 @@ const Home = ({ loaderData }: Route.ComponentProps) => {
       {/* 英雄区域 - 全屏展示 */}
       <section className="min-h-screen flex items-center justify-center px-6 pt-20">
         <LiquidHero
-          subtitle="Frontend Developer & Tech Enthusiast"
+          subtitle="Software & Backend Engineer & Tech Enthusiast"
           title="Hello, I'm Zach"
-          description="Welcome to my digital space where I share insights about frontend development, explore cutting-edge technologies, and document my journey in the ever-evolving world of web development."
+          description="Welcome to my digital space where I share insights about software architecture, backend development, and system design. Join me as I explore scalable solutions and document my journey in building robust, high-performance applications."
           className="max-w-4xl mx-auto"
         />
       </section>
