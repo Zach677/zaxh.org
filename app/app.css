@@ -91,6 +91,7 @@ body {
   color: theme('colors.gray.700');
   transition: color 0.2s ease;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .nav-link:hover {
