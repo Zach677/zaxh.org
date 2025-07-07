@@ -1,7 +1,6 @@
 import { data, redirect } from 'react-router'
 import type { Route } from './+types/post'
 import { Header } from '../components/header'
-import { Footer } from '../components/footer'
 import { getPostBySlug } from '../data/posts.server'
 import { marked } from 'marked'
 
