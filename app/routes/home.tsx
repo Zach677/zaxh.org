@@ -1,6 +1,5 @@
 import type { Route } from './+types/home'
 import { Header } from '../components/header'
-import { Footer } from '../components/footer'
 import { getAllPosts } from '../data/posts.server'
 import { LiquidHero } from '../components/LiquidGlass'
 
@@ -36,8 +35,6 @@ const Home = ({ loaderData }: Route.ComponentProps) => {
           className="max-w-4xl mx-auto"
         />
       </section>
-
-      <Footer />
     </div>
   )
 }
