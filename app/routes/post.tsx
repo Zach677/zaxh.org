@@ -15,7 +15,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   return data({ post })
 }
 
-export function meta({ data }: Route.MetaArgs) {
+export const meta = ({ data }: Route.MetaArgs) => {
   if (!data?.post) {
     return [{ title: "Article Not Found - Zach's Blog" }]
   }
@@ -26,7 +26,7 @@ export function meta({ data }: Route.MetaArgs) {
   ]
 }
 
-export default function Post({ loaderData }: Route.ComponentProps) {
+const Post = ({ loaderData }: Route.ComponentProps) => {
   const { post } = loaderData
 
   // Configure marked options
@@ -71,3 +71,5 @@ export default function Post({ loaderData }: Route.ComponentProps) {
     </div>
   )
 }
+
+export default Post

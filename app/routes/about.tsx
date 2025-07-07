@@ -1,14 +1,14 @@
 import { Header } from '../components/Header'
 import { Footer } from '../components/Footer'
 
-export function meta() {
+export const meta = () => {
   return [
     { title: "About Me - Zach's Blog" },
     { name: 'description', content: 'Learn more about the blog author' },
   ]
 }
 
-export default function About() {
+const About = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       <Header />
@@ -86,3 +86,5 @@ export default function About() {
     </div>
   )
 }
+
+export default About

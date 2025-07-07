@@ -4,7 +4,7 @@ import { Footer } from '../components/Footer'
 import { BlogCard } from '../components/BlogCard'
 import { getAllPosts } from '../data/posts.server'
 
-export function meta({}: Route.MetaArgs) {
+export const meta = ({}: Route.MetaArgs) => {
   return [
     { title: "Zach's Blog - Tech Sharing & Life Insights" },
     {
@@ -20,7 +20,7 @@ export async function loader() {
   return { posts }
 }
 
-export default function Home({ loaderData }: Route.ComponentProps) {
+const Home = ({ loaderData }: Route.ComponentProps) => {
   const { posts } = loaderData
 
   return (
@@ -44,3 +44,5 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     </div>
   )
 }
+
+export default Home
