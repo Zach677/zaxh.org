@@ -1,4 +1,4 @@
-import { socialLinks } from '../data/social'
+import { socialLinks } from '@/data/social'
 import { ThemeToggle } from './theme-switcher'
 import { Icon } from './icon'
 

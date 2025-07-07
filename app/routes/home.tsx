@@ -1,7 +1,7 @@
 import type { Route } from './+types/home'
-import { Header } from '../components/header'
-import { getAllPosts } from '../data/posts.server'
-import { LiquidHero } from '../components/LiquidGlass'
+import { Header } from '@/components/header'
+import { getAllPosts } from '@/data/posts.server'
+import { LiquidHero } from '@/components/LiquidGlass'
 
 export const meta = ({}: Route.MetaArgs) => {
   return [

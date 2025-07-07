@@ -1,8 +1,8 @@
 import type { Route } from './+types/posts'
-import { Header } from '../components/header'
-import { Footer } from '../components/footer'
+import { Header } from '@/components/header'
+import { Footer } from '@/components/footer'
 import { Link } from 'react-router'
-import { getAllPosts } from '../data/posts.server'
+import { getAllPosts } from '@/data/posts.server'
 
 export const meta = ({}: Route.MetaArgs) => {
   return [

@@ -1,7 +1,7 @@
 import { data, redirect } from 'react-router'
 import type { Route } from './+types/post'
-import { Header } from '../components/header'
-import { getPostBySlug } from '../data/posts.server'
+import { Header } from '@/components/header'
+import { getPostBySlug } from '@/data/posts.server'
 import { marked } from 'marked'
 
 export async function loader({ params }: Route.LoaderArgs) {
