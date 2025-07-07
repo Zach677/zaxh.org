@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Icon } from './Icon'
+import { Icon } from './icon'
 
 type Theme = 'light' | 'dark' | 'system'
 

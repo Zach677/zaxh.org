@@ -1,5 +1,5 @@
 import type { Route } from './+types/posts'
-import { Header } from '../components/Header'
+import { Header } from '../components/header'
 import { Link } from 'react-router'
 import { getAllPosts } from '../data/posts.server'
 

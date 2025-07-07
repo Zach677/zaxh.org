@@ -1,6 +1,6 @@
 import { socialLinks } from '../data/social'
-import { ThemeToggle } from './ThemeToggle'
-import { Icon } from './Icon'
+import { ThemeToggle } from './theme-switcher'
+import { Icon } from './icon'
 
 export const Footer = () => {
   return (

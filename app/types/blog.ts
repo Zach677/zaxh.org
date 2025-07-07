@@ -1,4 +1,4 @@
-import type { IconType } from '../components/Icon'
+import type { IconType } from '../components/icon'
 
 export interface BlogPost {
   slug: string
