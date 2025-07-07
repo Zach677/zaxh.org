@@ -5,6 +5,9 @@
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
+/* Configure dark mode to use class strategy */
+@variant dark (&:where(.dark, .dark *));
+
 html,
 body {
   @apply bg-white dark:bg-gray-950;
