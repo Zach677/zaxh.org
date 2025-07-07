@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 // 主要的 Liquid Glass 容器组件
 interface LiquidGlassProps {
