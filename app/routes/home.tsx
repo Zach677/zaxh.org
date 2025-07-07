@@ -1,8 +1,7 @@
 import type { Route } from './+types/home'
 import { Header } from '../components/Header'
-import { Footer } from '../components/Footer'
 import { getAllPosts } from '../data/posts.server'
-import { LiquidHero, LiquidButton } from '../components/LiquidGlass'
+import { LiquidHero } from '../components/LiquidGlass'
 
 export const meta = ({}: Route.MetaArgs) => {
   return [
@@ -33,20 +32,9 @@ const Home = ({ loaderData }: Route.ComponentProps) => {
           subtitle="Frontend Developer & Tech Enthusiast"
           title="Hello, I'm Zach"
           description="Welcome to my digital space where I share insights about frontend development, explore cutting-edge technologies, and document my journey in the ever-evolving world of web development."
-          actions={
-            <LiquidButton
-              variant="primary"
-              size="lg"
-              onClick={() => (window.location.href = '/posts')}
-            >
-              Explore My Work
-            </LiquidButton>
-          }
           className="max-w-4xl mx-auto"
         />
       </section>
-
-      <Footer />
     </div>
   )
 }
