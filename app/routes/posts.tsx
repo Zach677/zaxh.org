@@ -1,6 +1,5 @@
 import type { Route } from './+types/posts'
 import { Header } from '../components/Header'
-import { Footer } from '../components/Footer'
 import { Link } from 'react-router'
 import { getAllPosts } from '../data/posts.server'
 
@@ -76,8 +75,6 @@ const Posts = ({ loaderData }: Route.ComponentProps) => {
           </div>
         )}
       </main>
-
-      <Footer />
     </div>
   )
 }
