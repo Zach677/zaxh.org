@@ -1,3 +1,5 @@
+import type { IconType } from '../components/Icon'
+
 export interface BlogPost {
   slug: string
   title: string
@@ -10,5 +12,5 @@ export interface BlogPost {
 export interface SocialLink {
   name: string
   url: string
-  icon: string
+  icon: IconType
 }
