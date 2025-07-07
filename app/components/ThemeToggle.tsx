@@ -1,10 +1,5 @@
 import { useEffect, useState } from 'react'
-import {
-  LiquidGlass,
-  LiquidSlider,
-  LiquidButton,
-  LiquidLabel,
-} from './LiquidGlass'
+import { LiquidGlass, LiquidButton } from './LiquidGlass'
 
 type Theme = 'light' | 'dark' | 'system'
 
@@ -130,18 +125,49 @@ export const ThemeToggle = () => {
         className="relative inline-flex items-center rounded-full p-1 shadow-xl shadow-black/10 dark:shadow-black/20"
       >
         {/* 滑动指示器 */}
-        <LiquidSlider position={getSliderPosition()} width={32} />
+        <div
+          className="absolute top-1 bottom-1 bg-white/90 dark:bg-white/20 rounded-full shadow-lg transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] backdrop-blur-sm border border-white/30 dark:border-white/10"
+          style={{
+            left: `${getSliderPosition()}px`,
+            width: '32px',
+            background:
+              'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 100%)',
+            boxShadow:
+              '0 4px 20px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.8)',
+          }}
+        />
 
         {/* 按钮组 */}
         {themes.map(({ key, icon, title }) => (
-          <LiquidButton
+          <button
             key={key}
             onClick={() => setTheme(key)}
-            active={theme === key}
             title={title}
+            className={`relative z-10 flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300 ease-out group ${
+              theme === key
+                ? 'text-gray-800 dark:text-white'
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+            }`}
           >
-            {icon}
-          </LiquidButton>
+            {/* 图标容器 */}
+            <div
+              className={`transition-all duration-300 ${
+                theme === key
+                  ? 'scale-110 drop-shadow-sm'
+                  : 'scale-100 group-hover:scale-105'
+              }`}
+            >
+              {icon}
+            </div>
+
+            {/* 活跃状态光晕 */}
+            {theme === key && (
+              <div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/10 to-transparent opacity-60 pointer-events-none" />
+            )}
+
+            {/* 点击涟漪效果 */}
+            <div className="absolute inset-0 rounded-full opacity-0 group-active:opacity-30 transition-opacity duration-200 bg-white/20 dark:bg-white/10 pointer-events-none" />
+          </button>
         ))}
 
         {/* 环境光效果 */}
@@ -149,9 +175,13 @@ export const ThemeToggle = () => {
       </LiquidGlass>
 
       {/* 当前模式标签 */}
-      <LiquidLabel visible={showLabel}>
+      <div
+        className={`absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-gray-600 dark:text-gray-300 font-medium transition-all duration-300 pointer-events-none whitespace-nowrap ${
+          showLabel ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1'
+        }`}
+      >
         {themes.find((t) => t.key === theme)?.title}
-      </LiquidLabel>
+      </div>
     </div>
   )
 }

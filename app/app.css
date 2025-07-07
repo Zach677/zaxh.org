@@ -124,3 +124,273 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-gray-400 dark:bg-gray-500;
 }
+
+/* Liquid Glass Effects */
+.liquid-glass {
+  position: relative;
+  backdrop-filter: blur(20px) saturate(180%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 16px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.dark .liquid-glass {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 16px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.liquid-glass-strong {
+  backdrop-filter: blur(40px) saturate(200%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dark .liquid-glass-strong {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.06) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.liquid-glass-subtle {
+  backdrop-filter: blur(12px) saturate(150%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .liquid-glass-subtle {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Liquid Glass Hover Effects */
+.liquid-glass-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.liquid-glass-hover:hover {
+  backdrop-filter: blur(25px) saturate(190%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15), 0 4px 20px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.dark .liquid-glass-hover:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 4px 20px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Liquid Glass Animations */
+@keyframes liquid-pulse {
+  0%,
+  100% {
+    backdrop-filter: blur(20px) saturate(180%);
+    transform: scale(1);
+  }
+  50% {
+    backdrop-filter: blur(25px) saturate(200%);
+    transform: scale(1.02);
+  }
+}
+
+.liquid-glass-pulse {
+  animation: liquid-pulse 4s ease-in-out infinite;
+}
+
+@keyframes liquid-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.liquid-glass-shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: liquid-shimmer 3s ease-in-out infinite;
+  border-radius: inherit;
+}
+
+/* Liquid Glass Morphing */
+.liquid-glass-morph {
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.liquid-glass-morph:hover {
+  border-radius: 2rem;
+  backdrop-filter: blur(30px) saturate(220%);
+}
+
+/* Dynamic Background */
+.liquid-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: linear-gradient(
+    45deg,
+    rgba(59, 130, 246, 0.1) 0%,
+    rgba(147, 51, 234, 0.1) 25%,
+    rgba(236, 72, 153, 0.1) 50%,
+    rgba(245, 101, 101, 0.1) 75%,
+    rgba(251, 146, 60, 0.1) 100%
+  );
+  background-size: 400% 400%;
+  animation: liquid-gradient 15s ease infinite;
+}
+
+.dark .liquid-background {
+  background: linear-gradient(
+    45deg,
+    rgba(59, 130, 246, 0.05) 0%,
+    rgba(147, 51, 234, 0.05) 25%,
+    rgba(236, 72, 153, 0.05) 50%,
+    rgba(245, 101, 101, 0.05) 75%,
+    rgba(251, 146, 60, 0.05) 100%
+  );
+  background-size: 400% 400%;
+}
+
+@keyframes liquid-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Liquid Glass Text Effects */
+.liquid-text {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.6) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dark .liquid-text {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.7) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Liquid Glass Buttons */
+.liquid-button {
+  position: relative;
+  backdrop-filter: blur(20px) saturate(180%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.liquid-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.liquid-button:hover::before {
+  left: 100%;
+}
+
+.liquid-button:hover {
+  backdrop-filter: blur(25px) saturate(200%);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dark .liquid-button {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .liquid-button:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .liquid-glass {
+    backdrop-filter: blur(15px) saturate(150%);
+  }
+
+  .liquid-glass-strong {
+    backdrop-filter: blur(25px) saturate(170%);
+  }
+
+  .liquid-glass-subtle {
+    backdrop-filter: blur(8px) saturate(130%);
+  }
+}
