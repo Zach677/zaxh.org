@@ -24,13 +24,10 @@ const Posts = ({ loaderData }: Route.ComponentProps) => {
   const { posts } = loaderData
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 relative">
-      {/* 动态背景 */}
-      <div className="liquid-background" />
-
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       <Header />
 
-      <main className="max-w-2xl mx-auto px-6 py-12 pt-32 relative z-10">
+      <main className="max-w-2xl mx-auto px-6 py-12 pt-32">
         {/* 文章总数 */}
         <div className="mb-12">
           <p className="text-body text-gray-500 dark:text-gray-400">
