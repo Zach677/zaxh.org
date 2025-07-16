@@ -41,7 +41,7 @@ const Posts = ({ loaderData }: Route.ComponentProps) => {
             <article key={post.slug} className="group">
               <Link
                 to={`/posts/${post.slug}`}
-                className="block transition-all duration-200 hover:translate-x-1"
+                className="block transition-colors duration-200"
               >
                 <h2 className="text-h4 text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                   {post.title}
