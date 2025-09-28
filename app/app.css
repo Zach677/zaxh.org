@@ -1,320 +1,80 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
-@theme {
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+:root {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color-scheme: light dark;
 }
-
-/* Configure dark mode to use class strategy */
-@variant dark (&:where(.dark, .dark *));
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
-  font-size: 16px;
-  line-height: 1.6;
-
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
-  }
+  min-height: 100%;
 }
 
-/* Typography Scale */
-.text-display {
-  font-size: 3.5rem;
-  line-height: 1.1;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+@utility container-tight {
+  margin-inline: auto;
+  width: min(1100px, 92%);
 }
 
-.text-h1 {
-  font-size: 2.75rem;
-  line-height: 1.2;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
-.text-h3 {
-  font-size: 1.875rem;
-  line-height: 1.3;
-  font-weight: 600;
-}
-
-.text-h4 {
-  font-size: 1.5rem;
-  line-height: 1.35;
-  font-weight: 600;
-}
-
-.text-h5 {
-  font-size: 1.25rem;
-  line-height: 1.4;
-  font-weight: 500;
-}
-
-.text-body-lg {
-  font-size: 1.125rem;
-  line-height: 1.7;
-  font-weight: 400;
-}
-
-.text-body {
+@utility prose-content {
+  color: inherit;
+  line-height: 1.75;
   font-size: 1rem;
-  line-height: 1.6;
-  font-weight: 400;
 }
 
-.text-body-sm {
-  font-size: 0.875rem;
-  line-height: 1.5;
-  font-weight: 400;
+.prose-content h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  font-size: clamp(1.35rem, 0.6rem + 1.6vw, 1.8rem);
+  font-weight: 700;
 }
 
-/* Enhanced prose for article content */
-.prose-enhanced {
-  font-size: 1.125rem;
-  line-height: 1.8;
-  color: theme('colors.gray.700');
+.prose-content h3 {
+  margin-top: 1.8rem;
+  margin-bottom: 0.75rem;
+  font-size: clamp(1.2rem, 0.8rem + 0.8vw, 1.4rem);
+  font-weight: 600;
 }
 
-.dark .prose-enhanced {
-  color: theme('colors.gray.300');
+.prose-content p {
+  margin-block: 1rem;
+  color: inherit;
+  text-wrap: pretty;
 }
 
-/* Custom line clamp utility - removed unused .line-clamp-3 */
-
-/* Navigation Link Styles */
-.nav-link {
-  font-size: 0.875rem;
-  line-height: 1.5;
-  font-weight: 400;
-  color: theme('colors.gray.700');
-  transition: color 0.2s ease;
-  text-decoration: none;
-  cursor: pointer;
+.prose-content a {
+  color: var(--color-sky-500);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
-.nav-link:hover {
-  color: theme('colors.gray.900');
+.prose-content pre {
+  margin-block: 1.8rem;
+  padding: 1rem 1.2rem;
+  border-radius: 0.85rem;
+  background: color-mix(in srgb, var(--color-slate-900) 10%, transparent);
+  overflow-x: auto;
 }
 
-.dark .nav-link {
-  color: theme('colors.gray.200');
+.prose-content code {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-.dark .nav-link:hover {
-  color: theme('colors.white');
+.prose-content blockquote {
+  margin-block: 1.6rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--color-sky-500);
+  color: color-mix(in srgb, currentColor 80%, var(--color-slate-400));
+  font-style: italic;
 }
 
-/* Smooth transitions for theme switching */
-* {
-  transition: background-color 0.2s ease, color 0.2s ease,
-    border-color 0.2s ease;
+.prose-content ul,
+.prose-content ol {
+  padding-left: 1.3rem;
+  margin-block: 1rem 1.4rem;
+  display: grid;
+  gap: 0.45rem;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background-color: #f3f4f6;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #d1d5db;
-  border-radius: 9999px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: #9ca3af;
-}
-
-.dark ::-webkit-scrollbar-track {
-  background-color: #1f2937;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background-color: #4b5563;
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background-color: #6b7280;
-}
-
-/* Liquid Glass Effects - Hero Section Only */
-.liquid-glass {
-  position: relative;
-  backdrop-filter: blur(20px) saturate(180%);
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.05) 100%
-  );
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 16px rgba(0, 0, 0, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-.dark .liquid-glass {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.08) 0%,
-    rgba(255, 255, 255, 0.03) 100%
-  );
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 16px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.liquid-glass-strong {
-  backdrop-filter: blur(40px) saturate(200%);
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.15) 0%,
-    rgba(255, 255, 255, 0.08) 100%
-  );
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.dark .liquid-glass-strong {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.12) 0%,
-    rgba(255, 255, 255, 0.06) 100%
-  );
-  border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-/* Liquid Glass Animations */
-@keyframes liquid-pulse {
-  0%,
-  100% {
-    backdrop-filter: blur(20px) saturate(180%);
-    transform: scale(1);
-  }
-  50% {
-    backdrop-filter: blur(25px) saturate(200%);
-    transform: scale(1.02);
-  }
-}
-
-.liquid-glass-pulse {
-  animation: liquid-pulse 4s ease-in-out infinite;
-}
-
-@keyframes liquid-shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-.liquid-glass-shimmer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.1),
-    transparent
-  );
-  background-size: 200% 100%;
-  animation: liquid-shimmer 3s ease-in-out infinite;
-  border-radius: inherit;
-}
-
-/* Liquid Glass Morphing */
-.liquid-glass-morph {
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.liquid-glass-morph:hover {
-  border-radius: 2rem;
-  backdrop-filter: blur(30px) saturate(220%);
-}
-
-/* Dynamic Background */
-.liquid-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  background: linear-gradient(
-    45deg,
-    rgba(59, 130, 246, 0.1) 0%,
-    rgba(147, 51, 234, 0.1) 25%,
-    rgba(236, 72, 153, 0.1) 50%,
-    rgba(245, 101, 101, 0.1) 75%,
-    rgba(251, 146, 60, 0.1) 100%
-  );
-  background-size: 400% 400%;
-  animation: liquid-gradient 15s ease infinite;
-}
-
-.dark .liquid-background {
-  background: linear-gradient(
-    45deg,
-    rgba(59, 130, 246, 0.05) 0%,
-    rgba(147, 51, 234, 0.05) 25%,
-    rgba(236, 72, 153, 0.05) 50%,
-    rgba(245, 101, 101, 0.05) 75%,
-    rgba(251, 146, 60, 0.05) 100%
-  );
-  background-size: 400% 400%;
-}
-
-@keyframes liquid-gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* Liquid Glass Text Effects */
-.liquid-text {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.9) 0%,
-    rgba(255, 255, 255, 0.6) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.dark .liquid-text {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.95) 0%,
-    rgba(255, 255, 255, 0.7) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .liquid-glass {
-    backdrop-filter: blur(15px) saturate(150%);
-  }
-
-  .liquid-glass-strong {
-    backdrop-filter: blur(25px) saturate(170%);
-  }
+.dark .prose-content a {
+  color: var(--color-sky-300);
 }
