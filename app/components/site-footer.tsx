@@ -9,14 +9,11 @@ export function SiteFooter() {
           <p>记录一个前端学习者的实践路径与思考。</p>
         </div>
         <div className="flex flex-wrap gap-4">
+          <Link className="hover:text-slate-900 dark:hover:text-slate-100" to="/">
+            首页
+          </Link>
           <Link className="hover:text-slate-900 dark:hover:text-slate-100" to="/blog">
             博客
-          </Link>
-          <Link className="hover:text-slate-900 dark:hover:text-slate-100" to="/learn">
-            学习路径
-          </Link>
-          <Link className="hover:text-slate-900 dark:hover:text-slate-100" to="/about">
-            关于
           </Link>
         </div>
         <p className="text-xs text-slate-500 dark:text-slate-500">

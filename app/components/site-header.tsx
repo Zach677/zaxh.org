@@ -5,10 +5,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 const navLinks = [
   { to: "/", label: "首页" },
-  { to: "/learn", label: "学习路径" },
   { to: "/blog", label: "博客" },
-  { to: "/toolkit", label: "工具箱" },
-  { to: "/about", label: "关于" },
 ];
 
 export function SiteHeader() {
