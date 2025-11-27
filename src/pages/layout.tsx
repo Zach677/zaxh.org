@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router'
+import { Footer } from '@/components/Footer'
 
 export default function RootLayout() {
   return (
@@ -6,6 +7,7 @@ export default function RootLayout() {
       <main className="container mx-auto px-4 py-8 max-w-3xl">
         <Outlet />
       </main>
+      <Footer />
     </div>
   )
 }
