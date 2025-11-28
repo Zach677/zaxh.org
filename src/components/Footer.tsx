@@ -18,6 +18,8 @@ function SocialLink({
         className="flex w-10 h-10 items-center justify-center hover:text-primary font-light transition-colors duration-200"
         href={href}
         aria-label={title}
+        target="_blank"
+        rel="noopener noreferrer"
       >
         <Icon icon={icon as unknown as IconType} size="18px" />
       </a>
