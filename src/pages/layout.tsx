@@ -1,13 +1,17 @@
-import { Outlet } from 'react-router'
+import { Outlet, ScrollRestoration } from 'react-router'
 import { Footer } from '@/components/Footer'
+import { ReadableArea } from '@/components/ReadableArea'
 
 export default function RootLayout() {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-50 font-sans antialiased">
-      <main className="container mx-auto px-4 py-8 max-w-3xl">
+    <>
+      <ReadableArea className="mt-12 mb-20">
         <Outlet />
-      </main>
-      <Footer />
-    </div>
+      </ReadableArea>
+      <ReadableArea>
+        <Footer />
+      </ReadableArea>
+      <ScrollRestoration />
+    </>
   )
 }
