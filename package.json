@@ -9,7 +9,8 @@
     "build:client": "vite build --outDir dist",
     "build:ssg": "vite build --ssr src/main.ssg.tsx --outDir dist/server && tsx scripts/ssg.ts && tsx scripts/generate-rss.ts",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "process-img": "tsx scripts/process-img.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
@@ -22,6 +23,7 @@
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
+    "blurhash": "^2.0.5",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "eslint": "^9.39.1",
@@ -31,10 +33,12 @@
     "fs-extra": "^11.3.2",
     "globals": "^16.5.0",
     "react": "^19.2.0",
+    "react-blurhash": "^0.3.0",
     "react-dom": "^19.2.0",
     "react-icons": "^5.5.0",
     "react-router": "^7.9.6",
     "rehype-pretty-code": "^0.14.1",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.1.17",
     "tsx": "^4.21.0",
     "typescript": "~5.9.3",
