@@ -1,6 +1,7 @@
 import { lazy, use } from 'react'
 import { type RouteObject } from 'react-router'
 
+import './metadata/react-router-ext'
 import RootLayout from './pages/layout'
 import NotFound from './pages/not-found'
 import ErrorBoundary from './pages/error'
@@ -35,6 +36,11 @@ const routes: RouteObject[] = [
       ...postIndex.map((post) => ({
         path: `post/${post.slug}`,
         Component: wrapPostPage(post.slug!, loadPost),
+        metadata: {
+          title: post.title,
+          description: post.description,
+          url: `https://zaxh.org/post/${post.slug}`,
+        },
       })),
       ...Object.keys(pages).map((pageSlug) => ({
         path: `page/${pageSlug}`,
