@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "pnpm build:client && pnpm build:ssg",
+    "build:client": "vite build --outDir dist",
+    "build:ssg": "vite build --ssr src/main.ssg.tsx --outDir dist/server && tsx scripts/ssg.ts",
     "lint": "eslint .",
     "preview": "vite preview"
   },

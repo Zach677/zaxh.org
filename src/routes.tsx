@@ -1,7 +1,6 @@
 import { lazy, use } from 'react'
 import { type RouteObject } from 'react-router'
 
-import './metadata/react-router-ext'
 import RootLayout from './pages/layout'
 import NotFound from './pages/not-found'
 import ErrorBoundary from './pages/error'
@@ -25,7 +24,6 @@ function wrapPostPage(
 
 const routes: RouteObject[] = [
   {
-    path: '/',
     Component: RootLayout,
     ErrorBoundary,
     children: [
