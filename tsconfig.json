@@ -33,6 +33,7 @@
   "include": [
     "src",
     "scripts",
-    "plugins"
+    "plugins",
+    "types"
   ]
 }
