@@ -1,3 +1,11 @@
-# Zach.org
+# ZachSpace
 
-Hi, I'm Zach. I'm a software engineer and a designer. I'm here to share my thoughts and ideas with the world.
+My personal blog built with React, Vite, and MDX.
+
+## Acknowledgments
+
+This project's architecture and code structure is heavily inspired by [cyandev.app](https://github.com/unixzii/cyandev.app). Thanks to [@unixzii](https://github.com/unixzii) for the excellent reference implementation.
+
+## License
+
+MIT
