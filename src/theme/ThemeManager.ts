@@ -70,13 +70,26 @@ const themeManager: ThemeManager = {
     const transition = document.startViewTransition(() => {
       applyTheme(theme)
     })
+
     transition.ready.then(() => {
+      const x = 0
+      const y = 0
+      const endRadius = Math.hypot(
+        Math.max(x, window.innerWidth - x),
+        Math.max(y, window.innerHeight - y),
+      )
+
       document.documentElement.animate(
-        { opacity: 1 },
         {
-          duration: 200,
+          clipPath: [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${endRadius}px at ${x}px ${y}px)`,
+          ],
+        },
+        {
+          duration: 500,
+          easing: 'ease-in-out',
           pseudoElement: '::view-transition-new(root)',
-          fill: 'both',
         },
       )
     })

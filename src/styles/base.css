@@ -18,11 +18,7 @@
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation: none;
-  }
-
-  ::view-transition-new(root) {
-    /* Keep the old snapshot and fade in the new one. */
-    opacity: 0;
+    mix-blend-mode: normal;
   }
 }
 
