@@ -2,7 +2,7 @@ import { type RouteObject } from 'react-router'
 import RootLayout from './pages/layout'
 import NotFound from './pages/not-found'
 import ErrorBoundary from './pages/error'
-import postPages from './pages/post'
+import RootPage from './pages/index'
 
 const routes: RouteObject[] = [
   {
@@ -12,7 +12,7 @@ const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        Component: postPages,
+        Component: RootPage,
       },
     ],
   },
