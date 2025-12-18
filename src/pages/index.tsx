@@ -1,6 +1,7 @@
 import { Link } from 'react-router'
 
 import { Logo } from '@/components/Logo'
+import { FormattedTime } from '@/components/FormattedTime'
 import postIndex from 'virtual:postIndex'
 
 function PostItem({ post }: { post: PostMetadata }) {
@@ -14,13 +15,7 @@ function PostItem({ post }: { post: PostMetadata }) {
       >
         {post.title}
       </Link>
-      <time className="text-sm text-secondary" dateTime={date.toISOString()}>
-        {date.toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })}
-      </time>
+      <FormattedTime className="text-sm text-secondary" dateTime={date} />
     </li>
   )
 }

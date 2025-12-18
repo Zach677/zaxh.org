@@ -1,4 +1,5 @@
 import { Reader } from '@/components/reader'
+import { FormattedTime } from '@/components/FormattedTime'
 
 export default function PostPage(props: { postModule: PostModule }) {
   const { postModule } = props
@@ -11,13 +12,7 @@ export default function PostPage(props: { postModule: PostModule }) {
       <h1 className="page-title">{title}</h1>
       {parsedDate ? (
         <p className="page-subtitle">
-          <time dateTime={parsedDate.toISOString()}>
-            {parsedDate.toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
-          </time>
+          <FormattedTime dateTime={parsedDate} />
         </p>
       ) : null}
       <article className="md-reader mt-16">
