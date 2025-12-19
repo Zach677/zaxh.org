@@ -34,12 +34,16 @@ function extractMetadata(s: string): Metadata | undefined {
   return { title, size: size as [number, number], blurhash }
 }
 
-function calcScaleFactor(width: number, height: number, maxWidth: number) {
-  const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b))
-  const g = gcd(width, height)
-  const baseWidth = width / g
-  const maxScaleFactor = Math.floor(maxWidth / baseWidth)
-  return maxScaleFactor / g
+function calcBlurSize(
+  width: number,
+  height: number,
+  maxSize: number = 32
+): [number, number] {
+  const aspectRatio = width / height
+  if (width >= height) {
+    return [maxSize, Math.round(maxSize / aspectRatio)]
+  }
+  return [Math.round(maxSize * aspectRatio), maxSize]
 }
 
 export function Image(props: ImageProps) {
@@ -65,7 +69,9 @@ export function Image(props: ImageProps) {
     return (
       <div className="relative overflow-hidden rounded-md border border-separator">
         <img
-          className={`transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+          className={`transition-opacity duration-500 ${
+            loaded ? 'opacity-100' : 'opacity-0'
+          }`}
           ref={imgRef}
           src={src}
           alt={alt}
@@ -78,11 +84,7 @@ export function Image(props: ImageProps) {
   }
 
   const [width, height] = metadata.size
-  const scaleFactor = calcScaleFactor(width, height, 720)
-  const [scaledWidth, scaledHeight] = [
-    width * scaleFactor,
-    height * scaleFactor,
-  ]
+  const [blurWidth, blurHeight] = calcBlurSize(width, height)
 
   return (
     <div className="relative overflow-hidden rounded-md border border-separator">
@@ -97,11 +99,13 @@ export function Image(props: ImageProps) {
           aspectRatio: `auto ${width} / ${height}`,
         }}
         hash={metadata.blurhash}
-        width={scaledWidth}
-        height={scaledHeight}
+        width={blurWidth}
+        height={blurHeight}
       />
       <img
-        className={`transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+        className={`transition-opacity duration-500 ${
+          loaded ? 'opacity-100' : 'opacity-0'
+        }`}
         ref={imgRef}
         src={src}
         alt={alt}
