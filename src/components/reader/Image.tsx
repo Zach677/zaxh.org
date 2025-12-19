@@ -37,7 +37,7 @@ function extractMetadata(s: string): Metadata | undefined {
 function calcBlurSize(
   width: number,
   height: number,
-  maxSize: number = 32
+  maxSize: number = 32,
 ): [number, number] {
   const aspectRatio = width / height
   if (width >= height) {
