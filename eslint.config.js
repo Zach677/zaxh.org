@@ -5,6 +5,9 @@ import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'
 
 export default defineConfig(
+  {
+    ignores: ['dist/**', 'api/**'],
+  },
   eslint.configs.recommended,
   tseslint.configs.recommended,
   {

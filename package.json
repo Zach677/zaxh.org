@@ -48,5 +48,8 @@
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4"
   },
-  "packageManager": "pnpm@8.15.4+sha1.c85a4305534f76d461407b59277b954bac97b5c4"
+  "packageManager": "pnpm@8.15.4+sha1.c85a4305534f76d461407b59277b954bac97b5c4",
+  "dependencies": {
+    "@upstash/redis": "^1.35.8"
+  }
 }

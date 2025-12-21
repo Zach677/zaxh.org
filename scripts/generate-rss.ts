@@ -22,7 +22,7 @@ import('../dist/server/main.ssg.js' as any).then(
 
     const feed = new Feed({
       title: 'ZachSpace',
-      description: "Zach's personal blog",
+      description: 'Zach\'s personal blog',
       id: BASE_URL,
       link: BASE_URL,
       feed: `${BASE_URL}/rss.xml`,
