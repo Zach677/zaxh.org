@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import mdx from '@mdx-js/rollup'
+import remarkGfm from 'remark-gfm'
 import rehypePrettyCode, { Options } from 'rehype-pretty-code'
 
 import { postProvider, pageProvider } from './plugins/content-provider'
@@ -17,6 +18,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
     mdx({
+      remarkPlugins: [remarkGfm],
       rehypePlugins: [
         [
           rehypePrettyCode,
