@@ -67,25 +67,29 @@ export default async function handler(request: Request): Promise<Response> {
     }
   }
 
-  // POST: Update activity (requires API key)
+  // POST: Update activity (ProcessReporter payload, requires API key)
   if (request.method === 'POST') {
-    const apiKey = request.headers.get('X-API-Key')
-    const expectedKey = process.env.ACTIVITY_API_KEY
-
-    if (!expectedKey || apiKey !== expectedKey) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
-        headers: { 'Content-Type': 'application/json', ...corsHeaders },
-      })
-    }
-
     try {
-      const body = await request.json()
-      const { processName } = body as { processName?: string }
+      const body = (await request.json()) as {
+        process?: { name?: string }
+        key?: string
+      }
+
+      const apiKey = body.key
+      const expectedKey = process.env.ACTIVITY_API_KEY
+
+      if (!expectedKey || apiKey !== expectedKey) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        })
+      }
+
+      const processName = body.process?.name
 
       if (!processName) {
         return new Response(
-          JSON.stringify({ error: 'processName is required' }),
+          JSON.stringify({ error: 'process.name is required' }),
           {
             status: 400,
             headers: { 'Content-Type': 'application/json', ...corsHeaders },
