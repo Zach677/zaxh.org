@@ -1,5 +1,6 @@
 import { Reader } from '@/components/reader'
 import { FormattedTime } from '@/components/FormattedTime'
+import { BackToTop } from '@/components/BackToTop'
 
 export default function PostPage(props: { postModule: PostModule }) {
   const { postModule } = props
@@ -18,6 +19,7 @@ export default function PostPage(props: { postModule: PostModule }) {
       <article className="md-reader mt-16">
         <Reader contentComponent={contentComponent} />
       </article>
+      <BackToTop />
     </main>
   )
 }
