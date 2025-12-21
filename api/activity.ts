@@ -1,7 +1,7 @@
 import { Redis } from '@upstash/redis'
 
 const ACTIVITY_KEY = 'current_activity'
-const ACTIVITY_TTL = 300 // 5 minutes in seconds
+const ACTIVITY_TTL = 30
 
 interface ActivityData {
   processName: string
