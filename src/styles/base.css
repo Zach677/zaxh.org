@@ -1,0 +1,35 @@
+@layer base {
+  html {
+    scroll-padding-top: 100px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-primary);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+  }
+
+  *::selection {
+    background-color: --alpha(var(--color-primary) / 15%);
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+}
+
+@custom-variant dark {
+  :root[data-theme='dark'] & {
+    @slot;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root[data-theme='system'] & {
+      @slot;
+    }
+  }
+}

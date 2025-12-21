@@ -1,0 +1,71 @@
+export const metadata = {
+  title: '自动工作流同步仓库',
+  description:
+    '使用 GitHub Actions 实现跨仓库自动同步，解决私有仓库无法 fork 同步的痛点',
+  date: '2024-05-01T00:00:00.000Z',
+  tags: ['GitHub Actions', 'Git'],
+}
+
+最近看了[innei](https://innei.in)大佬的文章，[跨仓库全自动构建项目并部署到服务器](https://innei.in/posts/tech/automatically-build-projects-across-repositories-and-deploy-to-servers)对我很有启发
+
+我使用 vercel 构建 innei 大佬的 Shiro，自从有了闭源版本后，有很大痛点就是仓库不能 fork，导致无法方便同步 commit，只能从本地 fetch 再 push，之前有考虑过使用 GitHub 的 action 自动化操作，但是当时试了试总是失败
+
+后来也是自己手动同步，但是我看了文章之后问了一下 GPT，才明白怎么一回事
+
+## 流程
+
+1. 检查源码仓库是否有变更
+2. 定时进行
+3. 如有变更，进行自动 rebase 和 push 操作
+
+![](https://cdn.xingbest.fun/blog/2024/05/b81ca6b0e2431aa75625f95c65ca7af6.png '创建 GitHub Actions 工作流;1236x526;LuJkl#~q_3%M_3M{M{WB?bM{M|WB')
+
+## 参考配置（GPT 所写）
+
+```yaml
+name: Sync with upstream repo
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # 6 hous
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          repository: 'Sync-Repo'
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fetch-depth: 0
+
+      - name: Sync with upstream
+        run: |
+          git config user.name 'Username'
+          git config user.email 'Useremail'
+          git remote add upstream 'https://github.com/username/source-repo'
+          git fetch upstream
+          git checkout main
+          git rebase upstream/main
+          git push origin main -f
+```
+
+注意要在本仓库添加一个名为**PERSONAL_ACCESS_TOKEN**的 Secrets
+
+## 访问权限 Token
+
+如何获取具有私有仓库访问权限的令牌呢？
+
+首先要去 Setting ->> Developer setting ->> Personal access tokens (classic) ->> Generate new token(classic)
+
+![](https://cdn.xingbest.fun/blog/2024/05/cae836972275f29a84951db2f09651ee.png '生成 Personal Access Token;817x844;L2Sr}-00^jD%.TM{IT-;HWtRtlR*')
+
+**repo**一定要选上，workflow 我不确定
+
+之后去到你要同步的仓库里面
+
+![](https://cdn.xingbest.fun/blog/2024/05/e76a69ef3a94d7af1539f2b5b1a10efe.png '添加仓库 Secrets;1261x803;L3S$lnH@rqMc0KyX?vxtuPIAxHtR')
+
+添加即可

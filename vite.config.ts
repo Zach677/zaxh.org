@@ -1,8 +1,35 @@
-import { reactRouter } from "@react-router/dev/vite";
-import tailwindcss from "@tailwindcss/vite";
-import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
+import path from 'node:path'
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+import mdx from '@mdx-js/rollup'
+import rehypePrettyCode, { Options } from 'rehype-pretty-code'
+
+import { postProvider, pageProvider } from './plugins/content-provider'
 
 export default defineConfig({
-  plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
-});
+  resolve: {
+    alias: {
+      '@': '/src',
+    },
+  },
+  plugins: [
+    react(),
+    tailwindcss(),
+    mdx({
+      rehypePlugins: [
+        [
+          rehypePrettyCode,
+          {
+            theme: {
+              light: 'github-light-default',
+              dark: 'github-dark-default',
+            },
+          } satisfies Options,
+        ],
+      ],
+    }),
+    postProvider(path.resolve(import.meta.dirname, 'data/posts')),
+    pageProvider(path.resolve(import.meta.dirname, 'data/pages')),
+  ],
+})
