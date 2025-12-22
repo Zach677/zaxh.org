@@ -6,10 +6,13 @@ interface Activity {
   timestamp?: number
 }
 
-const POLL_INTERVAL = 30000 // 30 seconds
+const POLL_INTERVAL = 10000 // 10 seconds
 
 export function useActivity() {
-  const [activity, setActivity] = useState<Activity>({ online: false, processName: null })
+  const [activity, setActivity] = useState<Activity>({
+    online: false,
+    processName: null,
+  })
   const [isLoading, setIsLoading] = useState(true)
 
   const fetchActivity = useCallback(async () => {
