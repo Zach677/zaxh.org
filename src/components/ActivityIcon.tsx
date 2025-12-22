@@ -8,7 +8,7 @@ const FALLBACK_ICON = `data:image/svg+xml,${encodeURIComponent(
 )}`
 
 interface ActivityIconProps {
-  processName: string;
+  processName: string
 }
 
 export function ActivityIcon({ processName }: ActivityIconProps) {
@@ -31,9 +31,9 @@ export function ActivityIcon({ processName }: ActivityIconProps) {
       <img
         src={iconError || !iconUrl ? FALLBACK_ICON : iconUrl}
         alt={processName}
-        width={18}
-        height={18}
-        className="size-[18px] select-none transition-opacity duration-300"
+        width={22}
+        height={22}
+        className="size-[22px] select-none transition-opacity duration-300"
         onError={() => setIconError(true)}
       />
       {showTooltip && (
