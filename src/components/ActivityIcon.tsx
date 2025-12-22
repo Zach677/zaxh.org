@@ -1,39 +1,41 @@
-import { useEffect, useState } from 'react'
-import appIconMap from '../../reporter-assets/app-icon.json'
+import { useEffect, useState } from "react";
+import appIconMap from "../../reporter-assets/app-icon.json";
 
-const CDN_BASE = 'https://fastly.jsdelivr.net/gh/Innei/reporter-assets@main'
+const CDN_BASE = "https://fastly.jsdelivr.net/gh/Innei/reporter-assets@main";
 
 const FALLBACK_ICON = `data:image/svg+xml,${encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg>',
-)}`
+)}`;
 
 interface ActivityIconProps {
-  processName: string
+  processName: string;
+  size?: number;
 }
 
-export function ActivityIcon({ processName }: ActivityIconProps) {
-  const [iconError, setIconError] = useState(false)
-  const [showTooltip, setShowTooltip] = useState(false)
+export function ActivityIcon({ processName, size = 22 }: ActivityIconProps) {
+  const [iconError, setIconError] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
 
-  const iconName = (appIconMap as Record<string, string>)[processName]
-  const iconUrl = iconName ? `${CDN_BASE}/apps/${iconName}.png` : null
+  const iconName = (appIconMap as Record<string, string>)[processName];
+  const iconUrl = iconName ? `${CDN_BASE}/apps/${iconName}.png` : null;
 
   useEffect(() => {
-    setIconError(false)
-  }, [processName])
+    setIconError(false);
+  }, [processName]);
 
   return (
     <div
-      className="relative"
+      className="relative inline-flex shrink-0"
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
     >
       <img
         src={iconError || !iconUrl ? FALLBACK_ICON : iconUrl}
         alt={processName}
-        width={22}
-        height={22}
-        className="size-[22px] select-none transition-opacity duration-300"
+        width={size}
+        height={size}
+        style={{ width: size, height: size }}
+        className="select-none transition-opacity duration-300"
         onError={() => setIconError(true)}
       />
       {showTooltip && (
@@ -42,5 +44,5 @@ export function ActivityIcon({ processName }: ActivityIconProps) {
         </div>
       )}
     </div>
-  )
+  );
 }
