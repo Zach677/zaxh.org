@@ -63,10 +63,10 @@ export const SeasonalEffect = () => {
           return ['#ffb7c5', '#ff91a4', '#f8c8dc']
         case 'summer':
           return dark
-            ? ['#4ade80', '#22c55e', '#16a34a']
-            : ['#86efac', '#4ade80', '#22c55e']
+            ? ['#ffffff', '#f1f5f9', '#fefce8']
+            : ['#f8fafc', '#f1f5f9', '#fef9c3']
         case 'autumn':
-          return ['#facc15', '#fbbf24', '#f59e0b', '#ea580c']
+          return ['#ea580c', '#f59e0b', '#c2410c', '#9a3412', '#b45309']
         case 'winter':
           return dark ? ['#ffffff'] : ['#e2e8f0']
         default:
@@ -86,7 +86,7 @@ export const SeasonalEffect = () => {
           y: Math.random() * canvas.height,
           radius: radius,
           speed: (Math.random() * 0.5 + 0.2) * (radius / 2.5),
-          opacity: Math.random() * 0.4 + 0.3,
+          opacity: Math.random() * 0.5 + 0.4,
           wind: Math.random() * 0.4 - 0.2,
           rotation: Math.random() * Math.PI * 2,
           rotationSpeed: (Math.random() - 0.5) * 0.03,
@@ -134,20 +134,60 @@ export const SeasonalEffect = () => {
       c.globalAlpha = p.opacity
       c.fillStyle = p.color
 
+      // Draw a more realistic leaf shape (pointed at both ends)
       c.beginPath()
-      c.moveTo(0, -p.radius)
-      c.quadraticCurveTo(p.radius, -p.radius, p.radius, 0)
-      c.quadraticCurveTo(p.radius, p.radius, 0, p.radius)
-      c.quadraticCurveTo(-p.radius, p.radius, -p.radius, 0)
-      c.quadraticCurveTo(-p.radius, -p.radius, 0, -p.radius)
+      c.moveTo(0, -p.radius * 1.5)
+      // Top right
+      c.quadraticCurveTo(p.radius, -p.radius, p.radius * 0.5, 0)
+      // Bottom right
+      c.quadraticCurveTo(p.radius, p.radius, 0, p.radius * 1.5)
+      // Bottom left
+      c.quadraticCurveTo(-p.radius, p.radius, -p.radius * 0.5, 0)
+      // Top left
+      c.quadraticCurveTo(-p.radius, -p.radius, 0, -p.radius * 1.5)
       c.fill()
 
-      c.strokeStyle = 'rgba(0,0,0,0.1)'
+      // Vein
+      c.strokeStyle = 'rgba(0,0,0,0.15)'
       c.lineWidth = 0.5
       c.beginPath()
-      c.moveTo(0, -p.radius)
-      c.lineTo(0, p.radius)
+      c.moveTo(0, -p.radius * 1.5)
+      c.lineTo(0, p.radius * 1.5)
       c.stroke()
+
+      c.restore()
+    }
+
+    const drawDandelion = (c: CanvasRenderingContext2D, p: Particle) => {
+      c.save()
+      c.translate(p.x, p.y)
+      c.rotate(p.rotation)
+      c.globalAlpha = p.opacity
+      c.strokeStyle = p.color
+      c.fillStyle = p.color
+      c.lineWidth = 0.5
+
+      // Center seed
+      c.beginPath()
+      c.arc(0, 0, 1, 0, Math.PI * 2)
+      c.fill()
+
+      // Hairs (pappus)
+      for (let i = 0; i < 8; i++) {
+        c.rotate(Math.PI / 4)
+        c.beginPath()
+        c.moveTo(0, 0)
+        c.lineTo(0, p.radius)
+        c.stroke()
+
+        // Tiny branches at the end of each hair
+        c.beginPath()
+        c.moveTo(0, p.radius * 0.8)
+        c.lineTo(-p.radius * 0.2, p.radius)
+        c.moveTo(0, p.radius * 0.8)
+        c.lineTo(p.radius * 0.2, p.radius)
+        c.stroke()
+      }
 
       c.restore()
     }
@@ -183,6 +223,8 @@ export const SeasonalEffect = () => {
           drawSnowflake(ctx, p)
         } else if (p.type === 'spring') {
           drawPetal(ctx, p)
+        } else if (p.type === 'summer') {
+          drawDandelion(ctx, p)
         } else {
           drawLeaf(ctx, p)
         }
