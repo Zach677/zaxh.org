@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useLocation } from 'react-router'
 import themeManager from '@/theme/ThemeManager'
 
 type Season = 'spring' | 'summer' | 'autumn' | 'winter'
@@ -28,6 +29,10 @@ export const SeasonalEffect = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [isDark, setIsDark] = useState(false)
   const [season, setSeason] = useState<Season>('winter')
+  const location = useLocation()
+  const shouldToneDownInCenter =
+    location.pathname.startsWith('/post/') ||
+    location.pathname.startsWith('/page/')
 
   useEffect(() => {
     setSeason(getSeason())
@@ -56,6 +61,8 @@ export const SeasonalEffect = () => {
 
     let animationFrameId: number
     let particles: Particle[] = []
+    let readingAreaHalfWidth = 0
+    const readingAreaFadeWidth = 120
 
     const getColors = (s: Season, dark: boolean) => {
       switch (s) {
@@ -99,14 +106,46 @@ export const SeasonalEffect = () => {
     const resize = () => {
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
+      // Match the same width envelope as the centered readable area.
+      const maxReadableWidth = 48 * 16 + 48 // `max-w-3xl` + `px-6`
+      const minSideGutter = 16
+      const readableWidth = Math.min(
+        maxReadableWidth,
+        Math.max(0, canvas.width - minSideGutter * 2),
+      )
+      readingAreaHalfWidth = readableWidth / 2
       initParticles()
     }
 
-    const drawSnowflake = (c: CanvasRenderingContext2D, p: Particle) => {
+    const getReadingAreaOpacityMultiplier = (x: number) => {
+      if (!shouldToneDownInCenter) return 1
+
+      const centerX = canvas.width / 2
+      const distanceFromCenter = Math.abs(x - centerX)
+      const centerOpacity = canvas.width < 768 ? 0.6 : 0.45
+
+      if (distanceFromCenter <= readingAreaHalfWidth) {
+        return centerOpacity
+      }
+
+      const distanceFromFadeStart = distanceFromCenter - readingAreaHalfWidth
+      if (distanceFromFadeStart >= readingAreaFadeWidth) {
+        return 1
+      }
+
+      const progress = distanceFromFadeStart / readingAreaFadeWidth
+      return centerOpacity + (1 - centerOpacity) * progress
+    }
+
+    const drawSnowflake = (
+      c: CanvasRenderingContext2D,
+      p: Particle,
+      opacityMultiplier: number,
+    ) => {
       c.save()
       c.translate(p.x, p.y)
       c.rotate(p.rotation)
-      c.globalAlpha = p.opacity
+      c.globalAlpha = p.opacity * opacityMultiplier
       c.strokeStyle = isDark ? 'white' : '#cbd5e1'
       c.lineWidth = 1
       c.lineCap = 'round'
@@ -127,11 +166,15 @@ export const SeasonalEffect = () => {
       c.restore()
     }
 
-    const drawLeaf = (c: CanvasRenderingContext2D, p: Particle) => {
+    const drawLeaf = (
+      c: CanvasRenderingContext2D,
+      p: Particle,
+      opacityMultiplier: number,
+    ) => {
       c.save()
       c.translate(p.x, p.y)
       c.rotate(p.rotation)
-      c.globalAlpha = p.opacity
+      c.globalAlpha = p.opacity * opacityMultiplier
       c.fillStyle = p.color
 
       // Draw a more realistic leaf shape (pointed at both ends)
@@ -158,11 +201,15 @@ export const SeasonalEffect = () => {
       c.restore()
     }
 
-    const drawDandelion = (c: CanvasRenderingContext2D, p: Particle) => {
+    const drawDandelion = (
+      c: CanvasRenderingContext2D,
+      p: Particle,
+      opacityMultiplier: number,
+    ) => {
       c.save()
       c.translate(p.x, p.y)
       c.rotate(p.rotation)
-      c.globalAlpha = p.opacity
+      c.globalAlpha = p.opacity * opacityMultiplier
       c.strokeStyle = p.color
       c.fillStyle = p.color
       c.lineWidth = 0.5
@@ -192,11 +239,15 @@ export const SeasonalEffect = () => {
       c.restore()
     }
 
-    const drawPetal = (c: CanvasRenderingContext2D, p: Particle) => {
+    const drawPetal = (
+      c: CanvasRenderingContext2D,
+      p: Particle,
+      opacityMultiplier: number,
+    ) => {
       c.save()
       c.translate(p.x, p.y)
       c.rotate(p.rotation)
-      c.globalAlpha = p.opacity
+      c.globalAlpha = p.opacity * opacityMultiplier
       c.fillStyle = p.color
 
       c.beginPath()
@@ -219,14 +270,16 @@ export const SeasonalEffect = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
       particles.forEach((p) => {
+        const opacityMultiplier = getReadingAreaOpacityMultiplier(p.x)
+
         if (p.type === 'winter') {
-          drawSnowflake(ctx, p)
+          drawSnowflake(ctx, p, opacityMultiplier)
         } else if (p.type === 'spring') {
-          drawPetal(ctx, p)
+          drawPetal(ctx, p, opacityMultiplier)
         } else if (p.type === 'summer') {
-          drawDandelion(ctx, p)
+          drawDandelion(ctx, p, opacityMultiplier)
         } else {
-          drawLeaf(ctx, p)
+          drawLeaf(ctx, p, opacityMultiplier)
         }
 
         p.y += p.speed
@@ -256,7 +309,7 @@ export const SeasonalEffect = () => {
       window.removeEventListener('resize', resize)
       cancelAnimationFrame(animationFrameId)
     }
-  }, [isDark, season])
+  }, [isDark, season, shouldToneDownInCenter])
 
   return (
     <canvas
