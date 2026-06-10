@@ -10,13 +10,18 @@ import postIndex from 'virtual:postIndex'
 import pageIndex from 'virtual:pageIndex'
 
 const RootPage = lazy(() => import('./pages/index'))
-const PostPage = lazy(() => import('./pages/post'))
+
+export const loadPostPage = () => import('./pages/post')
+const PostPage = lazy(loadPostPage)
 
 function wrapPostPage(
   slug: string,
   loader: (slug: string) => Promise<PostModule>,
 ) {
   function WrappedPostPage() {
+    // Kick off the PostPage chunk fetch in parallel with the content chunk,
+    // instead of waiting for `use` to resolve before <PostPage> suspends.
+    void loadPostPage()
     const postModule = use(loader(slug))
     return <PostPage postModule={postModule} />
   }
