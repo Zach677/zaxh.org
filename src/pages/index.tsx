@@ -1,45 +1,62 @@
-import { Link } from "react-router";
+import { Link } from 'react-router'
 
-import { Logo } from "@/components/Logo";
-import { FormattedTime } from "@/components/FormattedTime";
-import postIndex from "virtual:postIndex";
+import { Logo } from '@/components/Logo'
+import { FormattedTime } from '@/components/FormattedTime'
+import postIndex from 'virtual:postIndex'
 
-function PostItem({ post }: { post: PostMetadata }) {
-  const date = new Date(post.date!);
+function PostItem({ post, index }: { post: PostMetadata; index: number }) {
+  const date = new Date(post.date!)
 
   return (
-    <li className="mb-8 flex flex-col gap-1">
-      <Link
-        className="text-xl font-semibold underline decoration-transparent transition-colors duration-200 hover:decoration-primary"
-        to={`/post/${post.slug}`}
-      >
+    <li className="index-item">
+      <span className="no">{String(index + 1).padStart(3, '0')}</span>
+      <Link className="ink-link title" to={`/post/${post.slug}`}>
         {post.title}
       </Link>
-      <FormattedTime className="text-sm text-secondary" dateTime={date} />
+      <FormattedTime className="date" dateTime={date} />
     </li>
-  );
+  )
 }
 
 export default function RootPage() {
   return (
-    <main>
-      <h1 className="page-title font-mono">
-        <Logo iconSize={48} />
-      </h1>
-      <p className="page-subtitle">
-        I write code so my cat and dog can have a better life.
-      </p>
-      <div className="mt-16">
-        {postIndex.length > 0 ? (
-          <ul>
-            {postIndex.map((post) => (
-              <PostItem key={post.slug} post={post} />
-            ))}
-          </ul>
-        ) : (
-          <p className="text-secondary">No posts yet. Stay tuned!</p>
-        )}
+    <main className="colophon">
+      {/* desktop-only left gutter: thin rule + vertical edition line */}
+      <div className="colophon-gutter" aria-hidden="true">
+        <span className="rule" />
+        <span className="edition reg-label">zaxh.org — a quiet website</span>
+      </div>
+
+      <div className="colophon-body">
+        <p className="reg-label mb-5">Est. — writing &amp; field notes</p>
+
+        <h1 className="masthead">
+          <Logo />
+        </h1>
+
+        <p className="tagline">
+          I write code so my cat and dog can have a better life.
+        </p>
+
+        <section className="mt-20">
+          <div className="index-head">
+            <span className="reg-label">Index of writing</span>
+            <span className="reg-label">
+              {postIndex.length} {postIndex.length === 1 ? 'entry' : 'entries'}
+            </span>
+          </div>
+
+          {postIndex.length > 0 ? (
+            <ul className="index-list">
+              {postIndex.map((post, i) => (
+                <PostItem key={post.slug} post={post} index={i} />
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-6 text-secondary italic">No posts yet. Stay tuned!</p>
+          )}
+        </section>
       </div>
     </main>
-  );
+  )
 }

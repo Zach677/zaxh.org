@@ -64,22 +64,28 @@ export function Image(props: ImageProps) {
     updateLoaded()
   }, [src])
 
+  // caption: the human-readable part of the image title, or the alt text
+  const caption = (metadata?.title || alt || '').trim()
+
   // Fallback for images without BlurHash metadata
   if (!metadata) {
     return (
-      <div className="relative overflow-hidden rounded-md border border-separator">
-        <img
-          className={`transition-opacity duration-500 ${
-            loaded ? 'opacity-100' : 'opacity-0'
-          }`}
-          ref={imgRef}
-          src={src}
-          alt={alt}
-          title={title}
-          loading="lazy"
-          onLoad={() => setLoaded(true)}
-        />
-      </div>
+      <figure className="md-figure">
+        <div className="frame">
+          <img
+            className={`transition-opacity duration-500 ${
+              loaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            ref={imgRef}
+            src={src}
+            alt={alt}
+            title={title}
+            loading="lazy"
+            onLoad={() => setLoaded(true)}
+          />
+        </div>
+        {caption ? <figcaption className="img-caption">{caption}</figcaption> : null}
+      </figure>
     )
   }
 
@@ -87,33 +93,36 @@ export function Image(props: ImageProps) {
   const [blurWidth, blurHeight] = calcBlurSize(width, height)
 
   return (
-    <div className="relative overflow-hidden rounded-md border border-separator">
-      <BlurhashCanvas
-        style={{
-          display: 'block',
-          position: 'absolute',
-          left: 0,
-          top: 0,
-          zIndex: -1,
-          width: '100%',
-          aspectRatio: `auto ${width} / ${height}`,
-        }}
-        hash={metadata.blurhash}
-        width={blurWidth}
-        height={blurHeight}
-      />
-      <img
-        className={`transition-opacity duration-500 ${
-          loaded ? 'opacity-100' : 'opacity-0'
-        }`}
-        ref={imgRef}
-        src={src}
-        alt={alt}
-        width={width}
-        height={height}
-        loading="lazy"
-        onLoad={() => updateLoaded()}
-      />
-    </div>
+    <figure className="md-figure">
+      <div className="frame">
+        <BlurhashCanvas
+          style={{
+            display: 'block',
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            zIndex: -1,
+            width: '100%',
+            aspectRatio: `auto ${width} / ${height}`,
+          }}
+          hash={metadata.blurhash}
+          width={blurWidth}
+          height={blurHeight}
+        />
+        <img
+          className={`transition-opacity duration-500 ${
+            loaded ? 'opacity-100' : 'opacity-0'
+          }`}
+          ref={imgRef}
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          loading="lazy"
+          onLoad={() => updateLoaded()}
+        />
+      </div>
+      {caption ? <figcaption className="img-caption">{caption}</figcaption> : null}
+    </figure>
   )
 }

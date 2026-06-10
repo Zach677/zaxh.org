@@ -2,7 +2,7 @@ import { Outlet, ScrollRestoration, useLocation } from 'react-router'
 import { Footer } from '@/components/Footer'
 import { NavBar } from '@/components/NavBar'
 import { ReadableArea } from '@/components/ReadableArea'
-import { SeasonalEffect } from '@/components/SeasonalEffect'
+import { PaperFrame } from '@/components/PaperFrame'
 
 export default function RootLayout() {
   const location = useLocation()
@@ -10,7 +10,7 @@ export default function RootLayout() {
 
   return (
     <>
-      <SeasonalEffect />
+      <PaperFrame />
       <ReadableArea>
         <NavBar hideHome={isRootPage} />
       </ReadableArea>

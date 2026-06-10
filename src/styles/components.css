@@ -1,16 +1,299 @@
 @layer components {
+  /* ============================================================
+     PAPER — shared decorative pieces
+     ============================================================ */
+
+  /* tiny registration / coordinate label */
+  .reg-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem; /* ~11px */
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-tertiary);
+  }
+
+  /* corner crop marks framing the viewport (rendered by PaperFrame) */
+  .paper-frame {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .paper-frame span {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: var(--color-separator);
+    border-style: solid;
+    border-width: 0;
+  }
+  .paper-frame .tl { top: 26px; left: 26px; border-top-width: 1px; border-left-width: 1px; }
+  .paper-frame .tr { top: 26px; right: 26px; border-top-width: 1px; border-right-width: 1px; }
+  .paper-frame .bl { bottom: 26px; left: 26px; border-bottom-width: 1px; border-left-width: 1px; }
+  .paper-frame .br { bottom: 26px; right: 26px; border-bottom-width: 1px; border-right-width: 1px; }
+  @media (max-width: 640px) {
+    .paper-frame { display: none; }
+  }
+
+  /* ============================================================
+     HOME — colophon
+     ============================================================ */
+
+  .colophon {
+    position: relative;
+  }
+
+  /* desktop left gutter: a thin rule + vertical edition label that
+     sit in the margin to the left of the readable column */
+  .colophon-gutter {
+    position: absolute;
+    top: 4px;
+    bottom: 0;
+    left: -88px;
+    width: 56px;
+    display: none;
+  }
+  .colophon-gutter .rule {
+    position: absolute;
+    top: 0;
+    bottom: 56px;
+    right: 0;
+    width: 1px;
+    background: var(--color-separator-soft);
+  }
+  .colophon-gutter .edition {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+  @media (min-width: 1100px) {
+    .colophon-gutter { display: block; }
+  }
+
+  /* content aligns to the readable edge on EVERY page; the gutter rule and
+     vertical edition label live entirely in the left margin and never shift
+     the content, so the masthead lines up with the nav, index and footer. */
+  .colophon-body {
+    padding-left: 0;
+  }
+
+  .masthead {
+    font-family: var(--font-display);
+    font-size: clamp(3.25rem, 7vw, 5rem);
+    line-height: 0.96;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--color-primary);
+    margin: 0;
+  }
+  .tagline {
+    margin-top: calc(var(--spacing) * 5);
+    max-width: 30rem;
+    font-size: var(--text-lg);
+    line-height: 1.55;
+    font-style: italic;
+    color: var(--color-secondary);
+  }
+
+  /* writing index */
+  .index-head {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: calc(var(--spacing) * 1);
+    padding-bottom: calc(var(--spacing) * 3);
+    border-bottom: 1px solid var(--color-separator-soft);
+  }
+  .index-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .index-item {
+    display: flex;
+    align-items: baseline;
+    gap: calc(var(--spacing) * 4);
+    padding: calc(var(--spacing) * 3.5) 0;
+    border-bottom: 1px solid var(--color-separator-soft);
+  }
+  .index-item .no {
+    flex: none;
+    width: 1.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--color-tertiary);
+  }
+  .index-item .title {
+    flex: 1;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 500;
+    line-height: 1.25;
+    color: var(--color-primary);
+  }
+  .index-item .date {
+    flex: none;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-tertiary);
+    white-space: nowrap;
+  }
+
+  /* narrow screens: let the row wrap — date drops below the title,
+     aligned past the entry number */
+  @media (max-width: 640px) {
+    .index-item {
+      flex-wrap: wrap;
+      row-gap: calc(var(--spacing) * 1.5);
+    }
+    .index-item .title {
+      flex: 1 1 calc(100% - 2.75rem);
+    }
+    .index-item .date {
+      margin-left: 2.75rem; /* .no width + gap */
+      flex: 0 0 calc(100% - 2.75rem);
+    }
+  }
+
+  /* monochrome underline-grow link (titles, nav).
+     NOTE: do NOT add `color` to the transition — a transitioned colour that
+     resolves through an inherited theme variable will not re-resolve on a
+     theme change in Chrome. We inherit colour and animate only the underline. */
+  .ink-link {
+    color: inherit;
+    text-decoration: none;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    transition: background-size 0.35s var(--ease-out-cubic);
+  }
+  .ink-link:hover {
+    background-size: 100% 1px;
+  }
+
+  /* ============================================================
+     SHARED page heading (posts & pages)
+     ============================================================ */
   .page-title {
-    font-size: var(--text-5xl);
-    font-weight: var(--font-weight-bold);
-    line-height: 1.1;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 6.5vw + 0.5rem, var(--text-5xl));
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.08;
   }
 
   .page-subtitle {
-    font-size: var(--text-base);
-    color: var(--color-secondary);
-    margin-top: calc(var(--spacing) * 6);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: 0.04em;
+    color: var(--color-tertiary);
+    margin-top: calc(var(--spacing) * 5);
   }
 
+  /* ── article / page editorial header ── */
+  .article-head {
+    padding-bottom: calc(var(--spacing) * 7);
+    margin-bottom: calc(var(--spacing) * 10);
+    border-bottom: 1px solid var(--color-separator-soft);
+  }
+  .article-kicker {
+    margin-bottom: calc(var(--spacing) * 4);
+  }
+  .article-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: calc(var(--spacing) * 3);
+    margin-top: calc(var(--spacing) * 5);
+  }
+  .article-meta .dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--color-tertiary);
+  }
+
+  /* figures + captions in the reader */
+  .md-reader .md-figure {
+    margin: calc(var(--spacing) * 8) 0;
+  }
+  .md-reader .md-figure .frame {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--color-separator);
+    border-radius: var(--radius-md);
+  }
+  .md-reader .img-caption {
+    display: block;
+    margin-top: calc(var(--spacing) * 2.5);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    color: var(--color-tertiary);
+    text-align: center;
+  }
+
+  /* drop cap on the article's lead paragraph (book/editorial opening) */
+  .md-reader > p:first-child::first-letter {
+    font-family: var(--font-display);
+    float: left;
+    font-size: 2.9em;
+    line-height: 0.84;
+    font-weight: 600;
+    padding: 0.04em 0.12em 0 0;
+    color: var(--color-primary);
+  }
+
+  /* ── 404 / error pages ── */
+  .error-stack {
+    position: relative;
+  }
+  .error-stack .reg-label {
+    display: block;
+    margin-bottom: calc(var(--spacing) * 3);
+  }
+  .error-code {
+    font-family: var(--font-display);
+    font-size: clamp(6rem, 18vw, 12rem);
+    font-weight: 500;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--color-primary);
+    margin: calc(var(--spacing) * 2) 0;
+  }
+  .error-msg {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--text-lg);
+    color: var(--color-secondary);
+  }
+  .error-back {
+    display: inline-block;
+    margin-top: calc(var(--spacing) * 7);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: 0.04em;
+    color: var(--color-secondary);
+  }
+  .error-detail {
+    margin-top: calc(var(--spacing) * 6);
+    padding: calc(var(--spacing) * 4);
+    background-color: #1b1610;
+    border: 1px solid rgb(0 0 0 / 0.4);
+    border-radius: var(--radius-md);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: #e7dbc2;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* ============================================================
+     Theme switcher (unchanged behaviour — paper colours via vars)
+     ============================================================ */
   .theme-switcher {
     view-transition-name: theme-switcher;
   }
@@ -29,48 +312,67 @@
       left 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) 0s;
   }
 
+  /* comfortable tap targets on touch screens */
+  @media (pointer: coarse) {
+    .theme-switcher button {
+      position: relative;
+    }
+    .theme-switcher button::after {
+      content: '';
+      position: absolute;
+      inset: -8px;
+    }
+  }
+
+  /* ============================================================
+     Markdown reader (paper + serif)
+     ============================================================ */
   .md-reader {
-    line-height: 28px;
+    line-height: 1.75;
 
     h1 {
+      font-family: var(--font-display);
       margin-top: calc(var(--spacing) * 10);
       margin-bottom: calc(var(--spacing) * 5);
       font-size: var(--text-3xl);
-      font-weight: var(--font-weight-semibold);
+      font-weight: 600;
     }
 
     h2 {
+      font-family: var(--font-display);
       margin-top: calc(var(--spacing) * 8);
       margin-bottom: calc(var(--spacing) * 4);
       font-size: var(--text-2xl);
-      font-weight: var(--font-weight-semibold);
+      font-weight: 600;
     }
 
     h3 {
+      font-family: var(--font-display);
       margin-top: calc(var(--spacing) * 6);
       margin-bottom: calc(var(--spacing) * 4);
       font-size: var(--text-xl);
-      font-weight: var(--font-weight-semibold);
+      font-weight: 600;
     }
 
     p {
       margin: calc(var(--spacing) * 4) 0;
     }
 
+    /* monochrome links: always faintly underlined, darker on hover */
     a {
       color: var(--color-link);
       text-decoration: underline;
-      text-decoration-color: transparent;
-      transition: color 0.2s, text-decoration-color 0.2s;
+      text-decoration-color: var(--color-separator);
+      text-underline-offset: 3px;
+      transition: text-decoration-color 0.2s;
 
       &:hover {
-        color: var(--color-link-highlighted);
         text-decoration-color: var(--color-link-highlighted);
       }
     }
 
     strong {
-      font-weight: var(--font-weight-semibold);
+      font-weight: 600;
     }
 
     ul,
@@ -99,7 +401,9 @@
     }
 
     code {
-      font-weight: var(--font-weight-medium);
+      font-family: var(--font-mono);
+      font-size: 0.9em;
+      font-weight: 500;
 
       &::before,
       &::after {
@@ -137,15 +441,20 @@
     }
   }
 
+  /* code blocks ride on a dark "ink plate" in BOTH themes — code reads as a
+     distinct machine voice, never paper-toned. Syntax always uses shiki-dark. */
   .code-block {
-    padding: calc(var(--spacing) * 2) 0;
-    background-color: var(--color-background-secondary);
-    border: 1px solid var(--color-separator);
+    padding: 0;
+    background-color: #1b1610;
+    border: 1px solid rgb(0 0 0 / 0.4);
     border-radius: var(--radius-md);
-    overflow-x: scroll;
+    overflow: hidden;
+    --color-code-highlighted-line: rgb(255 255 255 / 0.06);
 
     pre {
+      padding: calc(var(--spacing) * 3) 0;
       background-color: transparent !important;
+      overflow-x: auto;
     }
 
     code {
@@ -154,6 +463,7 @@
       min-width: 100%;
       flex-direction: column;
       font-size: var(--text-sm);
+      color: #e7dbc2;
 
       & > span {
         height: 23px;
@@ -167,19 +477,21 @@
       }
     }
 
+    /* always use the dark syntax palette, regardless of page theme */
     .shiki span {
-      color: var(--shiki-light);
-
-      :root[data-theme='dark'] & {
-        color: var(--shiki-dark) !important;
-      }
-
-      @media (prefers-color-scheme: dark) {
-        :root[data-theme='system'] & {
-          color: var(--shiki-dark) !important;
-        }
-      }
+      color: var(--shiki-dark) !important;
     }
+  }
+
+  /* small mono label bar atop a code plate (language / filename) */
+  .code-block .code-head {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #b9ad8f;
+    padding: calc(var(--spacing) * 2) calc(var(--spacing) * 4);
+    border-bottom: 1px solid rgb(255 255 255 / 0.08);
   }
 
   .back-to-top {
@@ -194,11 +506,9 @@
     color: var(--color-secondary);
     cursor: pointer;
 
-    /* Mobile First Position */
     bottom: 2rem;
     right: 1rem;
 
-    /* Hidden state */
     opacity: 0;
     transform: translateY(1rem);
     pointer-events: none;
@@ -210,17 +520,13 @@
     }
 
     &:hover {
-      background-color: var(
-        --color-background-tertiary,
-        #f3f4f6
-      ); /* Fallback */
+      background-color: var(--color-background-secondary);
       color: var(--color-primary);
     }
 
     @media (min-width: 1024px) {
       right: auto;
       left: 50%;
-      /* Default hidden state for desktop */
       transform: translateX(calc(48rem / 2 + 2rem)) translateY(1rem);
 
       &.visible {

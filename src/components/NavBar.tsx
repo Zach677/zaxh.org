@@ -32,7 +32,7 @@ export const NavBar = (props: NavBarProps) => {
       </Link>
       <Link
         className={clsx(
-          'text-secondary hover:text-primary transition-all duration-300',
+          'italic text-secondary hover:text-primary transition-all duration-300',
           { 'opacity-0': !hideHome },
         )}
         to="/page/about"
@@ -41,7 +41,7 @@ export const NavBar = (props: NavBarProps) => {
       </Link>
       <Link
         className={clsx(
-          'ml-6 text-secondary hover:text-primary transition-all duration-300',
+          'ml-6 italic text-secondary hover:text-primary transition-all duration-300',
           { 'opacity-0': !hideHome },
         )}
         to="/page/friends"

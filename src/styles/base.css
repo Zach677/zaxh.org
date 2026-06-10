@@ -1,14 +1,47 @@
 @layer base {
+  :root {
+    /* fibrous paper grain (fractal noise), tiled */
+    --paper-grain-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
   html {
     scroll-padding-top: 100px;
     -webkit-font-smoothing: antialiased;
   }
 
   body {
-    background-color: var(--color-background);
     color: var(--color-primary);
+    font-family: var(--font-serif);
     font-size: var(--text-base);
     line-height: var(--text-base--line-height);
+    text-rendering: optimizeLegibility;
+    font-synthesis: none;
+
+    /* the warm sheet: base colour + two soft gradients (fixed) */
+    background-color: var(--color-background);
+    background-image:
+      radial-gradient(120% 80% at 18% 6%, var(--color-background-hi) 0%, transparent 55%),
+      radial-gradient(120% 120% at 92% 100%, var(--color-background-secondary) 0%, transparent 50%);
+    background-attachment: fixed;
+  }
+
+  /* grain layer sits over the sheet, under the content */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: -10%;
+    z-index: 0;
+    pointer-events: none;
+    background-image: var(--paper-grain-img);
+    background-size: 180px 180px;
+    opacity: var(--paper-grain-opacity);
+    mix-blend-mode: var(--paper-grain-blend);
+  }
+
+  /* keep app content above the grain */
+  #root {
+    position: relative;
+    z-index: 1;
   }
 
   *::selection {

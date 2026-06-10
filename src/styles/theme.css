@@ -1,16 +1,29 @@
 @theme {
-  --font-sans: 'Inter', sans-serif;
-  --font-mono: 'Geist Mono', monospace;
+  /* ── Type: serif-led (book/newspaper), mono only for small labels ──
+     Make sure index.html loads these families (Newsreader, Source Serif 4,
+     Noto Serif SC, Spline Sans Mono). */
+  --font-sans: 'Source Serif 4', 'Noto Serif SC', Georgia, serif;
+  --font-serif: 'Source Serif 4', 'Noto Serif SC', Georgia, serif;
+  --font-display: 'Newsreader', 'Source Serif 4', 'Noto Serif SC', Georgia, serif;
+  --font-mono: 'Spline Sans Mono', ui-monospace, monospace;
 
-  --color-background: var(--color-neutral-50);
-  --color-background-secondary: var(--color-neutral-100);
-  --color-primary: var(--color-neutral-800);
-  --color-secondary: var(--color-neutral-500);
-  --color-tertiary: var(--color-neutral-300);
-  --color-separator: --alpha(var(--color-primary) / 8%);
-  --color-link: var(--color-blue-500);
-  --color-link-highlighted: var(--color-blue-700);
-  --color-code-highlighted-line: --alpha(var(--color-neutral-200) / 75%);
+  /* ── Light = warm paper "sheet". Pure ink, no colour. ── */
+  --color-background: #f1e9d6;
+  --color-background-secondary: #e7dcc2;
+  --color-background-hi: #f7f1e1; /* lit highlight of the sheet */
+  --color-primary: #211c12;        /* near-black warm ink   */
+  --color-secondary: #5c5340;      /* secondary ink         */
+  --color-tertiary: #94886c;       /* captions / faint ink  */
+  --color-separator: --alpha(var(--color-primary) / 14%);
+  --color-separator-soft: --alpha(var(--color-primary) / 8%);
+  /* links stay monochrome — distinguished by underline, not hue */
+  --color-link: var(--color-primary);
+  --color-link-highlighted: var(--color-primary);
+  --color-code-highlighted-line: --alpha(#000000 / 6%);
+
+  /* paper texture controls */
+  --paper-grain-opacity: 0.06;
+  --paper-grain-blend: multiply;
 
   --ease-out-cubic: cubic-bezier(0.22, 0.61, 0.36, 1);
 
@@ -26,15 +39,21 @@
 }
 
 @utility dark-theme-colors {
-  --color-background: var(--color-neutral-900);
-  --color-background-secondary: --alpha(var(--color-neutral-950) / 50%);
-  --color-primary: var(--color-neutral-200);
-  --color-secondary: var(--color-neutral-400);
-  --color-tertiary: var(--color-neutral-600);
-  --color-separator: --alpha(var(--color-primary) / 12%);
-  --color-link: var(--color-blue-400);
-  --color-link-highlighted: var(--color-blue-300);
-  --color-code-highlighted-line: --alpha(var(--color-neutral-800) / 60%);
+  /* ── Dark = kraft / 牛皮纸. Warm cream ink on dark kraft. ── */
+  --color-background: #2a2318;
+  --color-background-secondary: #211b12;
+  --color-background-hi: #322a1d;
+  --color-primary: #ece0c6;
+  --color-secondary: #b3a583;
+  --color-tertiary: #7c7257;
+  --color-separator: --alpha(var(--color-primary) / 16%);
+  --color-separator-soft: --alpha(var(--color-primary) / 9%);
+  --color-link: var(--color-primary);
+  --color-link-highlighted: var(--color-primary);
+  --color-code-highlighted-line: --alpha(#000000 / 30%);
+
+  --paper-grain-opacity: 0.1;
+  --paper-grain-blend: screen;
 }
 
 @layer theme {

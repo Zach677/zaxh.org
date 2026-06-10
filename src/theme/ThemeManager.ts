@@ -9,8 +9,9 @@ interface ThemeManager {
 
 const LOCAL_STORAGE_KEY = 'app_theme'
 
-const LIGHT_THEME_COLOR = '#fafafa'
-const DARK_THEME_COLOR = '#171717'
+// paper "sheet" (light) and kraft (dark) — used for the mobile browser chrome
+const LIGHT_THEME_COLOR = '#f1e9d6'
+const DARK_THEME_COLOR = '#2a2318'
 
 const listeners = new Set<() => void>()
 let currentTheme: Theme = 'system'

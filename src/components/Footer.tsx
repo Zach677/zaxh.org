@@ -46,12 +46,12 @@ export const Footer = () => {
   const yearString = new Date().getFullYear()
 
   return (
-    <footer className="pb-12 md:pb-16 flex items-start justify-between">
-      <div>
-        <p className="mb-2 text-secondary text-sm">© {yearString} Zach</p>
+    <footer className="pb-12 md:pb-16 pt-6 border-t border-separator-soft">
+      <p className="reg-label mb-4">© {yearString} Zach · Set in Source Serif</p>
+      <div className="flex items-center justify-between">
         <SocialLinks />
+        <ThemeSwitcher />
       </div>
-      <ThemeSwitcher />
     </footer>
   )
 }

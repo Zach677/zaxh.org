@@ -8,10 +8,13 @@ export default function ErrorBoundary() {
   return (
     <ReadableArea>
       <NavBar />
-      <h1 className="mt-12 font-bold">Something is wrong:(</h1>
-      <div className="mt-4 font-mono text-sm text-secondary">
-        {error.toString()}
-      </div>
+      <main className="article mt-12">
+        <header className="article-head">
+          <p className="reg-label article-kicker">Error</p>
+          <h1 className="page-title">Something went sideways</h1>
+        </header>
+        <div className="error-detail">{error.toString()}</div>
+      </main>
     </ReadableArea>
   )
 }
