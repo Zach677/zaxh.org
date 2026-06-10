@@ -1,6 +1,6 @@
-import type { DataRouter, RouteObject } from 'react-router'
+import type { DataRouter } from 'react-router'
 
-import type { Metadata } from './types'
+import type { Metadata, RouteObjectWithMetadata } from './types'
 
 export function collectMetadata(router: DataRouter, initialMetadata: Metadata) {
   const state = router.state
@@ -8,7 +8,7 @@ export function collectMetadata(router: DataRouter, initialMetadata: Metadata) {
 
   // Collect and merge all metadata in the current route tree.
   for (const match of state.matches) {
-    const thisMetadata = (match.route as RouteObject).metadata
+    const thisMetadata = (match.route as RouteObjectWithMetadata).metadata
     if (!thisMetadata) {
       continue
     }
