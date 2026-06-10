@@ -4,9 +4,10 @@ import { type RouteObject } from 'react-router'
 import RootLayout from './pages/layout'
 import NotFound from './pages/not-found'
 import ErrorBoundary from './pages/error'
+import type { RouteObjectWithMetadata } from './metadata/types'
 import { loadPost, loadPage } from './content-loader'
 import postIndex from 'virtual:postIndex'
-import pages from 'virtual:pages'
+import pageIndex from 'virtual:pageIndex'
 
 const RootPage = lazy(() => import('./pages/index'))
 const PostPage = lazy(() => import('./pages/post'))
@@ -30,7 +31,10 @@ const routes: RouteObject[] = [
       {
         index: true,
         Component: RootPage,
-      },
+        metadata: {
+          url: 'https://zaxh.org',
+        },
+      } as RouteObjectWithMetadata,
       ...postIndex.map((post) => ({
         path: `post/${post.slug}`,
         Component: wrapPostPage(post.slug!, loadPost),
@@ -40,9 +44,14 @@ const routes: RouteObject[] = [
           url: `https://zaxh.org/post/${post.slug}`,
         },
       })),
-      ...Object.keys(pages).map((pageSlug) => ({
-        path: `page/${pageSlug}`,
-        Component: wrapPostPage(pageSlug, loadPage),
+      ...pageIndex.map((page) => ({
+        path: `page/${page.slug}`,
+        Component: wrapPostPage(page.slug!, loadPage),
+        metadata: {
+          title: page.title,
+          description: page.description,
+          url: `https://zaxh.org/page/${page.slug}`,
+        },
       })),
     ],
   },

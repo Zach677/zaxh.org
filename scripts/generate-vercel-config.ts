@@ -43,6 +43,10 @@ const config = {
 }
 
 const outputPath = path.resolve(dirname, '../.vercel/output')
-fse.ensureDirSync(outputPath)
+// Empty the output directory so deleted pages/assets don't linger across builds.
+fse.emptyDirSync(outputPath)
 writeFileSync(path.join(outputPath, 'config.json'), JSON.stringify(config))
-fse.copySync(distPath, path.join(outputPath, 'static'))
+fse.copySync(distPath, path.join(outputPath, 'static'), {
+  // dist/server holds the SSG bundle and must not be deployed as public files.
+  filter: (src) => path.relative(distPath, src).split(path.sep)[0] !== 'server',
+})

@@ -30,3 +30,8 @@ declare module 'virtual:pages' {
   const pages: Record<string, Promise<PostModule>>
   export default pages
 }
+
+declare module 'virtual:pageIndex' {
+  const pageIndex: PostMetadata[]
+  export default pageIndex
+}

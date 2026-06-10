@@ -7,10 +7,11 @@ import { ThemeClientInitializer } from './theme'
 import { MetadataUpdater } from './metadata'
 import { IntlProvider } from './components/IntlProvider'
 
+// Each route declares its own canonical `url`; routes without one (e.g. 404)
+// intentionally emit no canonical/og:url.
 export const appMetadata = {
   title: 'ZachSpace',
   description: 'Zach\'s personal blog',
-  url: 'https://zaxh.org',
 }
 
 export function App(props: {

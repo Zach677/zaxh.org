@@ -23,9 +23,15 @@ export function collectMetadata(router: DataRouter, initialMetadata: Metadata) {
       }
     }
 
+    // Skip undefined fields so a route without e.g. description
+    // falls back to the site-level value instead of clearing it.
+    const definedMetadata = Object.fromEntries(
+      Object.entries(thisMetadata).filter(([, value]) => value !== undefined),
+    )
+
     metadata = {
       ...metadata,
-      ...thisMetadata,
+      ...definedMetadata,
       title,
     }
   }

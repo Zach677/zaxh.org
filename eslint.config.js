@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint'
 
 export default defineConfig(
   {
-    ignores: ['dist/**', 'api/**'],
+    ignores: ['dist/**', '.vercel/**', 'api/**'],
   },
   eslint.configs.recommended,
   tseslint.configs.recommended,

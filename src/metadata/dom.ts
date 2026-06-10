@@ -1,5 +1,13 @@
 import type { Metadata } from './types'
 
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
 function findOrInsertMetaElement(name?: string, property?: string) {
   const selector = name
     ? `meta[name='${name}']`
@@ -45,8 +53,26 @@ export function renderMetadata(metadata: Metadata) {
   const twDescriptionElement = findOrInsertMetaElement('twitter:description')
   twDescriptionElement.setAttribute('content', description || '')
 
-  const ogUrlElement = findOrInsertMetaElement(undefined, 'og:url')
-  ogUrlElement.setAttribute('content', url || '')
+  // Routes without a url (e.g. 404) carry no og:url/canonical at all,
+  // matching the SSG output.
+  if (url) {
+    const ogUrlElement = findOrInsertMetaElement(undefined, 'og:url')
+    ogUrlElement.setAttribute('content', url)
+  } else {
+    document.head.querySelector('meta[property=\'og:url\']')?.remove()
+  }
+
+  let canonicalElement = document.head.querySelector('link[rel=\'canonical\']')
+  if (url) {
+    if (!canonicalElement) {
+      canonicalElement = document.createElement('link')
+      canonicalElement.setAttribute('rel', 'canonical')
+      document.head.appendChild(canonicalElement)
+    }
+    canonicalElement.setAttribute('href', url)
+  } else if (canonicalElement) {
+    canonicalElement.remove()
+  }
 }
 
 export function renderMetadataToString(metadata: Metadata) {
@@ -54,17 +80,20 @@ export function renderMetadataToString(metadata: Metadata) {
   let htmlString = ''
 
   if (title) {
-    htmlString += `<title>${title}</title>`
+    htmlString += `<title>${escapeHtml(title)}</title>`
   }
 
   if (description) {
-    htmlString += `<meta name="description" content="${description}">`
-    htmlString += `<meta property="og:description" content="${description}">`
-    htmlString += `<meta name="twitter:description" content="${description}">`
+    const escapedDescription = escapeHtml(description)
+    htmlString += `<meta name="description" content="${escapedDescription}">`
+    htmlString += `<meta property="og:description" content="${escapedDescription}">`
+    htmlString += `<meta name="twitter:description" content="${escapedDescription}">`
   }
 
   if (url) {
-    htmlString += `<meta property="og:url" content="${url}">`
+    const escapedUrl = escapeHtml(url)
+    htmlString += `<meta property="og:url" content="${escapedUrl}">`
+    htmlString += `<link rel="canonical" href="${escapedUrl}">`
   }
 
   return htmlString

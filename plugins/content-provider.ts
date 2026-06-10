@@ -128,6 +128,7 @@ export function pageProvider(pagesPath: string): Plugin {
   if (!existsSync(pagesPath)) {
     return createContentProvider('page-provider-plugin', [
       createVirtualModule('pages', () => 'export default {};'),
+      createVirtualModule('pageIndex', () => 'export default [];'),
     ])
   }
 
@@ -136,6 +137,7 @@ export function pageProvider(pagesPath: string): Plugin {
   if (pageFilenames.length === 0) {
     return createContentProvider('page-provider-plugin', [
       createVirtualModule('pages', () => 'export default {};'),
+      createVirtualModule('pageIndex', () => 'export default [];'),
     ])
   }
 
@@ -144,6 +146,19 @@ export function pageProvider(pagesPath: string): Plugin {
     pagesPath,
     pageFilenames,
   )
+  const pageIndexVirtualModule = createVirtualModule('pageIndex', () => {
+    const metadataList: PostMetadata[] = []
+    for (const filename of pageFilenames) {
+      const pagePath = path.resolve(pagesPath, filename)
+      const metadata = parseMetadataFromMdx(pagePath)
+      metadata.slug = path.parse(filename).name
+      metadataList.push(metadata)
+    }
+    return 'export default ' + JSON.stringify(metadataList)
+  })
 
-  return createContentProvider('page-provider-plugin', [pagesVirtualModule])
+  return createContentProvider('page-provider-plugin', [
+    pagesVirtualModule,
+    pageIndexVirtualModule,
+  ])
 }
