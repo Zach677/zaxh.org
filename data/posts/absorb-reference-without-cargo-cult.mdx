@@ -7,22 +7,47 @@ export const metadata = {
 
 > Related skill: [zach-absorb-reference](https://github.com/Zach677/Zach-Skills/tree/main/skills/automation/zach-absorb-reference)
 
-## Context
+## 起因
 
-Write the task background here: what happened in the original session, why it
-was worth keeping, and what changed after the workflow was extracted.
+我有个 iOS 项目，从一个 UIKit starter 模板长成了真正的 app。当初搭模板的时候，我让 coding agent 参照了我很喜欢的另一个项目 MuseAmp：它的架构分层、工程纪律、构建脚本都非常好，我希望新项目能吸收这些优点。
 
-## What the skill captures
+写着写着我开始觉得项目很乱，说不上来哪里乱，就是每次打开都有点烦。于是让 agent 做了一次全项目审计，看看哪些是历史遗留、哪些根本不需要。
 
-- The reusable operating procedure
-- The non-obvious pitfalls
-- The verification commands or checks
-- The boundaries where this should not be reused
+审计结果挺打脸的：项目本身没那么乱，分层是清晰的，测试和构建链路都在。真正的问题是五个零引用的死类型，`RootViewController`、`AppPreferences`、一个只有 `init() {}` 的空 `AppLogger`、住在 app target 里的测试替身、一个全仓库没人用的 `StorageUsage`。它们有个共同点：全是当初"参照 MuseAmp"抄过来的。
 
-## Notes from the implementation
+## 死的都是工件，活的都是规则
 
-Use this section for the narrative. Keep code samples short; link back to the
-skill for the durable workflow.
+更有意思的是反面。同样来自 MuseAmp 的 Makefile 工作流、xcstrings 校验脚本、按包拆分的存储层，全都活得很好，每天在产出价值。
+
+agent 去 MuseAmp 里查了一下那几个死类型的"原型"：`AppPreferences` 在 MuseAmp 有 27 个文件在消费，背后还有一整节 Logging Rules 这样的文档规则在强制使用方式。它在那边活着，是因为先有真实需求、再有类型、规则保证后来者不跑偏。
+
+抄过来的时候这个顺序反了。类型先落地，需求还没出现，规则也没跟过来，于是它就变成了装饰。所谓"吸收精华"，精华从来不是那个类型本身，是消费者加规则。
+
+工具链为什么活着？因为构建脚本这种东西自带消费者，`make test` 每天都在跑它。
+
+## 改法：删尸体，写触发式规则
+
+返工分两步。第一步删掉全部死代码，连带被测试"钉住"的部分。这里有个挺隐蔽的坑：有些死代码看起来有人用，grep 一查，唯一的调用方是测试。测试本来该钉行为，结果钉住了一具尸体，让它一直有心跳。
+
+第二步是把"以后可能需要"的东西写成规则而不是代码，放进 AGENTS.md。比如 preferences：
+
+> 当前没有任何用户设置，第一个真实设置出现前禁止创建 preferences 类型。第一个设置出现时，按这个形状创建：typed static accessor 包 UserDefaults，反向域名 key，每个 key 带默认值和测试。
+
+规则有三要素：触发时机、具体形状、禁止预建。再加一条 meta 规则防复发：新类型必须在同一个 change 里带上至少一个生产消费者，否则不准进库。
+
+这就是 MuseAmp 那 654 行规则的生长方式。它的 Animation Rules、Cell Rules 没有一条是预写的，全是功能出现之后跟着长出来的。
+
+## 过程里的两个意外
+
+一是"等价重构"不等价。agent 删掉一个插入后回读数据库的多余查询，改成直接用手里的值构造返回，逻辑上看完全等价。全量测试一跑，挂了：`Date` 经过 SQLite REAL 往返之后和原始值差几个纳秒，整记录相等断言直接抓住。看代码推理觉得没问题的东西，测试不这么认为。
+
+二是 test plan 有个洞。`make test` 一直没跑存储包自己的 14 个测试，恰好这次改的就是存储包。这种验证缺口当场修掉，比记在备忘录里强。
+
+最后净删了差不多 1900 行，文档全部对齐现实。"项目很乱"的体感消失了大半，因为 AGENTS.md 终于说真话了。
+
+## 沉淀
+
+我手上还有两个项目要做同样的事，一个要新吸收，一个吸收过但歪了。这套流程跑第三遍的时候就该固化了，于是让 agent 写成了 skill：模式 A 负责新吸收（先在参考项目里验证消费者数量再决定抄什么），模式 B 负责返工（零消费者审计、删尸体、转写规则），坑表把上面踩过的全记了进去。
 
 ---
 
