@@ -7,6 +7,7 @@ interface PostMetadata {
   description?: string
   date?: string | Date
   slug?: string
+  hidden?: boolean
 }
 
 type MDXContent = React.FunctionComponent<{ components: MDXComponents }>

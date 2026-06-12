@@ -90,7 +90,11 @@ export function postProvider(postsPath: string): Plugin {
     ])
   }
 
-  const postFilenames = readdirSync(postsPath).filter((f) => f.endsWith('.mdx'))
+  // Posts with `hidden: true` in metadata are excluded from everything
+  // derived from the virtual modules: routes, index, SSG and RSS.
+  const postFilenames = readdirSync(postsPath)
+    .filter((f) => f.endsWith('.mdx'))
+    .filter((f) => !parseMetadataFromMdx(path.resolve(postsPath, f)).hidden)
 
   if (postFilenames.length === 0) {
     return createContentProvider('post-provider-plugin', [
