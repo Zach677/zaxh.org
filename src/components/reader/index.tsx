@@ -3,6 +3,8 @@ import type { MDXComponents } from 'mdx/types'
 
 import { FigureCodeBlock, PreCodeBlock } from './CodeBlock'
 import { Image } from './Image'
+import { Inventory } from '@/components/Inventory'
+import { AboutNow } from '@/components/AboutNow'
 
 export interface ReaderProps {
   contentComponent: FunctionComponent<{
@@ -14,6 +16,8 @@ export interface ReaderProps {
 const overrideComponents: MDXComponents = {
   figure: FigureCodeBlock,
   pre: PreCodeBlock,
+  Inventory: Inventory as unknown as FunctionComponent,
+  AboutNow: AboutNow as unknown as FunctionComponent,
   p(props) {
     if (Children.count(props.children) === 1) {
       const child = Children.toArray(props.children)[0] as JSX.Element

@@ -12,151 +12,7 @@
     color: var(--color-tertiary);
   }
 
-  /* corner crop marks framing the viewport (rendered by PaperFrame) */
-  .paper-frame {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-  }
-  .paper-frame span {
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    border-color: var(--color-separator);
-    border-style: solid;
-    border-width: 0;
-  }
-  .paper-frame .tl { top: 26px; left: 26px; border-top-width: 1px; border-left-width: 1px; }
-  .paper-frame .tr { top: 26px; right: 26px; border-top-width: 1px; border-right-width: 1px; }
-  .paper-frame .bl { bottom: 26px; left: 26px; border-bottom-width: 1px; border-left-width: 1px; }
-  .paper-frame .br { bottom: 26px; right: 26px; border-bottom-width: 1px; border-right-width: 1px; }
-  @media (max-width: 640px) {
-    .paper-frame { display: none; }
-  }
-
-  /* ============================================================
-     HOME — colophon
-     ============================================================ */
-
-  .colophon {
-    position: relative;
-  }
-
-  /* desktop left gutter: a thin rule + vertical edition label that
-     sit in the margin to the left of the readable column */
-  .colophon-gutter {
-    position: absolute;
-    top: 4px;
-    bottom: 0;
-    left: -88px;
-    width: 56px;
-    display: none;
-  }
-  .colophon-gutter .rule {
-    position: absolute;
-    top: 0;
-    bottom: 56px;
-    right: 0;
-    width: 1px;
-    background: var(--color-separator-soft);
-  }
-  .colophon-gutter .edition {
-    position: absolute;
-    top: 8px;
-    left: 0;
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-  }
-  @media (min-width: 1100px) {
-    .colophon-gutter { display: block; }
-  }
-
-  /* content aligns to the readable edge on EVERY page; the gutter rule and
-     vertical edition label live entirely in the left margin and never shift
-     the content, so the masthead lines up with the nav, index and footer. */
-  .colophon-body {
-    padding-left: 0;
-  }
-
-  .masthead {
-    font-family: var(--font-display);
-    font-size: clamp(3.25rem, 7vw, 5rem);
-    line-height: 0.96;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    color: var(--color-primary);
-    margin: 0;
-  }
-  .tagline {
-    margin-top: calc(var(--spacing) * 5);
-    max-width: 30rem;
-    font-size: var(--text-lg);
-    line-height: 1.55;
-    font-style: italic;
-    color: var(--color-secondary);
-  }
-
-  /* writing index */
-  .index-head {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: calc(var(--spacing) * 1);
-    padding-bottom: calc(var(--spacing) * 3);
-    border-bottom: 1px solid var(--color-separator-soft);
-  }
-  .index-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .index-item {
-    display: flex;
-    align-items: baseline;
-    gap: calc(var(--spacing) * 4);
-    padding: calc(var(--spacing) * 3.5) 0;
-    border-bottom: 1px solid var(--color-separator-soft);
-  }
-  .index-item .no {
-    flex: none;
-    width: 1.75rem;
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    color: var(--color-tertiary);
-  }
-  .index-item .title {
-    flex: 1;
-    font-family: var(--font-display);
-    font-size: var(--text-xl);
-    font-weight: 500;
-    line-height: 1.25;
-    color: var(--color-primary);
-  }
-  .index-item .date {
-    flex: none;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--color-tertiary);
-    white-space: nowrap;
-  }
-
-  /* narrow screens: let the row wrap — date drops below the title,
-     aligned past the entry number */
-  @media (max-width: 640px) {
-    .index-item {
-      flex-wrap: wrap;
-      row-gap: calc(var(--spacing) * 1.5);
-    }
-    .index-item .title {
-      flex: 1 1 calc(100% - 2.75rem);
-    }
-    .index-item .date {
-      margin-left: 2.75rem; /* .no width + gap */
-      flex: 0 0 calc(100% - 2.75rem);
-    }
-  }
-
-  /* monochrome underline-grow link (titles, nav).
+  /* monochrome underline-grow link (titles, nav, crumbs).
      NOTE: do NOT add `color` to the transition — a transitioned colour that
      resolves through an inherited theme variable will not re-resolve on a
      theme change in Chrome. We inherit colour and animate only the underline. */
@@ -167,52 +23,253 @@
     background-size: 0% 1px;
     background-repeat: no-repeat;
     background-position: 0 100%;
-    transition: background-size 0.35s var(--ease-out-cubic);
+    transition: background-size 0.35s var(--ease);
   }
   .ink-link:hover {
     background-size: 100% 1px;
   }
 
   /* ============================================================
-     SHARED page heading (posts & pages)
+     NAV
      ============================================================ */
-  .page-title {
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 6.5vw + 0.5rem, var(--text-5xl));
-    font-weight: 500;
-    letter-spacing: -0.015em;
-    line-height: 1.08;
-  }
-
-  .page-subtitle {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    letter-spacing: 0.04em;
-    color: var(--color-tertiary);
-    margin-top: calc(var(--spacing) * 5);
-  }
-
-  /* ── article / page editorial header ── */
-  .article-head {
-    padding-bottom: calc(var(--spacing) * 7);
-    margin-bottom: calc(var(--spacing) * 10);
-    border-bottom: 1px solid var(--color-separator-soft);
-  }
-  .article-kicker {
-    margin-bottom: calc(var(--spacing) * 4);
-  }
-  .article-meta {
+  .nav {
+    height: 5.5rem;
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    gap: calc(var(--spacing) * 3);
-    margin-top: calc(var(--spacing) * 5);
+    justify-content: space-between;
   }
-  .article-meta .dot {
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background: var(--color-tertiary);
+  .nav .wordmark {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+  .nav .links {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .nav .links a {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.9375rem;
+    color: var(--color-secondary);
+  }
+  .nav .links a:hover {
+    color: var(--color-primary);
+  }
+
+  /* ============================================================
+     HOME — masthead + writing index
+     ============================================================ */
+  .masthead-block {
+    margin-top: calc(var(--spacing) * 10);
+  }
+  .masthead {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(5rem, 16vw, 13rem);
+    line-height: 0.95;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--color-primary);
+    margin: 0;
+  }
+  .masthead .it {
+    font-weight: 400;
+  }
+  .masthead .L {
+    display: inline-block;
+    transition:
+      transform 0.45s var(--ease-spring),
+      color 0.3s var(--ease);
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .masthead .L:hover {
+      transform: translateY(-0.08em) rotate(-2deg);
+      color: var(--color-accent);
+    }
+  }
+
+  .tagline {
+    margin: calc(var(--spacing) * 7) 0 0;
+    max-width: 34rem;
+    font-size: 1.25rem;
+    line-height: 1.55;
+    font-style: italic;
+    color: var(--color-secondary);
+  }
+  /* accent-underlined words inside the tagline */
+  .tagline em {
+    font-style: italic;
+    color: var(--color-primary);
+    background-image: linear-gradient(var(--color-accent), var(--color-accent));
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+  }
+
+  .index {
+    margin-top: calc(var(--spacing) * 22);
+  }
+  .index-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: calc(var(--spacing) * 1);
+    padding-bottom: calc(var(--spacing) * 3);
+    border-bottom: 1px solid var(--color-separator);
+  }
+  .index-head .reg-label {
+    white-space: nowrap;
+  }
+  .index-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .index-item {
+    border-bottom: 1px solid var(--color-separator-soft);
+  }
+  .index-item a {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 1.35rem 0;
+    text-decoration: none;
+    color: inherit;
+  }
+  .index-item .title {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.6vw, 1.875rem);
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--color-primary);
+    transition: transform 0.4s var(--ease-spring);
+  }
+  .index-item .date {
+    flex: none;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-tertiary);
+    white-space: nowrap;
+  }
+  @media (hover: hover) {
+    .index-item a:hover .title {
+      transform: translateX(10px);
+    }
+  }
+  @media (max-width: 720px) {
+    .index-item a {
+      flex-wrap: wrap;
+      row-gap: 0.3rem;
+    }
+    .index-item .title {
+      flex: 1 1 100%;
+    }
+  }
+
+  /* ============================================================
+     ARTICLE (posts)
+     ============================================================ */
+  .article {
+    max-width: 42rem;
+    margin: 0 auto;
+  }
+  .crumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: calc(var(--spacing) * 12);
+  }
+  .folio {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    margin-bottom: calc(var(--spacing) * 6);
+  }
+  .a-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.3rem, 5.5vw, 3.6rem);
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0 0 calc(var(--spacing) * 5);
+  }
+  .a-lede {
+    font-style: italic;
+    font-size: 1.1875rem;
+    line-height: 1.6;
+    color: var(--color-secondary);
+    margin: 0 0 calc(var(--spacing) * 12);
+    max-width: 36rem;
+  }
+
+  /* accent drop cap on the article's lead paragraph */
+  .md-reader > p:first-of-type::first-letter {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 3.4em;
+    line-height: 0.8;
+    float: left;
+    padding: 0.08em 0.12em 0 0;
+    color: var(--color-accent);
+  }
+
+  /* marginalia at wide widths (opt-in: wrap text in <span class="marginalia">
+     inside a `.note-anchor` paragraph) */
+  .note-anchor {
+    position: relative;
+  }
+  .marginalia {
+    display: none;
+    position: absolute;
+    left: -13.5rem;
+    top: 0.3em;
+    width: 11rem;
+    font-style: italic;
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: var(--color-tertiary);
+    border-right: 1px solid var(--color-separator-soft);
+    padding-right: 1rem;
+    text-align: right;
+  }
+  .marginalia .mark {
+    color: var(--color-accent);
+    font-style: normal;
+  }
+  @media (min-width: 1240px) {
+    .marginalia {
+      display: block;
+    }
+  }
+
+  .pager {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: calc(var(--spacing) * 16);
+    padding-top: calc(var(--spacing) * 6);
+    border-top: 1px solid var(--color-separator-soft);
+  }
+  .pager a {
+    max-width: 46%;
+  }
+  .pager .t {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .pager a:last-child {
+    text-align: right;
+    margin-left: auto;
   }
 
   /* figures + captions in the reader */
@@ -230,52 +287,165 @@
     margin-top: calc(var(--spacing) * 2.5);
     font-family: var(--font-mono);
     font-size: 0.6875rem;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
     color: var(--color-tertiary);
     text-align: center;
   }
 
-  /* drop cap on the article's lead paragraph (book/editorial opening) */
-  .md-reader > p:first-child::first-letter {
+  /* ============================================================
+     ABOUT
+     ============================================================ */
+  .about-hello {
     font-family: var(--font-display);
-    float: left;
-    font-size: 2.9em;
-    line-height: 0.84;
-    font-weight: 600;
-    padding: 0.04em 0.12em 0 0;
-    color: var(--color-primary);
-  }
-
-  /* ── 404 / error pages ── */
-  .error-stack {
-    position: relative;
-  }
-  .error-stack .reg-label {
-    display: block;
-    margin-bottom: calc(var(--spacing) * 3);
-  }
-  .error-code {
-    font-family: var(--font-display);
-    font-size: clamp(6rem, 18vw, 12rem);
+    font-style: italic;
     font-weight: 500;
-    line-height: 0.9;
-    letter-spacing: -0.04em;
-    color: var(--color-primary);
-    margin: calc(var(--spacing) * 2) 0;
+    font-size: clamp(2.5rem, 6.5vw, 4.2rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: calc(var(--spacing) * 8) 0 calc(var(--spacing) * 8);
   }
-  .error-msg {
+  .about-hello .accent {
+    color: var(--color-accent);
+  }
+  .about-body {
+    max-width: 36rem;
+    font-size: 1.0625rem;
+    line-height: 1.9;
+  }
+  .about-body p {
+    margin: 0 0 calc(var(--spacing) * 6);
+  }
+  .pullquote {
+    margin: calc(var(--spacing) * 10) 0;
+    padding: 0 0 0 1.5rem;
+    border-left: 2px solid var(--color-accent);
     font-family: var(--font-serif);
     font-style: italic;
-    font-size: var(--text-lg);
+    font-size: 1.3125rem;
+    line-height: 1.55;
+    color: var(--color-primary);
+  }
+  .pullquote .who {
+    display: block;
+    margin-top: 0.6rem;
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-tertiary);
+  }
+  .inventory {
+    margin-top: calc(var(--spacing) * 14);
+  }
+  .inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+    gap: 0 2rem;
+    margin-top: 0.5rem;
+  }
+  .inv-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    align-items: baseline;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--color-separator-soft);
+    font-size: 0.9375rem;
+  }
+  .inv-item .what {
+    color: var(--color-primary);
+  }
+  .inv-item .what.retired {
+    text-decoration: line-through;
+    color: var(--color-tertiary);
+  }
+  .inv-item .note {
+    flex: none;
+    font-style: italic;
+    font-size: 0.8125rem;
+    color: var(--color-accent);
+    white-space: nowrap;
+  }
+  .inv-item .dot {
+    flex: 1;
+    border-bottom: 1px dotted var(--color-separator);
+  }
+  .now-line {
+    margin-top: calc(var(--spacing) * 12);
+    font-style: italic;
     color: var(--color-secondary);
   }
-  .error-back {
+  .now-line .moon {
+    color: var(--color-accent);
+    font-style: normal;
+  }
+
+  /* ============================================================
+     404 — lost entry
+     ============================================================ */
+  .lost-wrap {
+    min-height: 62vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .lost-num {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(7rem, 24vw, 18rem);
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    margin: 0;
+    display: flex;
+  }
+  .lost-num span {
     display: inline-block;
-    margin-top: calc(var(--spacing) * 7);
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    letter-spacing: 0.04em;
+    transition: transform 0.5s var(--ease-spring);
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .lost-num:hover span:nth-child(1) {
+      transform: translateY(-0.06em) rotate(-6deg);
+    }
+    .lost-num:hover span:nth-child(2) {
+      transform: translateY(0.05em);
+    }
+    .lost-num:hover span:nth-child(3) {
+      transform: translateY(-0.04em) rotate(5deg);
+    }
+  }
+  .lost-cap {
+    margin: calc(var(--spacing) * 8) 0 0;
+    font-size: 1.125rem;
+    font-style: italic;
     color: var(--color-secondary);
+    max-width: 26rem;
+    line-height: 1.6;
+  }
+  .lost-back {
+    margin-top: calc(var(--spacing) * 9);
+  }
+
+  /* ============================================================
+     ERROR boundary (kept minimal)
+     ============================================================ */
+  .article-head {
+    padding-bottom: calc(var(--spacing) * 7);
+    margin-bottom: calc(var(--spacing) * 10);
+    border-bottom: 1px solid var(--color-separator-soft);
+  }
+  .article-kicker {
+    margin-bottom: calc(var(--spacing) * 4);
+  }
+  .page-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 6.5vw + 0.5rem, var(--text-5xl));
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.08;
   }
   .error-detail {
     margin-top: calc(var(--spacing) * 6);
@@ -292,7 +462,40 @@
   }
 
   /* ============================================================
-     Theme switcher (unchanged behaviour — paper colours via vars)
+     FOOTER
+     ============================================================ */
+  .footer {
+    margin-top: calc(var(--spacing) * 16);
+    padding: calc(var(--spacing) * 6) 0 calc(var(--spacing) * 12);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    border-top: 1px solid var(--color-separator-soft);
+    flex-wrap: wrap;
+  }
+  .footer .reg-label {
+    display: block;
+    line-height: 1.9;
+  }
+  .social {
+    display: flex;
+    gap: 1.25rem;
+  }
+  .social a {
+    color: var(--color-secondary);
+    display: inline-flex;
+    transition:
+      color 0.25s var(--ease),
+      transform 0.25s var(--ease-spring);
+  }
+  .social a:hover {
+    color: var(--color-primary);
+    transform: translateY(-2px) rotate(-4deg);
+  }
+
+  /* ============================================================
+     Theme switcher (paper colours via vars)
      ============================================================ */
   .theme-switcher {
     view-transition-name: theme-switcher;
@@ -308,8 +511,9 @@
   }
 
   .theme-switcher-thumb {
-    transition: background-color 0.3s,
-      left 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) 0s;
+    transition:
+      background-color 0.3s,
+      left 0.3s var(--ease-spring) 0s;
   }
 
   /* comfortable tap targets on touch screens */
@@ -328,7 +532,8 @@
      Markdown reader (paper + serif)
      ============================================================ */
   .md-reader {
-    line-height: 1.75;
+    font-size: 1.0625rem;
+    line-height: 1.9;
 
     h1 {
       font-family: var(--font-display);
@@ -358,16 +563,21 @@
       margin: calc(var(--spacing) * 4) 0;
     }
 
-    /* monochrome links: always faintly underlined, darker on hover */
+    /* article links: accent underline, accent ink on hover */
     a {
-      color: var(--color-link);
-      text-decoration: underline;
-      text-decoration-color: var(--color-separator);
-      text-underline-offset: 3px;
-      transition: text-decoration-color 0.2s;
+      color: inherit;
+      text-decoration: none;
+      background-image: linear-gradient(
+        var(--color-accent),
+        var(--color-accent)
+      );
+      background-size: 100% 1px;
+      background-repeat: no-repeat;
+      background-position: 0 100%;
+      transition: color 0.25s var(--ease);
 
       &:hover {
-        text-decoration-color: var(--color-link-highlighted);
+        color: var(--color-accent);
       }
     }
 
@@ -502,7 +712,9 @@
     background-color: var(--color-background-secondary);
     border: 1px solid var(--color-separator);
     transition: all 0.3s;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    box-shadow:
+      0 4px 6px -1px rgb(0 0 0 / 0.1),
+      0 2px 4px -2px rgb(0 0 0 / 0.1);
     color: var(--color-secondary);
     cursor: pointer;
 
@@ -527,10 +739,10 @@
     @media (min-width: 1024px) {
       right: auto;
       left: 50%;
-      transform: translateX(calc(48rem / 2 + 2rem)) translateY(1rem);
+      transform: translateX(calc(42rem / 2 + 2rem)) translateY(1rem);
 
       &.visible {
-        transform: translateX(calc(48rem / 2 + 2rem)) translateY(0);
+        transform: translateX(calc(42rem / 2 + 2rem)) translateY(0);
       }
     }
   }

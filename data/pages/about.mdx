@@ -2,30 +2,37 @@ export const metadata = {
   title: 'About Me',
 }
 
-Hey, I'm Zach, a software engineer who writes code so my cat and dog can have a better life.
+<h1 className="about-hello">Hey, I'm <span className="accent">Zach</span>.</h1>
+
+<div className="about-body">
+
+A software engineer who writes code so my cat and dog can have a better life.
 
 I'm passionate about building elegant and efficient software. I believe in clean code, simple design, and the power of open-source.
 
-> **"Simplicity is the ultimate sophistication."**
->
-> — Leonardo da Vinci
-
-## What I Do
+<blockquote className="pullquote">
+  "Simplicity is the ultimate sophistication."
+  <span className="who">— Leonardo da Vinci</span>
+</blockquote>
 
 I spend most of my time writing code, exploring new technologies, and occasionally sharing my thoughts here.
 
-## Device
+</div>
 
-- iPhone 16 Pro Max
-- ~~iPhone 12~~
-- MacBook Pro 2023
-- Apple Watch Series 4
-- iPad Pro 11th (2022)
-- ~~AirPods Pro 2~~ (lost... fuck!)
-- EarPods
-- Nuphy Node 75
-- FL980
-- Kzzi k75
-- Redmi A27U Type-C 2026
+<Inventory
+  items={[
+    { what: 'iPhone 16 Pro Max' },
+    { what: 'iPhone 12', retired: true },
+    { what: 'MacBook Pro 2023' },
+    { what: 'Apple Watch Series 4' },
+    { what: 'iPad Pro 11" (2022)' },
+    { what: 'AirPods Pro 2', retired: true, note: 'lost… fuck!' },
+    { what: 'EarPods' },
+    { what: 'Nuphy Node 75' },
+    { what: 'FL980' },
+    { what: 'Kzzi K75' },
+    { what: 'Redmi A27U Type-C 2026' },
+  ]}
+/>
 
-To be continued...
+<AboutNow />

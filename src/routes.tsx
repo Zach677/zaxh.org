@@ -23,7 +23,7 @@ function wrapPostPage(
     // instead of waiting for `use` to resolve before <PostPage> suspends.
     void loadPostPage()
     const postModule = use(loader(slug))
-    return <PostPage postModule={postModule} />
+    return <PostPage postModule={postModule} slug={slug} />
   }
   return WrappedPostPage
 }

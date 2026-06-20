@@ -1,20 +1,15 @@
-import { Outlet, ScrollRestoration, useLocation } from 'react-router'
+import { Outlet, ScrollRestoration } from 'react-router'
 import { Footer } from '@/components/Footer'
 import { NavBar } from '@/components/NavBar'
 import { ReadableArea } from '@/components/ReadableArea'
-import { PaperFrame } from '@/components/PaperFrame'
 
 export default function RootLayout() {
-  const location = useLocation()
-  const isRootPage = location.pathname === '/'
-
   return (
     <>
-      <PaperFrame />
       <ReadableArea>
-        <NavBar hideHome={isRootPage} />
+        <NavBar />
       </ReadableArea>
-      <ReadableArea className="mt-12 mb-20">
+      <ReadableArea className="mt-6 mb-24">
         <Outlet />
       </ReadableArea>
       <ReadableArea>

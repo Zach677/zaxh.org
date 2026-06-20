@@ -21,7 +21,7 @@ import('../dist/server/main.ssg.js' as any).then(
     renderedItems.sort((a, b) => +b.metadata.date - +a.metadata.date)
 
     const feed = new Feed({
-      title: 'ZachSpace',
+      title: 'zaxh',
       description: 'Zach\'s personal blog',
       id: BASE_URL,
       link: BASE_URL,

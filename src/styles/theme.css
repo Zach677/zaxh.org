@@ -2,9 +2,14 @@
   /* ── Type: serif-led (book/newspaper), mono only for small labels ──
      Make sure index.html loads these families (Newsreader, Source Serif 4,
      Noto Serif SC, Spline Sans Mono). */
-  --font-sans: 'Source Serif 4', 'Noto Serif SC', Georgia, serif;
-  --font-serif: 'Source Serif 4', 'Noto Serif SC', Georgia, serif;
-  --font-display: 'Newsreader', 'Source Serif 4', 'Noto Serif SC', Georgia, serif;
+  /* serif-led; Latin from Source Serif 4, CJK from Noto Serif SC with a deep
+     system-serif fallback chain (aligned with innei.in) so Chinese stays in a
+     proper serif before/without the webfont. */
+  --font-cjk-serif: 'Noto Serif SC', 'Source Han Serif SC', 'Source Han Serif',
+    'Songti SC', SimSun, 'Hiragino Sans GB', serif;
+  --font-sans: 'Source Serif 4', var(--font-cjk-serif);
+  --font-serif: 'Source Serif 4', var(--font-cjk-serif);
+  --font-display: 'Source Serif 4', var(--font-cjk-serif);
   --font-mono: 'Spline Sans Mono', ui-monospace, monospace;
 
   /* ── Light = warm paper "sheet". Pure ink, no colour. ── */
@@ -16,15 +21,21 @@
   --color-tertiary: #94886c;       /* captions / faint ink  */
   --color-separator: --alpha(var(--color-primary) / 14%);
   --color-separator-soft: --alpha(var(--color-primary) / 8%);
-  /* links stay monochrome — distinguished by underline, not hue */
+  --color-ink-wash: --alpha(var(--color-primary) / 5%); /* faint ink fill */
   --color-link: var(--color-primary);
   --color-link-highlighted: var(--color-primary);
   --color-code-highlighted-line: --alpha(#000000 / 6%);
+
+  /* vermilion ink — the only colour in the almanac */
+  --color-accent: oklch(0.52 0.11 40);
+  --color-accent-soft: oklch(0.52 0.11 40 / 0.14);
 
   /* paper texture controls */
   --paper-grain-opacity: 0.06;
   --paper-grain-blend: multiply;
 
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.46, 1);
   --ease-out-cubic: cubic-bezier(0.22, 0.61, 0.36, 1);
 
   --animate-spin: spin 1s linear infinite;
@@ -48,9 +59,14 @@
   --color-tertiary: #7c7257;
   --color-separator: --alpha(var(--color-primary) / 16%);
   --color-separator-soft: --alpha(var(--color-primary) / 9%);
+  --color-ink-wash: --alpha(var(--color-primary) / 6%);
   --color-link: var(--color-primary);
   --color-link-highlighted: var(--color-primary);
   --color-code-highlighted-line: --alpha(#000000 / 30%);
+
+  /* kraft tone lifts the vermilion a little so it stays legible */
+  --color-accent: oklch(0.72 0.11 45);
+  --color-accent-soft: oklch(0.72 0.11 45 / 0.16);
 
   --paper-grain-opacity: 0.1;
   --paper-grain-blend: screen;

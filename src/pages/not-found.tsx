@@ -5,24 +5,31 @@ import { ReadableArea } from '@/components/ReadableArea'
 
 export default function NotFound() {
   return (
-    <main className="relative flex min-h-[720px] h-screen flex-col items-center justify-center">
-      <div className="error-stack text-center select-none">
-        <p className="reg-label">Error · Page not found</p>
-        <div className="error-code">404</div>
-        <p className="error-msg">Sorrrry, this leaf isn’t in the index.</p>
-        <Link to="/" className="ink-link error-back">
-          ← Return to the index
-        </Link>
-      </div>
-
-      <div className="absolute top-0 w-full h-full flex flex-col justify-between pointer-events-none">
-        <ReadableArea className="w-full pointer-events-auto">
-          <NavBar />
-        </ReadableArea>
-        <ReadableArea className="w-full pointer-events-auto">
-          <Footer />
-        </ReadableArea>
-      </div>
-    </main>
+    <>
+      <ReadableArea>
+        <NavBar />
+      </ReadableArea>
+      <ReadableArea>
+        <main className="lost-wrap select-none">
+          <span className="reg-label">Unrecorded entry</span>
+          <h1 className="lost-num" aria-label="404">
+            <span aria-hidden="true">4</span>
+            <span aria-hidden="true">0</span>
+            <span aria-hidden="true">4</span>
+          </h1>
+          <p className="lost-cap">
+            This page was never recorded in the almanac — or the cat sat on it.
+          </p>
+          <p className="lost-back">
+            <Link to="/" className="ink-link reg-label">
+              ← Back to the index
+            </Link>
+          </p>
+        </main>
+      </ReadableArea>
+      <ReadableArea>
+        <Footer />
+      </ReadableArea>
+    </>
   )
 }
