@@ -25,7 +25,7 @@ import('../dist/server/main.ssg.js' as any).then(
       description: 'Zach\'s personal blog',
       id: BASE_URL,
       link: BASE_URL,
-      feed: `${BASE_URL}/rss.xml`,
+      feed: `${BASE_URL}/rss`,
       image: `${BASE_URL}/apple-touch-icon.png`,
       favicon: `${BASE_URL}/favicon.ico`,
       copyright: `© ${new Date().getFullYear()} Zach`,

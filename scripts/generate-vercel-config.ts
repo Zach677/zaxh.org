@@ -37,7 +37,7 @@ const config = {
     ...pathMappings,
     'rss.xml': {
       path: 'rss',
-      contentType: 'application/rss+xml',
+      contentType: 'application/rss+xml; charset=utf-8',
     },
   },
 }
