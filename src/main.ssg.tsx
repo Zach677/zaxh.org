@@ -44,7 +44,7 @@ export async function render() {
   async function walkRoutes(routes: RouteObject[], pathSegments: string[]) {
     for (const route of routes) {
       const thisPath = route.path ? route.path : route.index ? '' : undefined
-      if (thisPath === '*') {
+      if (thisPath === '*' || thisPath === 'now') {
         continue
       }
       if (thisPath !== undefined) {

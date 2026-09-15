@@ -33,6 +33,7 @@ generatePathMappings([])
 const config = {
   version: 3,
   routes: [
+    { src: '/now/?', status: 308, headers: { Location: '/' } },
     { src: '/rss/?', status: 308, headers: { Location: '/' } },
     { src: '/rss.xml', status: 308, headers: { Location: '/' } },
     { src: '/page/about/?', status: 308, headers: { Location: '/about' } },

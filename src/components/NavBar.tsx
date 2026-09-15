@@ -62,10 +62,8 @@ const styles = stylex.create({
 })
 
 const NAV_ITEMS = [
-  { to: '/', label: 'home' },
   { to: '/projects', label: 'projects' },
   { to: '/about', label: 'about' },
-  { to: '/now', label: 'now' },
 ] as const
 
 export const NavBar = () => {

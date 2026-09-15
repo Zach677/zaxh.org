@@ -1,7 +1,6 @@
 import * as stylex from '@stylexjs/stylex'
 import { Link } from 'react-router'
 
-import { ConstellationMap } from '@/components/constellation'
 import { colors, fonts, typeScale } from '../design-system/tokens.stylex'
 import { shared } from '../design-system/shared.stylex'
 import {
@@ -32,26 +31,6 @@ const styles = stylex.create({
     fontSize: typeScale.copy14,
     lineHeight: typeScale.copy14Lh,
     color: colors.secondary,
-  },
-  ledeMap: {
-    display: {
-      default: 'none',
-      '@media (min-width: 640px)': 'inline',
-    },
-  },
-  mapFrame: {
-    width: '100%',
-    height: 'min(58dvh, 30rem)',
-    minHeight: '18rem',
-    position: 'relative',
-    marginBottom: {
-      default: 0,
-      '@media (min-width: 640px)': '2.5rem',
-    },
-    display: {
-      default: 'none',
-      '@media (min-width: 640px)': 'block',
-    },
   },
   sectionHead: {
     marginBottom: '0.75rem',
@@ -196,21 +175,7 @@ export default function ProjectsPage() {
       <h1 {...stylex.props(styles.title)}>projects</h1>
       <p {...stylex.props(styles.lede)}>
         Public satellites around zach.
-        <span {...stylex.props(styles.ledeMap)}>
-          {' '}
-          Denser map above, full index below.
-        </span>
       </p>
-
-      <div {...stylex.props(styles.mapFrame)}>
-        <ConstellationMap
-          projects={publicOnes}
-          mode="dense"
-          showArc={false}
-          mobileFallback={false}
-          hrefMode="anchor"
-        />
-      </div>
 
       <div {...stylex.props(styles.sectionHead)}>
         <span {...stylex.props(shared.regLabel)}>Public</span>

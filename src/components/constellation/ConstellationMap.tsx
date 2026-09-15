@@ -86,6 +86,8 @@ export function ConstellationMap({
   showArc = true,
   mobileFallback = true,
   hrefMode = 'external',
+  pinNotes = false,
+  showLegend = false,
 }: {
   projects: Project[]
   mode?: Mode
@@ -94,6 +96,9 @@ export function ConstellationMap({
   mobileFallback?: boolean
   /** Home opens the project URL; /projects jumps to the card. */
   hrefMode?: HrefMode
+  /** Always-on atlas notes. Too loud inside a small plate. */
+  pinNotes?: boolean
+  showLegend?: boolean
 }) {
   const [active, setActive] = useState<string | null>(null)
 
@@ -125,8 +130,8 @@ export function ConstellationMap({
   )
 
   const pinned = useMemo(
-    () => (mode === 'featured' ? pickPinned(nodes, 2) : []),
-    [mode, nodes],
+    () => (pinNotes ? pickPinned(nodes, 2) : []),
+    [pinNotes, nodes],
   )
   const pinnedSlugs = useMemo(
     () => new Set(pinned.map((n) => n.project.slug)),
@@ -137,7 +142,7 @@ export function ConstellationMap({
   return (
     <>
       <div
-        className="cx-map is-desktop-only"
+        className="cx-map"
         role="group"
         aria-label="Project constellation map"
       >
@@ -160,16 +165,18 @@ export function ConstellationMap({
           </>
         ) : null}
 
-        <div className="cx-legend" aria-hidden="true">
-          <span className="cx-legend-item">
-            <i className="cx-ring" />
-            active
-          </span>
-          <span className="cx-legend-item">
-            <i className="cx-ring is-sm" />
-            paused
-          </span>
-        </div>
+        {showLegend ? (
+          <div className="cx-legend" aria-hidden="true">
+            <span className="cx-legend-item">
+              <i className="cx-ring" />
+              active
+            </span>
+            <span className="cx-legend-item">
+              <i className="cx-ring is-sm" />
+              paused
+            </span>
+          </div>
+        ) : null}
 
         <div className="cx-graph cx-drift">
           <svg className="cx-edges" aria-hidden="true">

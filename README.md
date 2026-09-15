@@ -1,6 +1,6 @@
 # zaxh.org
 
-Zach's personal hub — home, projects, about, now.
+Zach's personal hub — home, projects, and about, with a short status on the home page.
 
 Built with React, Vite, and StyleX.
 

@@ -70,13 +70,6 @@ const styles = stylex.create({
     },
     transition: 'color 0.25s var(--ease)',
   },
-  friendsNote: {
-    marginTop: '0.75rem',
-    fontStyle: 'italic',
-    fontSize: typeScale.copy15,
-    lineHeight: typeScale.copy15Lh,
-    color: colors.secondary,
-  },
 })
 
 export default function AboutPage() {
@@ -114,8 +107,10 @@ export default function AboutPage() {
             <a
               key={link.title}
               href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
+              target={link.url.startsWith('http') ? '_blank' : undefined}
+              rel={
+                link.url.startsWith('http') ? 'noopener noreferrer' : undefined
+              }
               {...stylex.props(shared.inkLink, styles.contactLink)}
             >
               <Icon icon={link.icon as unknown as IconType} size="14px" />
@@ -123,13 +118,6 @@ export default function AboutPage() {
             </a>
           ))}
         </div>
-      </section>
-
-      <section {...stylex.props(styles.section)}>
-        <span {...stylex.props(shared.regLabel, styles.sectionTitle)}>
-          Friends
-        </span>
-        <p {...stylex.props(styles.friendsNote)}>To be continued…</p>
       </section>
 
       <Inventory

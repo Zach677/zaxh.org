@@ -28,11 +28,11 @@ Two-phase build process:
 
 ### Content
 
-Pages are React components under `src/pages/`. Project copy lives in `data/projects.ts`. The home now pulse reads `data/now-status.ts`.
+Pages are React components under `src/pages/`. Project copy lives in `data/projects.ts`. Home presence is `data/now-status.ts`.
 
 ### Routing
 
-Routes in `src/routes.tsx` are static. Home uses `handle: { bare: true }` so the shared nav/footer layout does not wrap it. Quiet `/mitori/privacy` is kept for App Store.
+Routes in `src/routes.tsx` are static. Home (`/`) is a centered calling card without the inner nav. Quiet `/mitori/privacy` is kept for App Store. `/now` redirects home.
 
 ### Key Files
 
