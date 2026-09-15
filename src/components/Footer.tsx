@@ -61,8 +61,8 @@ function SocialLinks() {
           key={link.title}
           href={link.url}
           aria-label={link.title}
-          target="_blank"
-          rel="noopener noreferrer"
+          target={link.url.startsWith('http') ? '_blank' : undefined}
+          rel={link.url.startsWith('http') ? 'noopener noreferrer' : undefined}
           {...stylex.props(styles.socialLink)}
         >
           <Icon icon={link.icon as unknown as IconType} size="16px" />

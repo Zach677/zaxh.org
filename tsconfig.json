@@ -32,8 +32,6 @@
   },
   "include": [
     "src",
-    "scripts",
-    "plugins",
-    "types"
+    "scripts"
   ]
 }

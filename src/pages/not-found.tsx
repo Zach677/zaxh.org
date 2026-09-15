@@ -22,7 +22,7 @@ export default function NotFound() {
           </p>
           <p className="lost-back">
             <Link to="/" className="ink-link reg-label">
-              ← Back to the index
+              ← Back home
             </Link>
           </p>
         </main>

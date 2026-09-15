@@ -7,7 +7,7 @@ import { Logo } from './Logo'
 
 const styles = stylex.create({
   nav: {
-    height: '5.5rem',
+    height: '4.25rem',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -27,10 +27,11 @@ const styles = stylex.create({
   },
   link: {
     position: 'relative',
-    fontFamily: fonts.serif,
-    fontStyle: 'italic',
-    fontSize: typeScale.copy15,
-    lineHeight: typeScale.copy15Lh,
+    fontFamily: fonts.mono,
+    fontStyle: 'normal',
+    fontSize: typeScale.label12,
+    lineHeight: typeScale.label12Lh,
+    letterSpacing: '0.04em',
     color: {
       default: colors.secondary,
       ':hover': colors.heading,
@@ -60,6 +61,11 @@ const styles = stylex.create({
   },
 })
 
+const NAV_ITEMS = [
+  { to: '/projects', label: 'projects' },
+  { to: '/about', label: 'about' },
+] as const
+
 export const NavBar = () => {
   return (
     <nav {...stylex.props(styles.nav)}>
@@ -67,15 +73,15 @@ export const NavBar = () => {
         <Logo />
       </Link>
       <div {...stylex.props(styles.links)}>
-        <Link {...stylex.props(shared.inkLink, styles.link)} to="/">
-          index
-        </Link>
-        <Link {...stylex.props(shared.inkLink, styles.link)} to="/page/about">
-          about
-        </Link>
-        <Link {...stylex.props(shared.inkLink, styles.link)} to="/page/friends">
-          friends
-        </Link>
+        {NAV_ITEMS.map((item) => (
+          <Link
+            key={item.to}
+            {...stylex.props(shared.inkLink, styles.link)}
+            to={item.to}
+          >
+            {item.label}
+          </Link>
+        ))}
       </div>
     </nav>
   )

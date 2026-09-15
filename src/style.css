@@ -3,3 +3,5 @@
 @import './styles/theme.css';
 @import './styles/base.css';
 @import './styles/components.css';
+/* Landing CSS: constellation must ship with index.html, not a lazy page chunk. */
+@import './components/constellation/constellation.css';

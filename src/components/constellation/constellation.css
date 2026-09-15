@@ -1,0 +1,433 @@
+/* Constellation (星图) motion — disabled under prefers-reduced-motion */
+
+@layer components {
+  .cx-map {
+    --cx-accent: var(--color-accent);
+    --cx-edge: color-mix(in oklab, var(--color-neutral-6) 45%, transparent);
+    --cx-node-ring: color-mix(in oklab, var(--color-neutral-8) 70%, transparent);
+    --cx-star: color-mix(in oklab, var(--color-neutral-6) 35%, transparent);
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    touch-action: manipulation;
+  }
+
+  .cx-stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    opacity: 0.7;
+  }
+
+  .cx-star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: var(--cx-star);
+  }
+
+  .cx-star.cross {
+    width: 7px;
+    height: 7px;
+    background: transparent;
+  }
+
+  .cx-star.cross::before,
+  .cx-star.cross::after {
+    content: '';
+    position: absolute;
+    background: var(--cx-star);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .cx-star.cross::before {
+    width: 7px;
+    height: 1px;
+  }
+
+  .cx-star.cross::after {
+    width: 1px;
+    height: 7px;
+  }
+
+  .cx-arc {
+    position: absolute;
+    right: -8%;
+    bottom: 6%;
+    width: min(52vw, 28rem);
+    height: min(52vw, 28rem);
+    border: 1px dotted color-mix(in oklab, var(--color-neutral-6) 28%, transparent);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.55;
+  }
+
+  .cx-arc-label {
+    position: absolute;
+    right: 4%;
+    bottom: 18%;
+    font-family: var(--font-mono);
+    font-size: var(--text-caption-10);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: color-mix(in oklab, var(--color-neutral-6) 70%, transparent);
+    transform: rotate(-28deg);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .cx-legend {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    gap: 0.9rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-caption-10);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: color-mix(in oklab, var(--color-neutral-6) 80%, transparent);
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .cx-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .cx-legend .cx-ring {
+    display: block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    border: 1.25px solid var(--cx-node-ring);
+    background: transparent;
+    flex-shrink: 0;
+  }
+
+  .cx-legend .cx-ring.is-sm {
+    width: 7px;
+    height: 7px;
+    opacity: 0.55;
+  }
+
+  .cx-graph {
+    position: absolute;
+    inset: 0;
+  }
+
+  .cx-edges {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  .cx-edge {
+    fill: none;
+    stroke: var(--cx-edge);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+    /* Dash in CSS px (no pathLength) so Chrome doesn't fragment the stroke. */
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: cx-edge-draw 0.7s var(--ease-out-cubic) forwards;
+  }
+
+  .cx-node {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    text-decoration: none;
+    color: inherit;
+    z-index: 2;
+    cursor: pointer;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    font: inherit;
+  }
+
+  .cx-node:focus {
+    outline: none;
+  }
+
+  .cx-node:focus-visible .cx-dot,
+  .cx-node:focus-visible .cx-ring {
+    box-shadow: 0 0 0 2px var(--color-paper), 0 0 0 4px var(--color-accent);
+  }
+
+  .cx-dot {
+    display: block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--cx-accent);
+    position: relative;
+    z-index: 1;
+  }
+
+  .cx-ring {
+    display: block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    border: 1.25px solid var(--cx-node-ring);
+    background: transparent;
+    position: relative;
+    z-index: 1;
+    transition:
+      border-color 0.15s var(--ease),
+      box-shadow 0.15s var(--ease),
+      transform 0.15s var(--ease);
+  }
+
+  .cx-node.is-lg .cx-ring {
+    width: 13px;
+    height: 13px;
+    border-color: color-mix(in oklab, var(--cx-node-ring) 55%, var(--cx-accent));
+  }
+
+  .cx-node.is-sm .cx-ring {
+    width: 7px;
+    height: 7px;
+    opacity: 0.55;
+  }
+
+  .cx-label {
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: var(--text-label-12);
+    line-height: 1.3;
+    letter-spacing: 0.02em;
+    color: var(--color-neutral-9);
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  .cx-center .cx-label {
+    color: var(--color-neutral-8);
+    font-size: var(--text-caption-10);
+    letter-spacing: 0.08em;
+  }
+
+  .cx-node.is-active .cx-ring,
+  .cx-node:hover .cx-ring,
+  .cx-node:focus-visible .cx-ring {
+    border-color: var(--cx-accent);
+    box-shadow: 0 0 10px color-mix(in oklab, var(--cx-accent) 45%, transparent);
+    transform: scale(1.15);
+  }
+
+  .cx-pulse {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1px solid var(--cx-accent);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0;
+    animation: cx-zach-pulse 4s var(--ease) infinite;
+  }
+
+  .cx-pulse:nth-child(2) {
+    animation-delay: 1.3s;
+  }
+
+  .cx-callout {
+    position: absolute;
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0;
+    animation: cx-callout-in 0.18s var(--ease) forwards;
+  }
+
+  .cx-callout.is-pinned {
+    animation: none;
+    opacity: 0.4;
+  }
+
+  .cx-callout.is-hot {
+    animation: cx-callout-in 0.18s var(--ease) forwards;
+    opacity: 1;
+  }
+
+  .cx-callout.is-pinned.is-hot {
+    animation: none;
+    opacity: 1;
+  }
+
+  .cx-leader {
+    position: absolute;
+    top: 0;
+    height: 1px;
+    background: color-mix(in oklab, var(--color-neutral-8) 55%, transparent);
+  }
+
+  .cx-leader-v {
+    position: absolute;
+    width: 1px;
+    background: color-mix(in oklab, var(--color-neutral-8) 55%, transparent);
+  }
+
+  .cx-leader-dot {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--cx-accent);
+  }
+
+  .cx-callout-text {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-12);
+    line-height: 1.4;
+    color: var(--color-neutral-8);
+    white-space: nowrap;
+    max-width: 16rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .cx-drift {
+    animation: cx-idle-drift 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes cx-idle-drift {
+    from {
+      translate: 0 0;
+    }
+    to {
+      translate: 3px -2px;
+    }
+  }
+
+  @keyframes cx-zach-pulse {
+    0% {
+      opacity: 0.55;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    70% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(4.2);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(4.2);
+    }
+  }
+
+  @keyframes cx-edge-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes cx-callout-in {
+    from {
+      opacity: 0;
+      transform: translateY(2px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes cx-now-blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  .cx-now-dot {
+    --cx-accent: var(--color-accent);
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1.25px solid var(--cx-accent);
+    background: transparent;
+    flex-shrink: 0;
+    animation: cx-now-blink 3.2s ease-in-out infinite;
+  }
+
+  .cx-now-dot.is-solid {
+    background: var(--cx-accent);
+    border-color: var(--cx-accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cx-drift,
+    .cx-pulse,
+    .cx-edge,
+    .cx-now-dot,
+    .cx-callout {
+      animation: none !important;
+    }
+
+    .cx-edge {
+      stroke-dasharray: none;
+      stroke-dashoffset: 0;
+    }
+
+    .cx-ring {
+      transition: none;
+    }
+
+    .cx-callout {
+      opacity: 1;
+    }
+
+    .cx-callout.is-pinned {
+      opacity: 0.4;
+    }
+
+    .cx-callout.is-hot {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .cx-callout {
+      inset: auto 0 0 !important;
+      text-align: center !important;
+    }
+
+    .cx-callout-text {
+      margin: 0 !important;
+      max-width: none;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .cx-leader,
+    .cx-leader-v,
+    .cx-leader-dot {
+      display: none;
+    }
+  }
+
+  @media (min-width: 640px) {
+    .cx-mobile-fallback {
+      display: none;
+    }
+  }
+}

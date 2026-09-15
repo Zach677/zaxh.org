@@ -3,6 +3,7 @@ import type { IconBaseProps } from 'react-icons'
 import {
   TbBrandTwitter,
   TbBrandGithub,
+  TbMail,
   TbRss,
   TbSun,
   TbMoon,
@@ -13,6 +14,7 @@ import {
 const ICON_MAP = {
   twitter: TbBrandTwitter,
   github: TbBrandGithub,
+  mail: TbMail,
   rss: TbRss,
   sun: TbSun,
   moon: TbMoon,

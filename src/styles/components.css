@@ -1,9 +1,4 @@
 @layer components {
-  /* ============================================================
-     Residual CSS — MDX class hooks + nested reader/code styles.
-     Most chrome (nav/footer/index/post shell) lives in StyleX.
-     ============================================================ */
-
   .reg-label {
     font-family: var(--font-mono);
     font-size: var(--text-label-12);
@@ -26,99 +21,6 @@
   }
   .ink-link:hover {
     background-size: 100% 1px;
-  }
-
-  /* figures + captions in the reader */
-  .md-reader .md-figure {
-    margin: calc(var(--spacing) * 8) 0;
-  }
-  .md-reader .md-figure .frame {
-    position: relative;
-    overflow: hidden;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-  }
-  .md-reader .img-caption {
-    display: block;
-    margin-top: calc(var(--spacing) * 2.5);
-    font-family: var(--font-mono);
-    font-size: var(--text-label-12);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-neutral-7);
-    text-align: center;
-  }
-
-  /* ABOUT / pages (classNames from MDX — not rewritten) */
-  .about-hello {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 500;
-    font-size: clamp(2.5rem, 6.5vw, 4.2rem);
-    line-height: 1.1;
-    letter-spacing: -0.01em;
-    margin: calc(var(--spacing) * 8) 0;
-    color: var(--color-neutral-10);
-  }
-  .about-hello .accent {
-    color: var(--color-accent);
-  }
-  .about-body {
-    max-width: 36rem;
-    font-size: var(--text-copy-15);
-    line-height: 1.9;
-    color: var(--color-neutral-9);
-  }
-  .about-body p {
-    margin: 0 0 calc(var(--spacing) * 6);
-  }
-  .pullquote {
-    margin: calc(var(--spacing) * 10) 0;
-    padding: 0 0 0 1.5rem;
-    border-left: 2px solid var(--color-accent);
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: var(--text-title-20);
-    line-height: 1.55;
-    color: var(--color-neutral-10);
-  }
-  .pullquote .who {
-    display: block;
-    margin-top: 0.6rem;
-    font-family: var(--font-mono);
-    font-style: normal;
-    font-size: var(--text-caption-10);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-neutral-7);
-  }
-
-  /* marginalia (opt-in in MDX) */
-  .note-anchor {
-    position: relative;
-  }
-  .marginalia {
-    display: none;
-    position: absolute;
-    left: -13.5rem;
-    top: 0.3em;
-    width: 11rem;
-    font-style: italic;
-    font-size: var(--text-copy-13);
-    line-height: 1.55;
-    color: var(--color-neutral-7);
-    border-right: 1px solid var(--color-separator-soft);
-    padding-right: 1rem;
-    text-align: right;
-  }
-  .marginalia .mark {
-    color: var(--color-accent);
-    font-style: normal;
-  }
-  @media (min-width: 1240px) {
-    .marginalia {
-      display: block;
-    }
   }
 
   /* 404 */
@@ -207,7 +109,7 @@
     opacity: 0;
   }
 
-  /* Markdown reader — nested selectors stay in CSS */
+  /* Nested reader selectors used by /mitori/privacy */
   .md-reader {
     font-size: var(--text-copy-15);
     line-height: 1.9;
@@ -320,42 +222,6 @@
       p:last-child {
         margin-bottom: 0;
       }
-    }
-  }
-
-  /* code plate inner structure (wrapper chrome may also be StyleX) */
-  .code-block {
-    --color-code-highlighted-line: rgb(255 255 255 / 0.06);
-
-    pre {
-      padding: calc(var(--spacing) * 3) 0;
-      background-color: transparent !important;
-      overflow-x: auto;
-      margin: 0;
-    }
-
-    code {
-      display: flex !important;
-      width: fit-content;
-      min-width: 100%;
-      flex-direction: column;
-      font-size: var(--text-copy-13);
-      color: var(--color-code-ink);
-
-      & > span {
-        height: 23px;
-        line-height: 23px;
-        flex-grow: 1;
-        padding: 0 calc(var(--spacing) * 4);
-      }
-
-      & > span[data-highlighted-line] {
-        background-color: var(--color-code-highlighted-line);
-      }
-    }
-
-    .shiki span {
-      color: var(--shiki-dark) !important;
     }
   }
 }

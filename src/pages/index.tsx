@@ -1,198 +1,176 @@
 import * as stylex from '@stylexjs/stylex'
 import { Link } from 'react-router'
 
-import { FormattedTime } from '@/components/FormattedTime'
+import { ConstellationMap } from '@/components/constellation'
+import { ThemeSwitcher } from '@/components/ThemeSwitcher'
+import { type IconType, Icon } from '@/components/Icon'
 import { colors, fonts, typeScale } from '../design-system/tokens.stylex'
 import { shared } from '../design-system/shared.stylex'
-import postIndex from 'virtual:postIndex'
-
-const WORDMARK = 'zaxh'
+import { featuredProjects } from '../../data/projects'
+import { NOW_STATUS } from '../../data/now-status'
+import me from '../../data/me.json'
 
 const styles = stylex.create({
-  main: {
-    marginTop: '2.5rem',
+  shell: {
+    minHeight: '100dvh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingInline: '1.5rem',
+    paddingBlock: '2rem',
+    boxSizing: 'border-box',
   },
-  masthead: {
-    fontFamily: fonts.serif,
+  card: {
+    width: '100%',
+    maxWidth: '32rem',
+  },
+  mark: {
+    fontFamily: fonts.logoLatin,
     fontStyle: 'italic',
-    fontSize: 'clamp(5rem, 16vw, 13rem)',
-    lineHeight: 0.95,
     fontWeight: 500,
-    letterSpacing: '-0.02em',
+    fontSize: typeScale.copy16,
+    lineHeight: typeScale.copy16Lh,
     color: colors.heading,
     margin: 0,
   },
-  letter: {
-    display: 'inline-block',
-    transition: 'transform 0.45s var(--ease-spring), color 0.3s var(--ease)',
-    transform: {
-      default: null,
-      ':hover': {
-        default: null,
-        '@media (hover: hover) and (prefers-reduced-motion: no-preference)':
-          'translateY(-0.08em) rotate(-2deg)',
-      },
-    },
-    color: {
-      default: colors.heading,
-      ':hover': {
-        default: null,
-        '@media (hover: hover) and (prefers-reduced-motion: no-preference)':
-          colors.accent,
-      },
-    },
+  lede: {
+    margin: '0.7rem 0 0',
+    maxWidth: '24rem',
+    fontSize: typeScale.copy15,
+    lineHeight: typeScale.copy15Lh,
+    color: colors.body,
   },
-  tagline: {
-    marginTop: '1.75rem',
-    marginBottom: 0,
-    maxWidth: '34rem',
-    fontSize: typeScale.title20,
-    lineHeight: typeScale.title20Lh,
-    fontStyle: 'italic',
+  status: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.45rem',
+    marginTop: '0.85rem',
+    fontFamily: fonts.mono,
+    fontSize: typeScale.caption10,
+    letterSpacing: '0.04em',
     color: colors.secondary,
   },
-  em: {
-    fontStyle: 'italic',
-    color: colors.heading,
-    backgroundImage: `linear-gradient(${colors.accent}, ${colors.accent})`,
-    backgroundSize: '100% 1px',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: '0 100%',
-  },
-  index: {
-    marginTop: '5.5rem',
-  },
-  indexHead: {
+  social: {
     display: 'flex',
+    alignItems: 'center',
+    gap: '0.85rem',
+    marginTop: '0.95rem',
+  },
+  socialLink: {
+    position: 'relative',
+    color: {
+      default: colors.secondary,
+      ':hover': colors.heading,
+    },
+    display: 'inline-flex',
+    transition: 'color 0.25s var(--ease), transform 0.25s var(--ease-spring)',
+    transform: {
+      default: null,
+      ':hover': 'translateY(-2px) rotate(-4deg)',
+    },
+    borderRadius: '2px',
+    outline: {
+      default: 'none',
+      ':focus-visible': `2px solid ${colors.accent}`,
+    },
+    outlineOffset: {
+      default: null,
+      ':focus-visible': '3px',
+    },
+    '::after': {
+      content: {
+        default: null,
+        '@media (pointer: coarse)': '""',
+      },
+      position: 'absolute',
+      inset: '-10px',
+      display: {
+        default: 'none',
+        '@media (pointer: coarse)': 'block',
+      },
+    },
+  },
+  plate: {
+    width: '100%',
+    height: '18rem',
+    position: 'relative',
+    marginTop: '1.35rem',
+  },
+  bar: {
+    display: 'flex',
+    alignItems: 'center',
     justifyContent: 'space-between',
     gap: '1rem',
-    marginBottom: '0.25rem',
-    paddingBottom: '0.75rem',
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: colors.separator,
+    marginTop: '1.5rem',
+    paddingTop: '1.1rem',
+    borderTopWidth: '1px',
+    borderTopStyle: 'solid',
+    borderTopColor: colors.separatorSoft,
   },
-  nowrap: {
-    whiteSpace: 'nowrap',
-  },
-  list: {
-    listStyle: 'none',
-    margin: 0,
-    padding: 0,
-  },
-  item: {
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: colors.separatorSoft,
-  },
-  itemLink: {
+  pages: {
     display: 'flex',
-    alignItems: 'baseline',
-    justifyContent: 'space-between',
-    gap: '1.25rem',
-    paddingBlock: '1.35rem',
-    textDecoration: 'none',
-    color: 'inherit',
-    flexWrap: {
-      default: 'nowrap',
-      '@media (max-width: 720px)': 'wrap',
-    },
-    rowGap: {
-      default: null,
-      '@media (max-width: 720px)': '0.3rem',
-    },
-    transition: 'transform 0.4s var(--ease-spring)',
-    transform: {
-      default: null,
-      ':hover': {
-        default: null,
-        '@media (hover: hover)': 'translateX(10px)',
-      },
-    },
+    flexWrap: 'wrap',
+    gap: '0.35rem 1.15rem',
   },
-  title: {
-    flexGrow: {
-      default: 1,
-      '@media (max-width: 720px)': 1,
-    },
-    flexShrink: {
-      default: 1,
-      '@media (max-width: 720px)': 1,
-    },
-    flexBasis: {
-      default: '0%',
-      '@media (max-width: 720px)': '100%',
-    },
-    minWidth: 0,
-    fontFamily: fonts.serif,
-    fontSize: 'clamp(1.4rem, 2.6vw, 1.875rem)',
-    fontWeight: 500,
-    lineHeight: 1.3,
-    color: colors.heading,
-  },
-  date: {
-    flexGrow: 0,
-    flexShrink: 0,
+  pageLink: {
     fontFamily: fonts.mono,
     fontSize: typeScale.label12,
-    lineHeight: typeScale.label12Lh,
-    color: colors.secondary,
-    whiteSpace: 'nowrap',
-  },
-  empty: {
-    marginTop: '1.5rem',
-    color: colors.secondary,
-    fontStyle: 'italic',
+    letterSpacing: '0.04em',
+    color: colors.body,
   },
 })
 
-function PostItem({ post }: { post: PostMetadata }) {
-  const date = new Date(post.date!)
-
-  return (
-    <li {...stylex.props(styles.item)}>
-      <Link {...stylex.props(styles.itemLink)} to={`/post/${post.slug}`}>
-        <span {...stylex.props(styles.title)}>{post.title}</span>
-        <FormattedTime {...stylex.props(styles.date)} dateTime={date} />
-      </Link>
-    </li>
-  )
-}
-
 export default function RootPage() {
+  const featured = featuredProjects()
+
   return (
-    <main {...stylex.props(styles.main)}>
-      <h1 {...stylex.props(styles.masthead)} aria-label={WORDMARK}>
-        {WORDMARK.split('').map((ch, i) => (
-          <span key={i} {...stylex.props(styles.letter)} aria-hidden="true">
-            {ch}
-          </span>
-        ))}
-      </h1>
-
-      <p {...stylex.props(styles.tagline)}>
-        I write code so my <em {...stylex.props(styles.em)}>cat</em> and{' '}
-        <em {...stylex.props(styles.em)}>dog</em> can have a better life.
-      </p>
-
-      <section {...stylex.props(styles.index)}>
-        <div {...stylex.props(styles.indexHead)}>
-          <span {...stylex.props(shared.regLabel)}>Recent writing</span>
-          <span {...stylex.props(shared.regLabel, styles.nowrap)}>
-            {postIndex.length} {postIndex.length === 1 ? 'entry' : 'entries'}
-          </span>
+    <div {...stylex.props(styles.shell)}>
+      <main {...stylex.props(styles.card)}>
+        <h1 {...stylex.props(styles.mark)}>zaxh</h1>
+        <p {...stylex.props(styles.lede)}>
+          Writes code so the cat and dog can have a better life.
+        </p>
+        <p {...stylex.props(styles.status)}>
+          <span className="cx-now-dot" aria-hidden="true" />
+          <span>{NOW_STATUS}</span>
+        </p>
+        <div {...stylex.props(styles.social)}>
+          {me.links.map((link) => (
+            <a
+              key={link.title}
+              href={link.url}
+              aria-label={link.title}
+              target={link.url.startsWith('http') ? '_blank' : undefined}
+              rel={
+                link.url.startsWith('http') ? 'noopener noreferrer' : undefined
+              }
+              {...stylex.props(styles.socialLink)}
+            >
+              <Icon icon={link.icon as unknown as IconType} size="17px" />
+            </a>
+          ))}
         </div>
-
-        {postIndex.length > 0 ? (
-          <ul {...stylex.props(styles.list)}>
-            {postIndex.map((post) => (
-              <PostItem key={post.slug} post={post} />
-            ))}
-          </ul>
-        ) : (
-          <p {...stylex.props(styles.empty)}>No posts yet. Stay tuned!</p>
-        )}
-      </section>
-    </main>
+        <div {...stylex.props(styles.plate)}>
+          <ConstellationMap
+            projects={featured}
+            mode="featured"
+            showArc={false}
+            mobileFallback={false}
+            showLegend={false}
+          />
+        </div>
+        <div {...stylex.props(styles.bar)}>
+          <nav {...stylex.props(styles.pages)} aria-label="Pages">
+            <Link {...stylex.props(shared.inkLink, styles.pageLink)} to="/projects">
+              projects
+            </Link>
+            <Link {...stylex.props(shared.inkLink, styles.pageLink)} to="/about">
+              about
+            </Link>
+          </nav>
+          <ThemeSwitcher />
+        </div>
+      </main>
+    </div>
   )
 }
