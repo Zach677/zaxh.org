@@ -5,13 +5,12 @@ import { SpeedInsights } from '@vercel/speed-insights/react'
 
 import { ThemeClientInitializer } from './theme'
 import { MetadataUpdater } from './metadata'
-import { IntlProvider } from './components/IntlProvider'
 
 // Each route declares its own canonical `url`; routes without one (e.g. 404)
 // intentionally emit no canonical/og:url.
 export const appMetadata = {
   title: 'zaxh',
-  description: 'Zach\'s personal blog',
+  description: 'Zach\'s personal hub',
 }
 
 export function App(props: {
@@ -25,9 +24,7 @@ export function App(props: {
       <ThemeClientInitializer />
       <MetadataUpdater router={router} initialMetadata={appMetadata} />
       <Suspense>
-        <IntlProvider>
-          <RouterProvider router={router} />
-        </IntlProvider>
+        <RouterProvider router={router} />
       </Suspense>
     </>
   )

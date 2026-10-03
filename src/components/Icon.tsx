@@ -3,21 +3,19 @@ import type { IconBaseProps } from 'react-icons'
 import {
   TbBrandTwitter,
   TbBrandGithub,
-  TbRss,
+  TbMail,
   TbSun,
   TbMoon,
   TbDeviceDesktop,
-  TbArrowUp,
 } from 'react-icons/tb'
 
 const ICON_MAP = {
   twitter: TbBrandTwitter,
   github: TbBrandGithub,
-  rss: TbRss,
+  mail: TbMail,
   sun: TbSun,
   moon: TbMoon,
   display: TbDeviceDesktop,
-  'arrow-up': TbArrowUp,
 }
 export type IconType = keyof typeof ICON_MAP
 

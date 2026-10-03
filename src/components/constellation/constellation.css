@@ -1,0 +1,295 @@
+/* Constellation (星图) motion — disabled under prefers-reduced-motion */
+
+@layer components {
+  .cx-map {
+    --cx-accent: var(--color-accent);
+    --cx-edge: color-mix(in oklab, var(--color-neutral-6) 45%, transparent);
+    --cx-node-ring: color-mix(in oklab, var(--color-neutral-8) 70%, transparent);
+    --cx-star: color-mix(in oklab, var(--color-neutral-6) 35%, transparent);
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    touch-action: manipulation;
+  }
+
+  .cx-stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    opacity: 0.7;
+  }
+
+  .cx-star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: var(--cx-star);
+  }
+
+  .cx-star.cross {
+    width: 7px;
+    height: 7px;
+    background: transparent;
+  }
+
+  .cx-star.cross::before,
+  .cx-star.cross::after {
+    content: '';
+    position: absolute;
+    background: var(--cx-star);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .cx-star.cross::before {
+    width: 7px;
+    height: 1px;
+  }
+
+  .cx-star.cross::after {
+    width: 1px;
+    height: 7px;
+  }
+
+  .cx-graph {
+    position: absolute;
+    inset: 0;
+  }
+
+  .cx-edges {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  .cx-edge {
+    fill: none;
+    stroke: var(--cx-edge);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+    /* Dash in CSS px (no pathLength) so Chrome doesn't fragment the stroke. */
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: cx-edge-draw 0.7s var(--ease-out-cubic) forwards;
+  }
+
+  .cx-edge.is-related {
+    stroke: color-mix(in oklab, var(--cx-accent) 55%, var(--cx-edge));
+  }
+
+  .cx-node {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    text-decoration: none;
+    color: inherit;
+    z-index: 2;
+    cursor: pointer;
+  }
+
+  .cx-node:focus {
+    outline: none;
+  }
+
+  .cx-node:focus-visible .cx-ring {
+    box-shadow: 0 0 0 2px var(--color-paper), 0 0 0 4px var(--color-accent);
+  }
+
+  .cx-dot {
+    display: block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--cx-accent);
+    position: relative;
+    z-index: 1;
+  }
+
+  .cx-ring {
+    display: block;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1.25px solid color-mix(in oklab, var(--cx-node-ring) 55%, var(--cx-accent));
+    /* Paper fill hides the edge ends inside the ring. */
+    background: var(--color-paper);
+    position: relative;
+    z-index: 1;
+    transition:
+      border-color 0.15s var(--ease),
+      box-shadow 0.15s var(--ease),
+      transform 0.15s var(--ease);
+  }
+
+  .cx-label {
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: var(--text-label-12);
+    line-height: 1.3;
+    letter-spacing: 0.02em;
+    color: var(--color-neutral-9);
+    white-space: nowrap;
+    user-select: none;
+    /* Map-style halo: edges pass behind labels instead of through them. */
+    text-shadow:
+      0 0 2px var(--color-paper),
+      0 0 4px var(--color-paper),
+      0 0 6px var(--color-paper);
+  }
+
+  /* Above the dot: the spoke to the bottom star would cross it. */
+  .cx-center .cx-label {
+    top: auto;
+    bottom: calc(100% + 0.4rem);
+    color: var(--color-neutral-8);
+    font-size: var(--text-caption-10);
+    letter-spacing: 0.08em;
+  }
+
+  .cx-node.is-active .cx-ring,
+  .cx-node:hover .cx-ring,
+  .cx-node:focus-visible .cx-ring {
+    border-color: var(--cx-accent);
+    box-shadow: 0 0 10px color-mix(in oklab, var(--cx-accent) 45%, transparent);
+    transform: scale(1.15);
+  }
+
+  .cx-pulse {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1px solid var(--cx-accent);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0;
+    animation: cx-zach-pulse 4s var(--ease) infinite;
+  }
+
+  .cx-pulse:nth-child(2) {
+    animation-delay: 1.3s;
+  }
+
+  .cx-caption {
+    margin: 0.6rem 0 0;
+    min-height: 1.4em;
+    font-family: var(--font-mono);
+    font-size: var(--text-label-12);
+    line-height: 1.4;
+    color: var(--color-neutral-8);
+    text-align: center;
+  }
+
+  .cx-caption b {
+    font-weight: 500;
+    color: var(--color-neutral-9);
+  }
+
+  .cx-caption-text {
+    display: inline-block;
+    animation: cx-caption-in 0.18s var(--ease) forwards;
+  }
+
+  .cx-hint {
+    color: var(--color-neutral-6);
+  }
+
+  @media (hover: hover) {
+    .cx-hint {
+      visibility: hidden;
+    }
+  }
+
+  .cx-drift {
+    animation: cx-idle-drift 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes cx-idle-drift {
+    from {
+      translate: 0 0;
+    }
+    to {
+      translate: 3px -2px;
+    }
+  }
+
+  @keyframes cx-zach-pulse {
+    0% {
+      opacity: 0.55;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    70% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(4.2);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(4.2);
+    }
+  }
+
+  @keyframes cx-edge-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes cx-caption-in {
+    from {
+      opacity: 0;
+      transform: translateY(2px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes cx-now-blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  .cx-now-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1.25px solid var(--color-accent);
+    flex-shrink: 0;
+    animation: cx-now-blink 3.2s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cx-drift,
+    .cx-pulse,
+    .cx-edge,
+    .cx-now-dot,
+    .cx-caption-text {
+      animation: none !important;
+    }
+
+    .cx-edge {
+      stroke-dasharray: none;
+      stroke-dashoffset: 0;
+    }
+
+    .cx-ring {
+      transition: none;
+    }
+  }
+}

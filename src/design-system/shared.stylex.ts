@@ -34,4 +34,14 @@ export const shared = stylex.create({
     whiteSpace: 'nowrap',
     borderWidth: 0,
   },
+  /** Article-page title — italic serif at title28. */
+  pageTitle: {
+    fontFamily: fonts.serif,
+    fontStyle: 'italic',
+    fontWeight: 500,
+    fontSize: typeScale.title28,
+    lineHeight: typeScale.title28Lh,
+    letterSpacing: '-0.01em',
+    color: colors.heading,
+  },
 })
