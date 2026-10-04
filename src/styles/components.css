@@ -26,6 +26,7 @@
   /* 404 */
   .lost-wrap {
     min-height: 62vh;
+    user-select: none;
     display: flex;
     flex-direction: column;
     justify-content: center;

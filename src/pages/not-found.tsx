@@ -10,7 +10,7 @@ export default function NotFound() {
         <NavBar />
       </ReadableArea>
       <ReadableArea>
-        <main className="lost-wrap select-none">
+        <main className="lost-wrap">
           <span className="reg-label">Unrecorded entry</span>
           <h1 className="lost-num" aria-label="404">
             <span aria-hidden="true">4</span>

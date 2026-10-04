@@ -1,4 +1,64 @@
 @layer base {
+  /* Minimal reset: only the defaults this site relies on. */
+  *,
+  ::before,
+  ::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0 solid;
+  }
+
+  html {
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: inherit;
+  }
+
+  b,
+  strong {
+    font-weight: bolder;
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 1em;
+  }
+
+  ol,
+  ul {
+    list-style: none;
+  }
+
+  img,
+  svg {
+    display: block;
+    vertical-align: middle;
+  }
+
+  button {
+    font: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    background-color: transparent;
+    border-radius: 0;
+  }
+
   :root {
     /* fibrous paper grain (fractal noise), tiled */
     --paper-grain-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -55,17 +115,5 @@
   ::view-transition-new(root) {
     animation: none;
     mix-blend-mode: normal;
-  }
-}
-
-@custom-variant dark {
-  :root[data-theme='dark'] & {
-    @slot;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root[data-theme='system'] & {
-      @slot;
-    }
   }
 }
