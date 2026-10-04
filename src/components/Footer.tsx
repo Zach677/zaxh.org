@@ -1,7 +1,6 @@
 import * as stylex from '@stylexjs/stylex'
 import { colors } from '../design-system/tokens.stylex'
 import { shared } from '../design-system/shared.stylex'
-import { SocialLinks } from './SocialLinks'
 import { ThemeSwitcher } from './ThemeSwitcher'
 
 const styles = stylex.create({
@@ -10,7 +9,7 @@ const styles = stylex.create({
     paddingTop: '1.5rem',
     paddingBottom: '3rem',
     display: 'flex',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent: 'space-between',
     gap: '1rem',
     borderTopWidth: '1px',
@@ -21,9 +20,6 @@ const styles = stylex.create({
   label: {
     display: 'block',
     lineHeight: 1.9,
-  },
-  social: {
-    marginTop: '0.75rem',
   },
 })
 
@@ -36,7 +32,6 @@ export const Footer = () => {
         <span {...stylex.props(shared.regLabel, styles.label)}>
           © {year} Zach
         </span>
-        <SocialLinks style={styles.social} />
       </div>
       <div>
         <ThemeSwitcher />

@@ -28,7 +28,7 @@ Two-phase build process:
 
 ### Content
 
-The site is one page (`src/pages/index.tsx`) with work and about sections, plus `/mitori/privacy`. Project copy lives in `data/projects.ts`. The status line is `data/now-status.ts`.
+The site is one page (`src/pages/index.tsx`) with work and about sections, plus `/mitori/privacy`. Project copy lives in `data/projects.ts`.
 
 ### Routing
 

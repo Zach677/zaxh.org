@@ -2,17 +2,12 @@ import * as stylex from '@stylexjs/stylex'
 import { Link } from 'react-router'
 
 import { Inventory } from '@/components/Inventory'
+import { SocialLinks } from '@/components/SocialLinks'
 import { colors, fonts, typeScale } from '../design-system/tokens.stylex'
 import { shared } from '../design-system/shared.stylex'
 import { projects, type Project, type ProjectLink } from '../../data/projects'
-import { NOW_STATUS } from '../../data/now-status'
 
 const MOBILE = '@media (max-width: 639px)'
-const MOTION = '@media (prefers-reduced-motion: no-preference)'
-
-const blink = stylex.keyframes({
-  '50%': { opacity: 0.35 },
-})
 
 const styles = stylex.create({
   intro: {
@@ -35,32 +30,8 @@ const styles = stylex.create({
     lineHeight: 1.6,
     color: colors.body,
   },
-  status: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    gap: '0.5rem',
-    margin: '1.25rem 0 0',
-  },
-  dot: {
-    flexShrink: 0,
-    width: '7px',
-    height: '7px',
-    marginTop: '0.45em',
-    borderRadius: '50%',
-    borderWidth: '1.25px',
-    borderStyle: 'solid',
-    borderColor: colors.accent,
-    animationName: {
-      default: null,
-      [MOTION]: blink,
-    },
-    animationDuration: '3.2s',
-    animationTimingFunction: 'ease-in-out',
-    animationIterationCount: 'infinite',
-  },
-  updated: {
-    whiteSpace: 'nowrap',
-    color: colors.icon,
+  social: {
+    marginTop: '1.5rem',
   },
   section: {
     marginTop: 'clamp(4rem, 10vh, 6rem)',
@@ -155,13 +126,6 @@ const styles = stylex.create({
   },
 })
 
-// UTC so the SSG output and the client agree in every time zone.
-const NOW_UPDATED = new Date(NOW_STATUS.updated).toLocaleDateString('en', {
-  month: 'short',
-  year: 'numeric',
-  timeZone: 'UTC',
-})
-
 // Active work first; sort is stable, so data order holds inside each group.
 const WORK = [...projects].sort(
   (a, b) => Number(a.status === 'paused') - Number(b.status === 'paused'),
@@ -228,15 +192,7 @@ export default function RootPage() {
           Builds small tools for iOS and macOS, and writes code so the cat and
           dog can have a better life.
         </p>
-        <p {...stylex.props(shared.regLabel, styles.status)}>
-          <span {...stylex.props(styles.dot)} aria-hidden="true" />
-          <span>
-            {NOW_STATUS.text}{' '}
-            <time {...stylex.props(styles.updated)} dateTime={NOW_STATUS.updated}>
-              · {NOW_UPDATED}
-            </time>
-          </span>
-        </p>
+        <SocialLinks style={styles.social} />
       </section>
 
       <section id="work" {...stylex.props(styles.section)}>
