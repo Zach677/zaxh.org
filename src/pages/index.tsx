@@ -1,58 +1,51 @@
 import * as stylex from '@stylexjs/stylex'
 import { Link } from 'react-router'
 
-import { ThemeSwitcher } from '@/components/ThemeSwitcher'
-import { SocialLinks } from '@/components/SocialLinks'
+import { Inventory } from '@/components/Inventory'
 import { colors, fonts, typeScale } from '../design-system/tokens.stylex'
 import { shared } from '../design-system/shared.stylex'
-import { featuredProjects, projects } from '../../data/projects'
+import { projects, type Project, type ProjectLink } from '../../data/projects'
 import { NOW_STATUS } from '../../data/now-status'
 
 const MOBILE = '@media (max-width: 639px)'
 const MOTION = '@media (prefers-reduced-motion: no-preference)'
-
-const rise = stylex.keyframes({
-  from: { opacity: 0, transform: 'translateY(6px)' },
-  to: { opacity: 1, transform: 'none' },
-})
 
 const blink = stylex.keyframes({
   '50%': { opacity: 0.35 },
 })
 
 const styles = stylex.create({
-  // The page is a printed sheet: running heads in the corners, text set on
-  // the left third, and the empty space reads as page margin.
-  page: {
-    minHeight: '100dvh',
-    display: 'grid',
-    gridTemplateRows: 'auto 1fr auto',
-    padding: 'clamp(1.25rem, 3.5vw, 2.5rem)',
-    boxSizing: 'border-box',
-    fontFamily: fonts.mono,
-    fontSize: typeScale.label12,
-    lineHeight: typeScale.label12Lh,
+  intro: {
+    paddingTop: 'clamp(3rem, 12vh, 8rem)',
   },
-  head: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    gap: '1.5rem',
+  name: {
+    margin: 0,
+    fontFamily: fonts.serif,
+    fontStyle: 'italic',
+    fontWeight: 500,
+    fontSize: 'clamp(3.25rem, 2rem + 4.5vw, 5rem)',
+    lineHeight: 1,
+    letterSpacing: '-0.02em',
+    color: colors.heading,
+  },
+  statement: {
+    margin: '1.5rem 0 0',
+    maxWidth: '30rem',
+    fontSize: 'clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem)',
+    lineHeight: 1.6,
+    color: colors.body,
   },
   status: {
     display: 'flex',
     alignItems: 'flex-start',
     gap: '0.5rem',
-    minWidth: 0,
-    margin: 0,
-    letterSpacing: '0.02em',
-    color: colors.secondary,
+    margin: '1.25rem 0 0',
   },
   dot: {
     flexShrink: 0,
     width: '7px',
     height: '7px',
-    marginTop: '0.4em',
+    marginTop: '0.45em',
     borderRadius: '50%',
     borderWidth: '1.25px',
     borderStyle: 'solid',
@@ -69,106 +62,57 @@ const styles = stylex.create({
     whiteSpace: 'nowrap',
     color: colors.icon,
   },
-  nav: {
-    display: 'flex',
-    gap: '1.25rem',
-    flexShrink: 0,
+  section: {
+    marginTop: 'clamp(4rem, 10vh, 6rem)',
   },
-  navLink: {
-    letterSpacing: '0.04em',
-    color: colors.body,
+  heading: {
+    margin: '0 0 1.25rem',
   },
-  main: {
-    alignSelf: 'center',
-    // Content box: the left margin must not eat into the text measure.
-    boxSizing: 'content-box',
-    maxWidth: '36rem',
-    paddingInlineStart: {
-      default: 'clamp(0rem, 9vw, 10rem)',
-      [MOBILE]: 0,
+  // Rows share the list's columns through subgrid, so the name column
+  // fits the longest name instead of a fixed width.
+  list: {
+    display: {
+      default: 'grid',
+      [MOBILE]: 'block',
     },
-    paddingBlock: '3rem',
-  },
-  name: {
-    margin: 0,
-    fontFamily: fonts.serif,
-    fontStyle: 'italic',
-    fontWeight: 500,
-    fontSize: 'clamp(3.25rem, 2rem + 4.5vw, 5.5rem)',
-    lineHeight: 1,
-    letterSpacing: '-0.02em',
-    color: colors.heading,
-  },
-  rule: {
-    width: '2rem',
-    height: '1px',
-    marginBlock: '1.5rem 1.25rem',
-    backgroundColor: colors.accent,
-  },
-  statement: {
-    margin: 0,
-    maxWidth: '30rem',
-    fontFamily: fonts.sans,
-    fontSize: 'clamp(1rem, 0.9rem + 0.4vw, 1.125rem)',
-    lineHeight: 1.65,
-    color: colors.body,
-  },
-  contents: {
+    gridTemplateColumns: 'max-content 1fr',
+    columnGap: '1.5rem',
     listStyle: 'none',
-    margin: '2.75rem 0 0',
+    margin: 0,
     padding: 0,
-  },
-  item: {
-    animationName: {
-      default: null,
-      [MOTION]: rise,
-    },
-    animationDuration: '0.5s',
-    animationTimingFunction: 'var(--ease)',
-    animationFillMode: 'both',
+    borderTopWidth: '1px',
+    borderTopStyle: 'solid',
+    borderTopColor: colors.border,
   },
   row: {
     display: 'grid',
+    gridColumn: '1 / -1',
     gridTemplateColumns: {
-      default: '2ch auto 1fr auto',
-      [MOBILE]: '2ch 1fr',
+      default: 'subgrid',
+      [MOBILE]: '1fr',
     },
     alignItems: 'baseline',
-    columnGap: '0.9rem',
-    paddingBlock: '0.5rem',
-    textDecoration: 'none',
-    color: colors.body,
-    transition: 'transform 0.2s var(--ease)',
-    transform: {
-      default: null,
-      ':active': 'translateX(2px)',
-    },
+    gap: '0.25rem 1.5rem',
+    paddingBlock: '0.85rem',
+    borderBottomWidth: '1px',
+    borderBottomStyle: 'solid',
+    borderBottomColor: colors.separatorSoft,
+  },
+  title: {
+    fontSize: typeScale.copy15,
+    lineHeight: typeScale.copy15Lh,
+    fontWeight: 500,
+    color: colors.heading,
     borderRadius: '2px',
     outline: {
       default: 'none',
       ':focus-visible': `2px solid ${colors.accent}`,
     },
-    outlineOffset: '4px',
-  },
-  num: {
-    color: colors.icon,
-  },
-  // Hover keeps the title dark for contrast; the accent goes on the arrow.
-  title: {
-    fontSize: typeScale.copy14,
-    color: colors.heading,
-    backgroundImage: 'linear-gradient(currentColor, currentColor)',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: '0 100%',
-    backgroundSize: {
-      default: '0% 1px',
-      [stylex.when.ancestor(':hover')]: '100% 1px',
-    },
-    transition: 'background-size 0.35s var(--ease)',
+    outlineOffset: '3px',
   },
   arrow: {
     display: 'inline-block',
-    marginLeft: '0.3em',
+    marginLeft: '0.25em',
     fontSize: '0.8em',
     color: {
       default: colors.icon,
@@ -180,38 +124,34 @@ const styles = stylex.create({
       [stylex.when.ancestor(':hover')]: 'translate(2px, -2px)',
     },
   },
-  // Same dotted leader as the device inventory on /about.
-  leader: {
-    display: {
-      default: null,
-      [MOBILE]: 'none',
-    },
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'dotted',
-    borderBottomColor: colors.strongFill,
+  pausedLabel: {
+    display: 'block',
   },
-  note: {
-    gridColumn: {
-      default: null,
-      [MOBILE]: '2',
-    },
-    color: colors.secondary,
-    whiteSpace: {
-      default: 'nowrap',
-      [MOBILE]: 'normal',
-    },
-  },
-  more: {
-    display: 'inline-block',
-    marginTop: '1rem',
-    marginLeft: 'calc(2ch + 0.9rem)',
+  description: {
+    margin: 0,
+    fontSize: typeScale.copy14,
+    lineHeight: typeScale.copy14Lh,
     color: colors.secondary,
   },
-  foot: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    gap: '1rem',
+  extraLink: {
+    color: colors.body,
+  },
+  prose: {
+    maxWidth: '34rem',
+    fontSize: typeScale.copy15,
+    lineHeight: 1.8,
+    color: colors.body,
+  },
+  p: {
+    margin: '0 0 1.25rem',
+  },
+  motto: {
+    margin: '2rem 0',
+    fontFamily: fonts.serif,
+    fontStyle: 'italic',
+    fontSize: typeScale.title20,
+    lineHeight: typeScale.title20Lh,
+    color: colors.heading,
   },
 })
 
@@ -222,14 +162,73 @@ const NOW_UPDATED = new Date(NOW_STATUS.updated).toLocaleDateString('en', {
   timeZone: 'UTC',
 })
 
-export default function RootPage() {
-  const featured = featuredProjects()
-  const more = projects.length - featured.length
+// Active work first; sort is stable, so data order holds inside each group.
+const WORK = [...projects].sort(
+  (a, b) => Number(a.status === 'paused') - Number(b.status === 'paused'),
+)
+
+function ExtraLink({ link }: { link: ProjectLink }) {
+  const props = stylex.props(shared.inkLink, styles.extraLink)
+  return link.url.startsWith('/') ? (
+    <Link to={link.url} {...props}>
+      {link.label}
+    </Link>
+  ) : (
+    <a href={link.url} target="_blank" rel="noopener noreferrer" {...props}>
+      {link.label}
+    </a>
+  )
+}
+
+function WorkRow({ project }: { project: Project }) {
+  // The first link is the project's home; the name carries it.
+  const [home, ...extra] = project.links
 
   return (
-    <div {...stylex.props(styles.page)}>
-      <header {...stylex.props(styles.head)}>
-        <p {...stylex.props(styles.status)}>
+    <li {...stylex.props(styles.row)}>
+      <div>
+        {home ? (
+          <a
+            href={home.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            {...stylex.props(shared.inkLink, styles.title, stylex.defaultMarker())}
+          >
+            {project.name}
+            <span {...stylex.props(styles.arrow)} aria-hidden="true">
+              ↗
+            </span>
+          </a>
+        ) : (
+          <span {...stylex.props(styles.title)}>{project.name}</span>
+        )}
+        {project.status === 'paused' ? (
+          <span {...stylex.props(shared.regLabel, styles.pausedLabel)}>paused</span>
+        ) : null}
+      </div>
+      <p {...stylex.props(styles.description)}>
+        {project.oneLiner}
+        {extra.map((link) => (
+          <span key={link.label}>
+            {' · '}
+            <ExtraLink link={link} />
+          </span>
+        ))}
+      </p>
+    </li>
+  )
+}
+
+export default function RootPage() {
+  return (
+    <main>
+      <section {...stylex.props(styles.intro)}>
+        <h1 {...stylex.props(styles.name)}>Zach</h1>
+        <p {...stylex.props(styles.statement)}>
+          Builds small tools for iOS and macOS, and writes code so the cat and
+          dog can have a better life.
+        </p>
+        <p {...stylex.props(shared.regLabel, styles.status)}>
           <span {...stylex.props(styles.dot)} aria-hidden="true" />
           <span>
             {NOW_STATUS.text}{' '}
@@ -238,70 +237,49 @@ export default function RootPage() {
             </time>
           </span>
         </p>
-        <nav {...stylex.props(styles.nav)} aria-label="Pages">
-          <Link {...stylex.props(shared.inkLink, styles.navLink)} to="/projects">
-            projects
-          </Link>
-          <Link {...stylex.props(shared.inkLink, styles.navLink)} to="/about">
-            about
-          </Link>
-        </nav>
-      </header>
+      </section>
 
-      <main {...stylex.props(styles.main)}>
-        <h1 {...stylex.props(styles.name)}>Zach</h1>
-        <div {...stylex.props(styles.rule)} aria-hidden="true" />
-        <p {...stylex.props(styles.statement)}>
-          Builds small tools for iOS and macOS, and writes code so the cat and
-          dog can have a better life.
-        </p>
-
+      <section id="work" {...stylex.props(styles.section)}>
+        <h2 {...stylex.props(shared.pageTitle, styles.heading)}>Work</h2>
         {/* role="list": Safari drops list semantics when list-style is none. */}
-        <ol
-          {...stylex.props(styles.contents)}
-          role="list"
-          aria-label="Selected projects"
-        >
-          {featured.map((project, index) => (
-            <li
-              key={project.slug}
-              {...stylex.props(styles.item)}
-              style={{ animationDelay: `${120 + index * 50}ms` }}
-            >
-              <a
-                href={project.links[0]?.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                {...stylex.props(styles.row, stylex.defaultMarker())}
-              >
-                <span {...stylex.props(styles.num)} aria-hidden="true">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-                <span {...stylex.props(styles.title)}>
-                  {project.name}
-                  <span {...stylex.props(styles.arrow)} aria-hidden="true">
-                    ↗
-                  </span>
-                </span>
-                <span {...stylex.props(styles.leader)} aria-hidden="true" />
-                <span {...stylex.props(styles.note)}>
-                  {project.callout ?? project.oneLiner}
-                </span>
-              </a>
-            </li>
+        <ul {...stylex.props(styles.list)} role="list">
+          {WORK.map((project) => (
+            <WorkRow key={project.slug} project={project} />
           ))}
-        </ol>
-        {more > 0 ? (
-          <Link {...stylex.props(shared.inkLink, styles.more)} to="/projects">
-            and {more} more →
-          </Link>
-        ) : null}
-      </main>
+        </ul>
+      </section>
 
-      <footer {...stylex.props(styles.foot)}>
-        <SocialLinks />
-        <ThemeSwitcher />
-      </footer>
-    </div>
+      <section id="about" {...stylex.props(styles.section)}>
+        <h2 {...stylex.props(shared.pageTitle, styles.heading)}>About</h2>
+        <div {...stylex.props(styles.prose)}>
+          <p {...stylex.props(styles.p)}>
+            Most of what I ship is small Apple-platform tooling: a menu bar app
+            for Apple ID credit, a Swift rewrite of ipatool, and starter kits
+            for UIKit and AppKit. When something needs a server, it usually
+            ends up on Cloudflare Workers.
+          </p>
+          <p {...stylex.props(styles.motto)}>Slow is fast.</p>
+          <p {...stylex.props(styles.p)}>
+            I&apos;m still learning, so I take the time to understand a problem
+            before I write the fix.
+          </p>
+        </div>
+        <Inventory
+          items={[
+            { what: 'iPhone 16 Pro Max' },
+            { what: 'iPhone 12', retired: true },
+            { what: 'MacBook Pro 2023' },
+            { what: 'Apple Watch Series 4' },
+            { what: 'iPad Pro 11" (2022)' },
+            { what: 'AirPods Pro 2', retired: true, note: 'lost… fuck!' },
+            { what: 'EarPods' },
+            { what: 'Nuphy Node 75' },
+            { what: 'FL980' },
+            { what: 'Kzzi K75' },
+            { what: 'Redmi A27U Type-C 2026' },
+          ]}
+        />
+      </section>
+    </main>
   )
 }

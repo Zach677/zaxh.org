@@ -1,5 +1,5 @@
 import * as stylex from '@stylexjs/stylex'
-import { Link, NavLink } from 'react-router'
+import { Link } from 'react-router'
 
 import { colors, fonts, typeScale } from '../design-system/tokens.stylex'
 import { shared } from '../design-system/shared.stylex'
@@ -13,10 +13,10 @@ const styles = stylex.create({
     justifyContent: 'space-between',
   },
   wordmark: {
-    fontFamily: fonts.logoLatin,
+    fontFamily: fonts.serif,
     fontStyle: 'italic',
-    fontSize: typeScale.copy16,
-    lineHeight: typeScale.copy16Lh,
+    fontSize: typeScale.title20,
+    lineHeight: 1,
     fontWeight: 500,
     color: colors.heading,
     textDecoration: 'none',
@@ -27,16 +27,11 @@ const styles = stylex.create({
   },
   link: {
     position: 'relative',
-    fontFamily: fonts.mono,
-    fontStyle: 'normal',
-    fontSize: typeScale.label12,
-    lineHeight: typeScale.label12Lh,
-    letterSpacing: '0.04em',
+    fontSize: typeScale.copy14,
+    lineHeight: typeScale.copy14Lh,
     color: {
       default: colors.secondary,
       ':hover': colors.heading,
-      // NavLink sets aria-current on the active route.
-      ':is([aria-current=page])': colors.heading,
     },
     transition: 'color 0.25s var(--ease), background-size 0.35s var(--ease)',
     outline: {
@@ -63,9 +58,12 @@ const styles = stylex.create({
   },
 })
 
+// Sections of the home page. Router links, not plain anchors: a full page
+// load shares the "default" history key, so ScrollRestoration would restore
+// that saved position over the hash.
 const NAV_ITEMS = [
-  { to: '/projects', label: 'projects' },
-  { to: '/about', label: 'about' },
+  { to: '/#work', label: 'work' },
+  { to: '/#about', label: 'about' },
 ] as const
 
 export const NavBar = () => {
@@ -76,13 +74,13 @@ export const NavBar = () => {
       </Link>
       <div {...stylex.props(styles.links)}>
         {NAV_ITEMS.map((item) => (
-          <NavLink
+          <Link
             key={item.to}
-            {...stylex.props(shared.inkLink, styles.link)}
             to={item.to}
+            {...stylex.props(shared.inkLink, styles.link)}
           >
             {item.label}
-          </NavLink>
+          </Link>
         ))}
       </div>
     </nav>

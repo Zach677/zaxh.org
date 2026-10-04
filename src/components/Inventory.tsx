@@ -1,6 +1,5 @@
 import * as stylex from '@stylexjs/stylex'
 import { colors, typeScale } from '../design-system/tokens.stylex'
-import { shared } from '../design-system/shared.stylex'
 
 export interface InventoryItem {
   what: string
@@ -10,56 +9,50 @@ export interface InventoryItem {
 
 const styles = stylex.create({
   section: {
-    marginTop: '3.5rem',
+    marginTop: '3rem',
+  },
+  title: {
+    margin: 0,
+    fontSize: typeScale.copy15,
+    lineHeight: typeScale.copy15Lh,
+    fontWeight: 500,
+    color: colors.heading,
   },
   grid: {
+    listStyle: 'none',
+    margin: '0.75rem 0 0',
+    padding: 0,
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(13rem, 1fr))',
-    gap: '0 2rem',
-    marginTop: '0.5rem',
-  },
-  item: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    gap: '0.75rem',
-    alignItems: 'baseline',
-    paddingBlock: '0.55rem',
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: colors.separatorSoft,
+    gap: '0.35rem 2rem',
     fontSize: typeScale.copy15,
     lineHeight: typeScale.copy15Lh,
   },
   what: {
-    color: colors.heading,
+    color: colors.body,
   },
   retired: {
     textDecoration: 'line-through',
     color: colors.secondary,
   },
   note: {
-    flex: 'none',
+    marginLeft: '0.6rem',
     fontStyle: 'italic',
     fontSize: typeScale.copy13,
-    lineHeight: typeScale.copy13Lh,
-    color: colors.accent,
-    whiteSpace: 'nowrap',
-  },
-  dot: {
-    flex: 1,
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'dotted',
-    borderBottomColor: colors.separator,
+    color: colors.secondary,
   },
 })
 
 export function Inventory({ items }: { items: InventoryItem[] }) {
   return (
-    <section {...stylex.props(styles.section)}>
-      <span {...stylex.props(shared.regLabel)}>Device inventory</span>
-      <div {...stylex.props(styles.grid)}>
+    <section {...stylex.props(styles.section)} aria-labelledby="devices">
+      <h3 id="devices" {...stylex.props(styles.title)}>
+        Devices
+      </h3>
+      {/* role="list": Safari drops list semantics when list-style is none. */}
+      <ul {...stylex.props(styles.grid)} role="list">
         {items.map((item) => (
-          <div {...stylex.props(styles.item)} key={item.what}>
+          <li key={item.what}>
             <span
               {...stylex.props(styles.what, item.retired && styles.retired)}
             >
@@ -68,10 +61,9 @@ export function Inventory({ items }: { items: InventoryItem[] }) {
             {item.note ? (
               <span {...stylex.props(styles.note)}>{item.note}</span>
             ) : null}
-            <span {...stylex.props(styles.dot)} />
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   )
 }

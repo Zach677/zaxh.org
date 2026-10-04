@@ -13,9 +13,6 @@
     --font-serif: 'Source Serif 4', var(--font-cjk-serif);
     --font-mono: 'JetBrains Mono', 'Cascadia Code PL', 'Fira Code', Consolas,
       Monaco, var(--font-cjk-sans), ui-monospace, monospace;
-    --font-logo-cjk: 'Noto Serif JP', 'Source Han Serif', 'Noto Serif CJK SC',
-      serif;
-    --font-logo-latin: 'EB Garamond', Georgia, serif;
     /* display alias kept for residual CSS / masthead */
     --font-display: var(--font-serif);
 

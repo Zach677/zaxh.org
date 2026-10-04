@@ -3,8 +3,7 @@
     font-family: var(--font-mono);
     font-size: var(--text-label-12);
     line-height: var(--text-label-12--line-height);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    letter-spacing: 0.02em;
     color: var(--color-neutral-7);
   }
 

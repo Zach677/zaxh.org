@@ -28,11 +28,11 @@ Two-phase build process:
 
 ### Content
 
-Pages are React components under `src/pages/`. Project copy lives in `data/projects.ts`. Home presence is `data/now-status.ts`.
+The site is one page (`src/pages/index.tsx`) with work and about sections, plus `/mitori/privacy`. Project copy lives in `data/projects.ts`. The status line is `data/now-status.ts`.
 
 ### Routing
 
-Routes in `src/routes.tsx` are static. Home (`/`) is a full-page sheet with its own corner nav, not the inner nav. Quiet `/mitori/privacy` is kept for App Store.
+Routes in `src/routes.tsx` are static. Every page shares one layout: nav, a centered column, and the footer. The nav links are home-page anchors (`/#work`, `/#about`). Quiet `/mitori/privacy` is kept for App Store.
 
 ### Key Files
 

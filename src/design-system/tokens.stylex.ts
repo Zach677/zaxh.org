@@ -35,8 +35,6 @@ export const fonts = stylex.defineVars({
   sans: 'var(--font-sans)',
   serif: 'var(--font-serif)',
   mono: 'var(--font-mono)',
-  logoCjk: 'var(--font-logo-cjk)',
-  logoLatin: 'var(--font-logo-latin)',
 })
 
 /** Type roles — size + line-height bundled (Yohaku role+px). */

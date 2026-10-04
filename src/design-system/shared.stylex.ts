@@ -3,12 +3,12 @@ import { colors, fonts, typeScale } from './tokens.stylex'
 
 /** Shared decorative / typography pieces used across pages. */
 export const shared = stylex.create({
+  /** The one mono style: metadata only (dates, status, labels). */
   regLabel: {
     fontFamily: fonts.mono,
     fontSize: typeScale.label12,
     lineHeight: typeScale.label12Lh,
-    letterSpacing: '0.14em',
-    textTransform: 'uppercase',
+    letterSpacing: '0.02em',
     color: colors.secondary,
   },
   /** Underline wipe only — callers own color via stylex.props order. */
