@@ -169,7 +169,8 @@ export default function ProjectsPage() {
         Things I build and maintain.
       </p>
 
-      <ul {...stylex.props(styles.list)}>
+      {/* role="list": Safari drops list semantics when list-style is none. */}
+      <ul {...stylex.props(styles.list)} role="list">
         {projects.map((project) => (
           <ProjectCard key={project.slug} project={project} />
         ))}

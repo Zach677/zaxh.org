@@ -9,15 +9,13 @@ export interface Project {
   slug: string
   name: string
   oneLiner: string
-  /** Short note shown under the home map. Falls back to `oneLiner`. */
+  /** Short note for the home contents list. Falls back to `oneLiner`. */
   callout?: string
   status: ProjectStatus
   tags: string[]
   links: ProjectLink[]
-  /** Position on the home map (0–100, zach sits at 50,50). Set it to feature the project. */
-  star?: { x: number; y: number }
-  /** Slugs this project builds on or ships with. Drawn as map edges. */
-  related?: string[]
+  /** Listed on the home page, in index order. */
+  featured?: boolean
 }
 
 /** Draft project index — copy is editable. */
@@ -34,8 +32,7 @@ export const projects: Project[] = [
       { label: 'GitHub', url: 'https://github.com/Zach677/mitori' },
       { label: 'Privacy', url: '/mitori/privacy' },
     ],
-    star: { x: 24, y: 20 },
-    related: ['apple-package', 'homebrew-star'],
+    featured: true,
   },
   {
     slug: 'apple-package',
@@ -45,7 +42,7 @@ export const projects: Project[] = [
     status: 'active',
     tags: ['Swift', 'CLI', 'iOS'],
     links: [{ label: 'GitHub', url: 'https://github.com/Zach677/ApplePackage' }],
-    star: { x: 76, y: 22 },
+    featured: true,
   },
   {
     slug: 'modern-uikit',
@@ -55,7 +52,7 @@ export const projects: Project[] = [
     status: 'active',
     tags: ['Swift', 'UIKit', 'iOS'],
     links: [{ label: 'GitHub', url: 'https://github.com/Zach677/Modern.UIKit' }],
-    star: { x: 86, y: 54 },
+    featured: true,
   },
   {
     slug: 'snell-panel',
@@ -66,7 +63,7 @@ export const projects: Project[] = [
     status: 'active',
     tags: ['Cloudflare', 'Hono', 'Workers'],
     links: [{ label: 'GitHub', url: 'https://github.com/Zach677/snell-panel' }],
-    star: { x: 50, y: 80 },
+    featured: true,
   },
   {
     slug: 'modern-appkit',
@@ -85,7 +82,7 @@ export const projects: Project[] = [
     status: 'active',
     tags: ['Homebrew', 'Ruby', 'macOS'],
     links: [{ label: 'GitHub', url: 'https://github.com/Zach677/homebrew-star' }],
-    star: { x: 14, y: 56 },
+    featured: true,
   },
   {
     slug: 'eevee-spotify',
@@ -140,5 +137,5 @@ export const projects: Project[] = [
 ]
 
 export function featuredProjects(): Project[] {
-  return projects.filter((p) => p.star)
+  return projects.filter((p) => p.featured)
 }

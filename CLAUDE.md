@@ -32,7 +32,7 @@ Pages are React components under `src/pages/`. Project copy lives in `data/proje
 
 ### Routing
 
-Routes in `src/routes.tsx` are static. Home (`/`) is a centered calling card without the inner nav. Quiet `/mitori/privacy` is kept for App Store.
+Routes in `src/routes.tsx` are static. Home (`/`) is a full-page sheet with its own corner nav, not the inner nav. Quiet `/mitori/privacy` is kept for App Store.
 
 ### Key Files
 
@@ -42,5 +42,4 @@ Routes in `src/routes.tsx` are static. Home (`/`) is a centered calling card wit
 | `src/main.ssg.tsx` | SSG entry with `render()` export |
 | `src/routes.tsx` | Route definitions |
 | `data/projects.ts` | Project index |
-| `src/components/constellation/` | Home star map (positions and edges come from `data/projects.ts`) |
 | `src/theme/ThemeManager.ts` | Dark/light theme with View Transitions API |
