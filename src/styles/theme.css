@@ -36,6 +36,11 @@
       color-mix(in oklab, #c56473 18%, transparent),
       color-mix(in oklab, #d47886 20%, transparent)
     );
+    /* The home page book: page paper, cover cloth, and gold foil. */
+    --color-page: light-dark(#fbfaf6, #1e1d1b);
+    --color-cloth: light-dark(#2b4563, #24395a);
+    --color-foil: #d9bd86;
+    --color-gutter: light-dark(rgba(20, 19, 18, 0.1), rgba(0, 0, 0, 0.55));
     --color-info: #3d6896; /* 縹 hanada */
     --color-success: #5e9f7e; /* 若竹 wakatake */
     --color-warning: #a87a3d; /* 朽葉 kuchiba */

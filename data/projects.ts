@@ -10,7 +10,8 @@ export interface Project {
   name: string
   oneLiner: string
   status: ProjectStatus
-  tags: string[]
+  /** Short kind label, shown at the end of a contents line. */
+  kind: string
   links: ProjectLink[]
 }
 
@@ -22,7 +23,7 @@ export const projects: Project[] = [
     oneLiner:
       'Native macOS menu bar app for checking Apple ID store credit across accounts.',
     status: 'active',
-    tags: ['Swift', 'macOS', 'AppKit'],
+    kind: 'macOS',
     links: [
       { label: 'GitHub', url: 'https://github.com/Zach677/mitori' },
       { label: 'Privacy', url: '/mitori/privacy' },
@@ -33,7 +34,7 @@ export const projects: Project[] = [
     name: 'ApplePackage',
     oneLiner: 'ipatool rewrite as a Swift library and CLI for Apple packages.',
     status: 'active',
-    tags: ['Swift', 'CLI', 'iOS'],
+    kind: 'Swift CLI',
     links: [{ label: 'GitHub', url: 'https://github.com/Zach677/ApplePackage' }],
   },
   {
@@ -41,7 +42,7 @@ export const projects: Project[] = [
     name: 'Modern.UIKit',
     oneLiner: 'Agent-native UIKit starter for shipping iOS apps faster.',
     status: 'active',
-    tags: ['Swift', 'UIKit', 'iOS'],
+    kind: 'iOS',
     links: [{ label: 'GitHub', url: 'https://github.com/Zach677/Modern.UIKit' }],
   },
   {
@@ -50,7 +51,7 @@ export const projects: Project[] = [
     oneLiner:
       'Snell proxy node manager & subscription generator on Cloudflare Workers.',
     status: 'active',
-    tags: ['Cloudflare', 'Hono', 'Workers'],
+    kind: 'Workers',
     links: [{ label: 'GitHub', url: 'https://github.com/Zach677/snell-panel' }],
   },
   {
@@ -58,7 +59,7 @@ export const projects: Project[] = [
     name: 'Modern.AppKit',
     oneLiner: 'Companion AppKit starter alongside Modern.UIKit.',
     status: 'active',
-    tags: ['Swift', 'AppKit', 'macOS'],
+    kind: 'macOS',
     links: [{ label: 'GitHub', url: 'https://github.com/Zach677/Modern.AppKit' }],
   },
   {
@@ -66,7 +67,7 @@ export const projects: Project[] = [
     name: 'homebrew-star',
     oneLiner: 'Casks and formulae not in the official Homebrew records.',
     status: 'active',
-    tags: ['Homebrew', 'Ruby', 'macOS'],
+    kind: 'Homebrew',
     links: [{ label: 'GitHub', url: 'https://github.com/Zach677/homebrew-star' }],
   },
   {
@@ -74,7 +75,7 @@ export const projects: Project[] = [
     name: 'EeveeSpotifyReincarnated',
     oneLiner: 'Enhancing the Spotify experience on iOS via sideload sources.',
     status: 'paused',
-    tags: ['iOS', 'Spotify'],
+    kind: 'iOS',
     links: [
       {
         label: 'GitHub',
@@ -87,7 +88,7 @@ export const projects: Project[] = [
     name: 'Zach-Skills',
     oneLiner: 'Personal AI agent skills collection.',
     status: 'paused',
-    tags: ['Python', 'Agents'],
+    kind: 'Agents',
     links: [{ label: 'GitHub', url: 'https://github.com/Zach677/Zach-Skills' }],
   },
   {
@@ -95,7 +96,7 @@ export const projects: Project[] = [
     name: 'CET-System',
     oneLiner: 'CET exam tooling and workflow helpers.',
     status: 'paused',
-    tags: ['TypeScript'],
+    kind: 'TypeScript',
     links: [{ label: 'GitHub', url: 'https://github.com/Zach677/CET-System' }],
   },
   {
@@ -103,7 +104,7 @@ export const projects: Project[] = [
     name: 'dotfiles',
     oneLiner: 'Machine setup, shell config, and everyday CLI defaults.',
     status: 'paused',
-    tags: ['Shell', 'dotfiles'],
+    kind: 'Shell',
     links: [{ label: 'GitHub', url: 'https://github.com/Zach677/dotfiles' }],
   },
   {
@@ -111,7 +112,7 @@ export const projects: Project[] = [
     name: 'zaxh.org',
     oneLiner: 'This site — personal hub, quiet paper.',
     status: 'active',
-    tags: ['React', 'Vite', 'StyleX'],
+    kind: 'Web',
     links: [{ label: 'GitHub', url: 'https://github.com/Zach677/zaxh.org' }],
   },
 ]

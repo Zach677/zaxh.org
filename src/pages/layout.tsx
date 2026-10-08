@@ -1,4 +1,4 @@
-import { Outlet, ScrollRestoration } from 'react-router'
+import { Outlet } from 'react-router'
 import * as stylex from '@stylexjs/stylex'
 import { Footer } from '@/components/Footer'
 import { NavBar } from '@/components/NavBar'
@@ -23,7 +23,6 @@ export default function RootLayout() {
       <ReadableArea>
         <Footer />
       </ReadableArea>
-      <ScrollRestoration />
     </>
   )
 }

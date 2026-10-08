@@ -22,6 +22,12 @@
     background-size: 100% 1px;
   }
 
+  /* The prerendered book is open, so it reads without JavaScript. When this
+     visit plays the opening, hide it until React renders it closed. */
+  :root[data-book='closed'] #book {
+    visibility: hidden;
+  }
+
   /* 404 */
   .lost-wrap {
     min-height: 62vh;

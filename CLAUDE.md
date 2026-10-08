@@ -28,11 +28,11 @@ Two-phase build process:
 
 ### Content
 
-The site is one page (`src/pages/index.tsx`) with work and about sections, plus `/mitori/privacy`. Project copy lives in `data/projects.ts`.
+The home page is a small book: `src/components/book/Book.tsx` owns the cover, the turning leaves, and the narrow-screen fallback; `src/pages/index.tsx` lists the pages in reading order (frontispiece, contents, about, appendix). Contents continues onto more pages as projects grow (`ENTRIES_PER_PAGE`), and a blank page keeps the spreads paired. Page sizes are em of a base that scales with the book, so a page holds the same content at every viewport. Project copy lives in `data/projects.ts`. The site also has `/mitori/privacy`.
 
 ### Routing
 
-Routes in `src/routes.tsx` are static. Every page shares one layout: nav, a centered column, and the footer. The nav links are home-page anchors (`/#work`, `/#about`). Quiet `/mitori/privacy` is kept for App Store.
+Routes in `src/routes.tsx` are static. The book has its own chrome; other pages share `RootLayout` (nav, a centered column, the footer). The nav links `/#work` and `/#about` open the book at contents or about. Quiet `/mitori/privacy` is kept for App Store.
 
 ### Key Files
 

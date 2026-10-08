@@ -1,241 +1,426 @@
+import type { ReactNode } from 'react'
 import * as stylex from '@stylexjs/stylex'
 import { Link } from 'react-router'
 
-import { Inventory } from '@/components/Inventory'
+import { Book, Page, TurnButton } from '@/components/book/Book'
 import { SocialLinks } from '@/components/SocialLinks'
-import { colors, fonts, typeScale } from '../design-system/tokens.stylex'
+import { ThemeSwitcher } from '@/components/ThemeSwitcher'
+import { colors, fonts } from '../design-system/tokens.stylex'
 import { shared } from '../design-system/shared.stylex'
-import { projects, type Project, type ProjectLink } from '../../data/projects'
+import { projects, type Project } from '../../data/projects'
 
-const MOBILE = '@media (max-width: 639px)'
+const DEVICES: { what: string; retired?: boolean; note?: string }[] = [
+  { what: 'iPhone 16 Pro Max' },
+  { what: 'iPhone 12', retired: true },
+  { what: 'MacBook Pro 2023' },
+  { what: 'Apple Watch Series 4' },
+  { what: 'Fitbit Air' },
+  { what: 'iPad Pro 11" (2022)' },
+  { what: 'AirPods Pro 2', retired: true, note: 'lost… fuck!' },
+  { what: 'EarPods' },
+  { what: 'Nuphy Node 75' },
+  { what: 'FL980' },
+  { what: 'Kzzi K75', retired: true },
+  { what: 'Redmi A27U Type-C 2026' },
+]
 
+// How many contents entries fit on one page, with one-liners of two lines at
+// most (about 80 characters). More projects continue on the next page, and
+// the rest of the book moves along.
+const ENTRIES_PER_PAGE = 7
+
+const ACTIVE = projects.filter((p) => p.status === 'active')
+const SHELVED = projects.filter((p) => p.status === 'paused')
+
+// Book sizes are em of the page's 14px base, which scales with the book
+// (see PAGE_TYPE in Book.tsx). Nested sizes note their parent.
 const styles = stylex.create({
-  intro: {
-    paddingTop: 'clamp(3rem, 12vh, 8rem)',
+  // Cover
+  title: {
+    fontFamily: fonts.serif,
+    fontStyle: 'italic',
+    fontWeight: 500,
+    fontSize: '4.5em',
+    lineHeight: 1,
+    letterSpacing: '-0.02em',
+  },
+  ornament: {
+    width: '2.5em',
+    height: '1px',
+    margin: '1.4em auto 0',
+    backgroundColor: colors.foil,
+    opacity: 0.7,
+  },
+  subtitle: {
+    marginTop: '1.27em',
+    fontFamily: fonts.mono,
+    fontSize: '0.7857em',
+    letterSpacing: '0.18em',
+    textTransform: 'uppercase',
+    opacity: 0.8,
+  },
+  // Frontispiece: set at the optical center, as on a title page.
+  titlePage: {
+    marginBlock: 'auto',
+    paddingBottom: '8%',
   },
   name: {
     margin: 0,
     fontFamily: fonts.serif,
     fontStyle: 'italic',
     fontWeight: 500,
-    fontSize: 'clamp(3.25rem, 2rem + 4.5vw, 5rem)',
-    lineHeight: 1,
-    letterSpacing: '-0.02em',
+    fontSize: '5em',
+    lineHeight: 0.95,
+    letterSpacing: '-0.03em',
     color: colors.heading,
   },
-  statement: {
-    margin: '1.5rem 0 0',
-    maxWidth: '30rem',
-    fontSize: 'clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem)',
-    lineHeight: 1.6,
-    color: colors.body,
+  rule: {
+    width: '2em',
+    height: '1px',
+    marginBlock: '1.5em 1.25em',
+    backgroundColor: colors.accent,
+  },
+  lede: {
+    margin: 0,
+    maxWidth: '19em',
+    fontSize: '1.1429em',
+    lineHeight: 1.65,
+    color: colors.bodyAlt,
   },
   social: {
-    marginTop: '1.5rem',
+    marginTop: '1.5em',
   },
-  section: {
-    marginTop: 'clamp(4rem, 10vh, 6rem)',
-  },
+  // Shared page parts
   heading: {
-    margin: '0 0 1.25rem',
-  },
-  // Rows share the list's columns through subgrid, so the name column
-  // fits the longest name instead of a fixed width.
-  list: {
-    display: {
-      default: 'grid',
-      [MOBILE]: 'block',
-    },
-    gridTemplateColumns: 'max-content 1fr',
-    columnGap: '1.5rem',
-    listStyle: 'none',
     margin: 0,
-    padding: 0,
-    borderTopWidth: '1px',
-    borderTopStyle: 'solid',
-    borderTopColor: colors.border,
-  },
-  row: {
-    display: 'grid',
-    gridColumn: '1 / -1',
-    gridTemplateColumns: {
-      default: 'subgrid',
-      [MOBILE]: '1fr',
-    },
-    alignItems: 'baseline',
-    gap: '0.25rem 1.5rem',
-    paddingBlock: '0.85rem',
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: colors.separatorSoft,
-  },
-  title: {
-    fontSize: typeScale.copy15,
-    lineHeight: typeScale.copy15Lh,
+    fontFamily: fonts.serif,
+    fontStyle: 'italic',
     fontWeight: 500,
+    fontSize: '2em',
+    lineHeight: 1.2,
     color: colors.heading,
+  },
+  // In the 28px heading.
+  continued: {
+    marginLeft: '0.3em',
+    fontFamily: fonts.mono,
+    fontStyle: 'normal',
+    fontSize: '0.3929em',
+    color: colors.icon,
+  },
+  // Contents
+  toc: {
+    listStyle: 'none',
+    margin: '1.25em 0 0',
+    padding: 0,
+  },
+  entry: {
+    paddingBlock: '0.2em',
+  },
+  line: {
+    display: 'flex',
+    alignItems: 'baseline',
+    gap: '0.6em',
+  },
+  // 1.6em of the page base, in its own 11px.
+  number: {
+    flex: 'none',
+    width: '2.036em',
+    fontFamily: fonts.mono,
+    fontSize: '0.7857em',
+    color: colors.accent,
+  },
+  entryTitle: {
+    fontFamily: fonts.serif,
+    fontSize: '1.357em',
+    lineHeight: 1.3,
+    color: {
+      default: colors.heading,
+      ':hover': colors.accent,
+    },
+    transition: 'color 0.2s var(--ease)',
     borderRadius: '2px',
     outline: {
       default: 'none',
       ':focus-visible': `2px solid ${colors.accent}`,
     },
-    outlineOffset: '3px',
+    outlineOffset: '2px',
   },
-  arrow: {
-    display: 'inline-block',
-    marginLeft: '0.25em',
-    fontSize: '0.8em',
-    color: {
-      default: colors.icon,
-      [stylex.when.ancestor(':hover')]: colors.accent,
-    },
-    transition: 'transform 0.2s var(--ease), color 0.2s var(--ease)',
-    transform: {
-      default: null,
-      [stylex.when.ancestor(':hover')]: 'translate(2px, -2px)',
-    },
+  leader: {
+    flex: 1,
+    minWidth: '1em',
+    transform: 'translateY(-0.286em)',
+    borderBottomWidth: '1px',
+    borderBottomStyle: 'dotted',
+    borderBottomColor: colors.strongFill,
   },
-  pausedLabel: {
-    display: 'block',
+  kind: {
+    fontFamily: fonts.mono,
+    fontSize: '0.7857em',
+    color: colors.icon,
   },
+  // Indented past the number column, in its own 12.5px.
   description: {
-    margin: 0,
-    fontSize: typeScale.copy14,
-    lineHeight: typeScale.copy14Lh,
+    margin: '0.1em 0 0 2.464em',
+    fontSize: '0.8929em',
+    lineHeight: 1.45,
     color: colors.secondary,
   },
-  extraLink: {
+  inlineLink: {
     color: colors.body,
   },
+  shelf: {
+    margin: '1.12em 0 0',
+    fontSize: '0.8929em',
+    lineHeight: 1.6,
+    color: colors.secondary,
+  },
+  // In the 12.5px shelf line.
+  shelfLabel: {
+    marginRight: '0.636em',
+    fontFamily: fonts.mono,
+    fontSize: '0.88em',
+    color: colors.icon,
+  },
+  // About
   prose: {
-    maxWidth: '34rem',
-    fontSize: typeScale.copy15,
-    lineHeight: 1.8,
-    color: colors.body,
+    marginTop: '1.25em',
+    fontSize: '1.0714em',
+    lineHeight: 1.75,
+    color: colors.bodyAlt,
   },
-  p: {
-    margin: '0 0 1.25rem',
+  // In the 15px prose.
+  paragraph: {
+    margin: '0 0 0.933em',
   },
   motto: {
-    margin: '2rem 0',
+    margin: 0,
+    marginTop: 'auto',
+    paddingTop: '1.273em',
     fontFamily: fonts.serif,
     fontStyle: 'italic',
-    fontSize: typeScale.title20,
-    lineHeight: typeScale.title20Lh,
+    fontSize: '1.571em',
     color: colors.heading,
+  },
+  // Appendix
+  devices: {
+    listStyle: 'none',
+    margin: '1.25em 0 0',
+    padding: 0,
+    columnCount: 2,
+    columnGap: '1.5em',
+    fontSize: '1em',
+    lineHeight: 1.95,
+    color: colors.body,
+  },
+  retired: {
+    textDecoration: 'line-through',
+    color: colors.icon,
+  },
+  note: {
+    marginLeft: '0.4em',
+    fontStyle: 'italic',
+    fontSize: '0.857em',
+    color: colors.secondary,
+  },
+  colophon: {
+    margin: 0,
+    marginTop: 'auto',
+    paddingTop: '1.5em',
+    fontFamily: fonts.serif,
+    fontStyle: 'italic',
+    fontSize: '1em',
+    lineHeight: 1.6,
+    color: colors.secondary,
+  },
+  blank: {
+    margin: 'auto',
+    fontFamily: fonts.serif,
+    fontStyle: 'italic',
+    fontSize: '1em',
+    color: colors.icon,
   },
 })
 
-// Active work first; sort is stable, so data order holds inside each group.
-const WORK = [...projects].sort(
-  (a, b) => Number(a.status === 'paused') - Number(b.status === 'paused'),
+function ProjectLinks({ project }: { project: Project }) {
+  // The first link is the project's home; the title carries it.
+  return project.links.slice(1).map((link) => (
+    <span key={link.label}>
+      {' · '}
+      {link.url.startsWith('/') ? (
+        <Link to={link.url} {...stylex.props(shared.inkLink, styles.inlineLink)}>
+          {link.label}
+        </Link>
+      ) : (
+        <a href={link.url} {...stylex.props(shared.inkLink, styles.inlineLink)}>
+          {link.label}
+        </a>
+      )}
+    </span>
+  ))
+}
+
+const cover = (
+  <div>
+    <div {...stylex.props(styles.title)}>zaxh</div>
+    <div {...stylex.props(styles.ornament)} />
+    <div {...stylex.props(styles.subtitle)}>Zach · tools &amp; notes</div>
+  </div>
 )
 
-function ExtraLink({ link }: { link: ProjectLink }) {
-  const props = stylex.props(shared.inkLink, styles.extraLink)
-  return link.url.startsWith('/') ? (
-    <Link to={link.url} {...props}>
-      {link.label}
-    </Link>
-  ) : (
-    <a href={link.url} target="_blank" rel="noopener noreferrer" {...props}>
-      {link.label}
-    </a>
-  )
-}
+const frontispiece = (
+  <div {...stylex.props(styles.titlePage)}>
+    <h1 {...stylex.props(styles.name)}>Zach</h1>
+    <div {...stylex.props(styles.rule)} aria-hidden="true" />
+    <p {...stylex.props(styles.lede)}>
+      Writes code so the cat and dog can have a better life.
+    </p>
+    <SocialLinks style={styles.social} />
+  </div>
+)
 
-function WorkRow({ project }: { project: Project }) {
-  // The first link is the project's home; the name carries it.
-  const [home, ...extra] = project.links
-
+function contents(entries: Project[], start: number, first: boolean, last: boolean) {
   return (
-    <li {...stylex.props(styles.row)}>
-      <div>
-        {home ? (
-          <a
-            href={home.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            {...stylex.props(shared.inkLink, styles.title, stylex.defaultMarker())}
-          >
-            {project.name}
-            <span {...stylex.props(styles.arrow)} aria-hidden="true">
-              ↗
-            </span>
-          </a>
-        ) : (
-          <span {...stylex.props(styles.title)}>{project.name}</span>
-        )}
-        {project.status === 'paused' ? (
-          <span {...stylex.props(shared.regLabel, styles.pausedLabel)}>paused</span>
-        ) : null}
-      </div>
-      <p {...stylex.props(styles.description)}>
-        {project.oneLiner}
-        {extra.map((link) => (
-          <span key={link.label}>
-            {' · '}
-            <ExtraLink link={link} />
-          </span>
+    <>
+      <h2 id={first ? 'work' : undefined} {...stylex.props(styles.heading)}>
+        Contents
+        {first ? null : <span {...stylex.props(styles.continued)}>continued</span>}
+      </h2>
+      {/* role="list": Safari drops list semantics when list-style is none. */}
+      <ol {...stylex.props(styles.toc)} role="list" start={start + 1}>
+        {entries.map((project, index) => (
+          <li key={project.slug} {...stylex.props(styles.entry)}>
+            <div {...stylex.props(styles.line)}>
+              <span {...stylex.props(styles.number)} aria-hidden="true">
+                {String(start + index + 1).padStart(2, '0')}
+              </span>
+              <a href={project.links[0]?.url} {...stylex.props(styles.entryTitle)}>
+                {project.name}
+              </a>
+              <span {...stylex.props(styles.leader)} aria-hidden="true" />
+              <span {...stylex.props(styles.kind)}>{project.kind}</span>
+            </div>
+            <p {...stylex.props(styles.description)}>
+              {project.oneLiner}
+              <ProjectLinks project={project} />
+            </p>
+          </li>
         ))}
-      </p>
-    </li>
+      </ol>
+      {last && SHELVED.length > 0 ? (
+        <p {...stylex.props(styles.shelf)}>
+          <span {...stylex.props(styles.shelfLabel)}>shelved</span>
+          {SHELVED.map((project, index) => (
+            <span key={project.slug}>
+              {index > 0 ? ', ' : null}
+              <a href={project.links[0]?.url} {...stylex.props(shared.inkLink)}>
+                {project.name}
+              </a>
+            </span>
+          ))}
+        </p>
+      ) : null}
+    </>
   )
 }
+
+const about = (
+  <>
+    <h2 id="about" {...stylex.props(styles.heading)}>
+      About
+    </h2>
+    <div {...stylex.props(styles.prose)}>
+      <p {...stylex.props(styles.paragraph)}>
+        I&apos;m passionate about building elegant and efficient software. I
+        believe in clean code, simple design, and the power of open-source.
+      </p>
+    </div>
+    <p {...stylex.props(styles.motto)}>Slow is fast.</p>
+  </>
+)
+
+const appendix = (
+  <>
+    <h2 {...stylex.props(styles.heading)}>Devices</h2>
+    <ul {...stylex.props(styles.devices)} role="list">
+      {DEVICES.map((device) => (
+        <li key={device.what}>
+          <span {...stylex.props(device.retired && styles.retired)}>{device.what}</span>
+          {device.note ? <span {...stylex.props(styles.note)}>{device.note}</span> : null}
+        </li>
+      ))}
+    </ul>
+    <p {...stylex.props(styles.colophon)}>
+      Set in Source Serif and Inter. Built with React, Vite, and StyleX. ©{' '}
+      {new Date().getFullYear()} Zach.
+    </p>
+  </>
+)
+
+type Sheet = { title: string; body: ReactNode; blank?: boolean }
+
+// The book in reading order. Contents grows with the project list.
+const SHEETS: Sheet[] = (() => {
+  const chunks: Project[][] = []
+  for (let i = 0; i < ACTIVE.length; i += ENTRIES_PER_PAGE) {
+    chunks.push(ACTIVE.slice(i, i + ENTRIES_PER_PAGE))
+  }
+  const sheets: Sheet[] = [
+    { title: 'Frontispiece', body: frontispiece },
+    ...chunks.map((entries, i) => ({
+      title: 'Contents',
+      body: contents(entries, i * ENTRIES_PER_PAGE, i === 0, i === chunks.length - 1),
+    })),
+  ]
+  // Spreads need pairs of pages; a blank page keeps the count even.
+  if (sheets.length % 2 === 1) {
+    sheets.push({
+      title: 'Blank',
+      blank: true,
+      body: <p {...stylex.props(styles.blank)}>This page is intentionally left blank.</p>,
+    })
+  }
+  sheets.push({ title: 'About', body: about }, { title: 'Appendix', body: appendix })
+  return sheets
+})()
+
+// Hash targets for the nav links: #work opens on contents, #about on about.
+const SECTIONS = {
+  work: 0,
+  about: Math.floor(SHEETS.findIndex((s) => s.title === 'About') / 2),
+}
+
+// A back-turn is named after the last real page it returns to.
+function titleBefore(index: number) {
+  return SHEETS.slice(0, index + 1).reverse().find((sheet) => !sheet.blank)?.title
+}
+
+const PAGES = SHEETS.map((sheet, index) => {
+  const side = index % 2 === 0 ? 'left' : 'right'
+  const last = index === SHEETS.length - 1
+  let action: ReactNode = null
+  if (side === 'right' && !last) {
+    action = <TurnButton by={1}>{SHEETS[index + 1]?.title} →</TurnButton>
+  } else if (side === 'left' && index > 0) {
+    action = <TurnButton by={-1}>← {titleBefore(index - 1)}</TurnButton>
+  }
+  return (
+    <Page
+      key={index}
+      side={side}
+      // Blank pages carry no running head, as in print.
+      head={
+        sheet.blank ? ['', ''] : side === 'left' ? ['zaxh.org', sheet.title] : [sheet.title, 'zaxh']
+      }
+      folio={index === 0 ? 'i' : String(index)}
+      action={action}
+      blank={sheet.blank}
+    >
+      {sheet.body}
+    </Page>
+  )
+})
 
 export default function RootPage() {
-  return (
-    <main>
-      <section {...stylex.props(styles.intro)}>
-        <h1 {...stylex.props(styles.name)}>Zach</h1>
-        <p {...stylex.props(styles.statement)}>
-          Builds small tools for iOS and macOS, and writes code so the cat and
-          dog can have a better life.
-        </p>
-        <SocialLinks style={styles.social} />
-      </section>
-
-      <section id="work" {...stylex.props(styles.section)}>
-        <h2 {...stylex.props(shared.pageTitle, styles.heading)}>Work</h2>
-        {/* role="list": Safari drops list semantics when list-style is none. */}
-        <ul {...stylex.props(styles.list)} role="list">
-          {WORK.map((project) => (
-            <WorkRow key={project.slug} project={project} />
-          ))}
-        </ul>
-      </section>
-
-      <section id="about" {...stylex.props(styles.section)}>
-        <h2 {...stylex.props(shared.pageTitle, styles.heading)}>About</h2>
-        <div {...stylex.props(styles.prose)}>
-          <p {...stylex.props(styles.p)}>
-            Most of what I ship is small Apple-platform tooling: a menu bar app
-            for Apple ID credit, a Swift rewrite of ipatool, and starter kits
-            for UIKit and AppKit. When something needs a server, it usually
-            ends up on Cloudflare Workers.
-          </p>
-          <p {...stylex.props(styles.motto)}>Slow is fast.</p>
-          <p {...stylex.props(styles.p)}>
-            I&apos;m still learning, so I take the time to understand a problem
-            before I write the fix.
-          </p>
-        </div>
-        <Inventory
-          items={[
-            { what: 'iPhone 16 Pro Max' },
-            { what: 'iPhone 12', retired: true },
-            { what: 'MacBook Pro 2023' },
-            { what: 'Apple Watch Series 4' },
-            { what: 'iPad Pro 11" (2022)' },
-            { what: 'AirPods Pro 2', retired: true, note: 'lost… fuck!' },
-            { what: 'EarPods' },
-            { what: 'Nuphy Node 75' },
-            { what: 'FL980' },
-            { what: 'Kzzi K75' },
-            { what: 'Redmi A27U Type-C 2026' },
-          ]}
-        />
-      </section>
-    </main>
-  )
+  return <Book cover={cover} pages={PAGES} sections={SECTIONS} corner={<ThemeSwitcher />} />
 }
