@@ -1,4 +1,5 @@
-@import 'tailwindcss';
+/* Layer order: tokens, reset and base, then shared classes. StyleX layers come after. */
+@layer theme, base, components;
 
 @import './styles/theme.css';
 @import './styles/base.css';

@@ -154,22 +154,22 @@ export function ThemeSwitcher() {
   ) {
     let nextIndex: number | null = null
     switch (e.key) {
-      case 'ArrowRight':
-      case 'ArrowDown':
-        nextIndex = (index + 1) % THEME_OPTIONS.length
-        break
-      case 'ArrowLeft':
-      case 'ArrowUp':
-        nextIndex = (index - 1 + THEME_OPTIONS.length) % THEME_OPTIONS.length
-        break
-      case 'Home':
-        nextIndex = 0
-        break
-      case 'End':
-        nextIndex = THEME_OPTIONS.length - 1
-        break
-      default:
-        return
+    case 'ArrowRight':
+    case 'ArrowDown':
+      nextIndex = (index + 1) % THEME_OPTIONS.length
+      break
+    case 'ArrowLeft':
+    case 'ArrowUp':
+      nextIndex = (index - 1 + THEME_OPTIONS.length) % THEME_OPTIONS.length
+      break
+    case 'Home':
+      nextIndex = 0
+      break
+    case 'End':
+      nextIndex = THEME_OPTIONS.length - 1
+      break
+    default:
+      return
     }
     e.preventDefault()
     focusOption(nextIndex)

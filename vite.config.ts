@@ -1,13 +1,6 @@
-import path from 'node:path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import stylex from '@stylexjs/unplugin'
-import tailwindcss from '@tailwindcss/vite'
-import mdx from '@mdx-js/rollup'
-import remarkGfm from 'remark-gfm'
-import rehypePrettyCode, { type Options } from 'rehype-pretty-code'
-
-import { postProvider, pageProvider } from './plugins/content-provider'
 
 export default defineConfig({
   resolve: {
@@ -21,22 +14,5 @@ export default defineConfig({
       useCSSLayers: true,
     }),
     react(),
-    tailwindcss(),
-    mdx({
-      remarkPlugins: [remarkGfm],
-      rehypePlugins: [
-        [
-          rehypePrettyCode,
-          {
-            theme: {
-              light: 'github-light-default',
-              dark: 'github-dark-default',
-            },
-          } satisfies Options,
-        ],
-      ],
-    }),
-    postProvider(path.resolve(import.meta.dirname, 'data/posts')),
-    pageProvider(path.resolve(import.meta.dirname, 'data/pages')),
   ],
 })

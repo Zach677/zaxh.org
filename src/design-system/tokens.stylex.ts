@@ -19,6 +19,10 @@ export const colors = stylex.defineVars({
   heading: 'var(--color-neutral-10)',
   accent: 'var(--color-accent)',
   accentSoft: 'var(--color-accent-soft)',
+  page: 'var(--color-page)',
+  cloth: 'var(--color-cloth)',
+  foil: 'var(--color-foil)',
+  gutter: 'var(--color-gutter)',
   info: 'var(--color-info)',
   success: 'var(--color-success)',
   warning: 'var(--color-warning)',
@@ -35,8 +39,6 @@ export const fonts = stylex.defineVars({
   sans: 'var(--font-sans)',
   serif: 'var(--font-serif)',
   mono: 'var(--font-mono)',
-  logoCjk: 'var(--font-logo-cjk)',
-  logoLatin: 'var(--font-logo-latin)',
 })
 
 /** Type roles — size + line-height bundled (Yohaku role+px). */

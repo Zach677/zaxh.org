@@ -35,10 +35,6 @@ const config = {
   routes: [],
   overrides: {
     ...pathMappings,
-    'rss.xml': {
-      path: 'rss',
-      contentType: 'application/rss+xml; charset=utf-8',
-    },
   },
 }
 

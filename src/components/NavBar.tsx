@@ -7,16 +7,16 @@ import { Logo } from './Logo'
 
 const styles = stylex.create({
   nav: {
-    height: '5.5rem',
+    height: '4.25rem',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   wordmark: {
-    fontFamily: fonts.logoLatin,
+    fontFamily: fonts.serif,
     fontStyle: 'italic',
-    fontSize: typeScale.copy16,
-    lineHeight: typeScale.copy16Lh,
+    fontSize: typeScale.title20,
+    lineHeight: 1,
     fontWeight: 500,
     color: colors.heading,
     textDecoration: 'none',
@@ -27,10 +27,8 @@ const styles = stylex.create({
   },
   link: {
     position: 'relative',
-    fontFamily: fonts.serif,
-    fontStyle: 'italic',
-    fontSize: typeScale.copy15,
-    lineHeight: typeScale.copy15Lh,
+    fontSize: typeScale.copy14,
+    lineHeight: typeScale.copy14Lh,
     color: {
       default: colors.secondary,
       ':hover': colors.heading,
@@ -60,6 +58,14 @@ const styles = stylex.create({
   },
 })
 
+// Sections of the home page. Router links, not plain anchors: a full page
+// load shares the "default" history key, so ScrollRestoration would restore
+// that saved position over the hash.
+const NAV_ITEMS = [
+  { to: '/#work', label: 'work' },
+  { to: '/#about', label: 'about' },
+] as const
+
 export const NavBar = () => {
   return (
     <nav {...stylex.props(styles.nav)}>
@@ -67,15 +73,15 @@ export const NavBar = () => {
         <Logo />
       </Link>
       <div {...stylex.props(styles.links)}>
-        <Link {...stylex.props(shared.inkLink, styles.link)} to="/">
-          index
-        </Link>
-        <Link {...stylex.props(shared.inkLink, styles.link)} to="/page/about">
-          about
-        </Link>
-        <Link {...stylex.props(shared.inkLink, styles.link)} to="/page/friends">
-          friends
-        </Link>
+        {NAV_ITEMS.map((item) => (
+          <Link
+            key={item.to}
+            to={item.to}
+            {...stylex.props(shared.inkLink, styles.link)}
+          >
+            {item.label}
+          </Link>
+        ))}
       </div>
     </nav>
   )
