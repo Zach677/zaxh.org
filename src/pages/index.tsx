@@ -27,7 +27,7 @@ const DEVICES: { what: string; retired?: boolean; note?: string }[] = [
 // How many contents entries fit on one page, with one-liners of two lines at
 // most (about 80 characters). More projects continue on the next page, and
 // the rest of the book moves along.
-const ENTRIES_PER_PAGE = 7
+const ENTRIES_PER_PAGE = 5
 
 const ACTIVE = projects.filter((p) => p.status === 'active')
 const SHELVED = projects.filter((p) => p.status === 'paused')
@@ -35,7 +35,16 @@ const SHELVED = projects.filter((p) => p.status === 'paused')
 // Book sizes are em of the page's 14px base, which scales with the book
 // (see PAGE_TYPE in Book.tsx). Nested sizes note their parent.
 const styles = stylex.create({
-  // Cover
+  // Cover: title above, a foil device in the middle, the author below.
+  coverLayout: {
+    position: 'absolute',
+    inset: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '24% 2em 14% calc(9% + 2em)',
+  },
   title: {
     fontFamily: fonts.serif,
     fontStyle: 'italic',
@@ -44,20 +53,25 @@ const styles = stylex.create({
     lineHeight: 1,
     letterSpacing: '-0.02em',
   },
-  ornament: {
-    width: '2.5em',
-    height: '1px',
-    margin: '1.4em auto 0',
-    backgroundColor: colors.foil,
-    opacity: 0.7,
-  },
   subtitle: {
-    marginTop: '1.27em',
+    marginTop: '1.4em',
     fontFamily: fonts.mono,
     fontSize: '0.7857em',
-    letterSpacing: '0.18em',
+    letterSpacing: '0.22em',
     textTransform: 'uppercase',
     opacity: 0.8,
+  },
+  emblem: {
+    width: '3.4em',
+    height: '3.4em',
+    opacity: 0.9,
+  },
+  author: {
+    fontFamily: fonts.serif,
+    fontWeight: 500,
+    fontSize: '1.15em',
+    letterSpacing: '0.32em',
+    textTransform: 'uppercase',
   },
   // Frontispiece: set at the optical center, as on a title page.
   titlePage: {
@@ -115,7 +129,7 @@ const styles = stylex.create({
     padding: 0,
   },
   entry: {
-    paddingBlock: '0.2em',
+    paddingBlock: '0.7em',
   },
   line: {
     display: 'flex',
@@ -134,6 +148,10 @@ const styles = stylex.create({
     fontFamily: fonts.serif,
     fontSize: '1.357em',
     lineHeight: 1.3,
+    color: colors.heading,
+  },
+  // Only titles with a destination behave as links.
+  entryLink: {
     color: {
       default: colors.heading,
       ':hover': colors.accent,
@@ -161,9 +179,9 @@ const styles = stylex.create({
   },
   // Indented past the number column, in its own 12.5px.
   description: {
-    margin: '0.1em 0 0 2.464em',
+    margin: '0.25em 0 0 2.464em',
     fontSize: '0.8929em',
-    lineHeight: 1.45,
+    lineHeight: 1.55,
     color: colors.secondary,
   },
   inlineLink: {
@@ -192,6 +210,18 @@ const styles = stylex.create({
   // In the 15px prose.
   paragraph: {
     margin: '0 0 0.933em',
+  },
+  // The statement reads as an epigraph: no drop cap, since a lone "I"
+  // makes a poor one.
+  // Keeps a hyphenated word on one line.
+  nowrap: {
+    whiteSpace: 'nowrap',
+  },
+  lead: {
+    fontFamily: fonts.serif,
+    fontSize: '1.333em',
+    lineHeight: 1.55,
+    color: colors.heading,
   },
   motto: {
     margin: 0,
@@ -260,11 +290,36 @@ function ProjectLinks({ project }: { project: Project }) {
   ))
 }
 
+// The first link is the project's home: an App Store page, a site, or the
+// source. A project with no public link shows its name as plain text.
+function ProjectTitle({ project }: { project: Project }) {
+  const home = project.links[0]
+  if (!home) return <span {...stylex.props(styles.entryTitle)}>{project.name}</span>
+  return (
+    <a href={home.url} {...stylex.props(styles.entryTitle, styles.entryLink)}>
+      {project.name}
+    </a>
+  )
+}
+
 const cover = (
-  <div>
-    <div {...stylex.props(styles.title)}>zaxh</div>
-    <div {...stylex.props(styles.ornament)} />
-    <div {...stylex.props(styles.subtitle)}>Zach · tools &amp; notes</div>
+  <div {...stylex.props(styles.coverLayout)}>
+    <div>
+      <div {...stylex.props(styles.title)}>zaxh</div>
+      <div {...stylex.props(styles.subtitle)}>Tools &amp; Notes</div>
+    </div>
+    {/* A paw in a ring: for the cat and the dog. */}
+    <svg viewBox="0 0 40 40" {...stylex.props(styles.emblem)} aria-hidden="true">
+      <circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" strokeWidth="1" />
+      <g fill="currentColor">
+        <ellipse cx="20" cy="24.5" rx="6" ry="5" />
+        <ellipse cx="12.4" cy="17.6" rx="2.4" ry="3" transform="rotate(-22 12.4 17.6)" />
+        <ellipse cx="17" cy="12.8" rx="2.4" ry="3.1" />
+        <ellipse cx="23" cy="12.8" rx="2.4" ry="3.1" />
+        <ellipse cx="27.6" cy="17.6" rx="2.4" ry="3" transform="rotate(22 27.6 17.6)" />
+      </g>
+    </svg>
+    <div {...stylex.props(styles.author)}>Zach</div>
   </div>
 )
 
@@ -294,9 +349,7 @@ function contents(entries: Project[], start: number, first: boolean, last: boole
               <span {...stylex.props(styles.number)} aria-hidden="true">
                 {String(start + index + 1).padStart(2, '0')}
               </span>
-              <a href={project.links[0]?.url} {...stylex.props(styles.entryTitle)}>
-                {project.name}
-              </a>
+              <ProjectTitle project={project} />
               <span {...stylex.props(styles.leader)} aria-hidden="true" />
               <span {...stylex.props(styles.kind)}>{project.kind}</span>
             </div>
@@ -313,9 +366,13 @@ function contents(entries: Project[], start: number, first: boolean, last: boole
           {SHELVED.map((project, index) => (
             <span key={project.slug}>
               {index > 0 ? ', ' : null}
-              <a href={project.links[0]?.url} {...stylex.props(shared.inkLink)}>
-                {project.name}
-              </a>
+              {project.links[0] ? (
+                <a href={project.links[0].url} {...stylex.props(shared.inkLink)}>
+                  {project.name}
+                </a>
+              ) : (
+                project.name
+              )}
             </span>
           ))}
         </p>
@@ -330,9 +387,10 @@ const about = (
       About
     </h2>
     <div {...stylex.props(styles.prose)}>
-      <p {...stylex.props(styles.paragraph)}>
+      <p {...stylex.props(styles.paragraph, styles.lead)}>
         I&apos;m passionate about building elegant and efficient software. I
-        believe in clean code, simple design, and the power of open-source.
+        believe in clean code, simple design, and the power of{' '}
+        <span {...stylex.props(styles.nowrap)}>open-source</span>.
       </p>
     </div>
     <p {...stylex.props(styles.motto)}>Slow is fast.</p>
@@ -398,6 +456,7 @@ function titleBefore(index: number) {
 const PAGES = SHEETS.map((sheet, index) => {
   const side = index % 2 === 0 ? 'left' : 'right'
   const last = index === SHEETS.length - 1
+  const bare = index === 0 || sheet.blank
   let action: ReactNode = null
   if (side === 'right' && !last) {
     action = <TurnButton by={1}>{SHEETS[index + 1]?.title} →</TurnButton>
@@ -408,11 +467,12 @@ const PAGES = SHEETS.map((sheet, index) => {
     <Page
       key={index}
       side={side}
-      // Blank pages carry no running head, as in print.
+      // As in print, the frontispiece and blank pages carry no running head
+      // or folio.
       head={
-        sheet.blank ? ['', ''] : side === 'left' ? ['zaxh.org', sheet.title] : [sheet.title, 'zaxh']
+        bare ? ['', ''] : side === 'left' ? ['zaxh.org', sheet.title] : [sheet.title, 'zaxh']
       }
-      folio={index === 0 ? 'i' : String(index)}
+      folio={bare ? '' : String(index)}
       action={action}
       blank={sheet.blank}
     >

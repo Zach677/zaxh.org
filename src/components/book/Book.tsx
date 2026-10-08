@@ -258,9 +258,15 @@ const styles = stylex.create({
       default: '0 6px 6px 0',
       [NARROW]: 0,
     },
+    // Spine shadow, the hinge groove of a hardcover, then a linen weave.
     backgroundImage:
-      'linear-gradient(90deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0) 5%, rgba(255, 255, 255, 0.06) 6%, rgba(0, 0, 0, 0) 9%), repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.025) 0 2px, rgba(0, 0, 0, 0.03) 2px 4px)',
+      'linear-gradient(90deg, rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0) 5%), ' +
+      'linear-gradient(90deg, transparent 7.4%, rgba(0, 0, 0, 0.3) 7.9%, rgba(255, 255, 255, 0.07) 8.5%, transparent 9.2%), ' +
+      'repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 3px), ' +
+      'repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.06) 0 1px, transparent 1px 3px)',
     backgroundColor: colors.cloth,
+    // Foil is pressed into the cloth: lit below, shaded above.
+    textShadow: '0 1px 0 rgba(255, 255, 255, 0.1), 0 -1px 0 rgba(0, 0, 0, 0.45)',
     boxShadow:
       'inset 0 0 0 1px rgba(255, 255, 255, 0.05), 0 30px 60px -30px rgba(20, 19, 18, 0.6)',
     transformOrigin: 'left center',
@@ -284,7 +290,7 @@ const styles = stylex.create({
   },
   coverFrame: {
     position: 'absolute',
-    inset: '22px 22px 22px 34px',
+    inset: '1.6em 1.6em 1.6em calc(9% + 1em)',
     borderWidth: '1px',
     borderStyle: 'solid',
     borderColor: `color-mix(in oklab, ${colors.foil} 55%, transparent)`,
@@ -570,6 +576,16 @@ const pageStyles = stylex.create({
       [NARROW]: 'none',
     },
   },
+  // The same paper grain as the desk, so pages read as paper too.
+  grain: {
+    position: 'absolute',
+    inset: 0,
+    pointerEvents: 'none',
+    backgroundImage: 'var(--paper-grain-img)',
+    backgroundSize: '180px 180px',
+    opacity: 'var(--paper-grain-opacity)',
+    mixBlendMode: 'var(--paper-grain-blend)',
+  },
   // Filler pages exist only to complete a spread.
   blank: {
     display: {
@@ -646,6 +662,7 @@ export function Page({
         {action ?? <span />}
         <span>{side === 'right' ? folio : null}</span>
       </footer>
+      <div {...stylex.props(pageStyles.grain)} aria-hidden="true" />
     </article>
   )
 }
