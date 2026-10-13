@@ -175,7 +175,12 @@ const styles = stylex.create({
       [NARROW]: 'auto',
     },
     transformOrigin: 'left center',
-    transformStyle: 'preserve-3d',
+    // Flat when narrow: preserve-3d makes the leaf the containing block of
+    // the fixed cover, which then covers only the first page.
+    transformStyle: {
+      default: 'preserve-3d',
+      [NARROW]: 'flat',
+    },
     transform: {
       default: FLAT,
       [NARROW]: 'none',
@@ -393,6 +398,14 @@ export function Book({
   useLayoutEffect(() => {
     delete document.documentElement.dataset.book
   }, [])
+
+  // A layout switch (rotation, resize) jumps to the new layout. The media
+  // query has already started the turns between the two; land them.
+  useLayoutEffect(() => {
+    for (const animation of document.getElementById('book')?.getAnimations({ subtree: true }) ?? []) {
+      animation.finish()
+    }
+  }, [narrow])
 
   useEffect(() => {
     if (!instant) return undefined
@@ -624,7 +637,10 @@ const pageStyles = stylex.create({
       ':hover': colors.accent,
     },
     cursor: 'pointer',
+    // A taller tap target that keeps the folio line where pages without a
+    // button put it.
     padding: '0.35em 0',
+    margin: '-0.35em 0',
     borderRadius: '2px',
     outline: {
       default: 'none',
