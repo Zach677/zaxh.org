@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "zaxh-org",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-13",
+  // The Worker sees every request so it can send www to the apex; pages
+  // still come from the static assets.
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": true
+  },
+  "durable_objects": {
+    "bindings": [{ "name": "DESK", "class_name": "DeskRoom" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["DeskRoom"] }],
+  "routes": [
+    { "pattern": "zaxh.org", "custom_domain": true },
+    { "pattern": "www.zaxh.org", "custom_domain": true }
+  ],
+  "observability": { "enabled": true }
+}

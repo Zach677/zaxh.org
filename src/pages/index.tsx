@@ -3,6 +3,7 @@ import * as stylex from '@stylexjs/stylex'
 import { Link } from 'react-router'
 
 import { Book, Page, TurnButton } from '@/components/book/Book'
+import { LiveNotes } from '@/components/LiveNotes'
 import { SocialLinks } from '@/components/SocialLinks'
 import { ThemeSwitcher } from '@/components/ThemeSwitcher'
 import { colors, fonts } from '../design-system/tokens.stylex'
@@ -73,10 +74,11 @@ const styles = stylex.create({
     letterSpacing: '0.32em',
     textTransform: 'uppercase',
   },
-  // Frontispiece: set at the optical center, as on a title page.
+  // Frontispiece: the title sits high, so the live notes get the foot of
+  // the page.
   titlePage: {
-    marginBlock: 'auto',
-    paddingBottom: '8%',
+    marginTop: '14%',
+    paddingBottom: '2.5em',
   },
   name: {
     margin: 0,
@@ -334,6 +336,13 @@ const frontispiece = (
   </div>
 )
 
+const frontispiecePage = (
+  <>
+    {frontispiece}
+    <LiveNotes />
+  </>
+)
+
 function contents(entries: Project[], start: number, first: boolean, last: boolean) {
   return (
     <>
@@ -424,7 +433,7 @@ const SHEETS: Sheet[] = (() => {
     chunks.push(ACTIVE.slice(i, i + ENTRIES_PER_PAGE))
   }
   const sheets: Sheet[] = [
-    { title: 'Frontispiece', body: frontispiece },
+    { title: 'Frontispiece', body: frontispiecePage },
     ...chunks.map((entries, i) => ({
       title: 'Contents',
       body: contents(entries, i * ENTRIES_PER_PAGE, i === 0, i === chunks.length - 1),
