@@ -25,7 +25,7 @@ export default function MitoriPrivacyPage() {
         <span {...stylex.props(styles.accent)}>Mitori</span> Privacy Policy
       </h1>
       <p {...stylex.props(shared.regLabel, styles.updated)}>
-        Last updated: July 29, 2026
+        Last updated: October 13, 2026
       </p>
 
       <article className="md-reader">
@@ -85,17 +85,17 @@ export default function MitoriPrivacyPage() {
 
         <h2>This policy website</h2>
         <p>
-          This website uses Vercel Web Analytics for anonymous, cookie-free
-          page-view statistics and Vercel Speed Insights for website performance
-          measurements. These services receive website usage and performance
-          data when you visit this page. They do not receive the Apple ID
-          credentials or account data stored by Mitori. See{' '}
+          This website is hosted on Cloudflare. It uses Cloudflare Web
+          Analytics for anonymous, cookie-free page-view statistics and
+          website performance measurements. Cloudflare receives website usage
+          and performance data when you visit this page. It does not receive
+          the Apple ID credentials or account data stored by Mitori. See{' '}
           <a
-            href="https://vercel.com/docs/analytics/privacy-policy"
+            href="https://www.cloudflare.com/web-analytics/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Vercel Web Analytics privacy and compliance
+            Cloudflare Web Analytics
           </a>{' '}
           for details.
         </p>

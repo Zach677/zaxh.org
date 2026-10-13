@@ -22,7 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-.vercel/*
 
 # Playwright / local screenshots
 .playwright-mcp/
+
+# Cloudflare
+.wrangler/
+.dev.vars
+worker/worker-configuration.d.ts
