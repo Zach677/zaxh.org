@@ -400,10 +400,12 @@ export function Book({
   }, [])
 
   // A layout switch (rotation, resize) jumps to the new layout. The media
-  // query has already started the turns between the two; land them.
+  // query has already started the turns between the two; land them. Only
+  // transitions: finish() throws on an infinite animation, like a page's
+  // breathing dot.
   useLayoutEffect(() => {
     for (const animation of document.getElementById('book')?.getAnimations({ subtree: true }) ?? []) {
-      animation.finish()
+      if (animation instanceof CSSTransition) animation.finish()
     }
   }, [narrow])
 
