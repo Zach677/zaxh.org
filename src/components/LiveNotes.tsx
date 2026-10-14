@@ -127,19 +127,10 @@ const styles = stylex.create({
     lineHeight: 1.35,
     color: colors.heading,
   },
-  // A tipped-in plate: the icon keeps its colour, the paper frame keeps it
-  // quiet on the page.
   icon: {
     flex: 'none',
-    boxSizing: 'content-box',
-    width: '1.1em',
-    height: '1.1em',
-    padding: '0.12em',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: colors.border,
-    borderRadius: '3px',
-    backgroundColor: colors.paper,
+    width: '1.15em',
+    height: '1.15em',
   },
   media: {
     margin: '0.35em 0 0',
