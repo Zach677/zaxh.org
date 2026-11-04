@@ -1,0 +1,120 @@
+import * as stylex from '@stylexjs/stylex'
+
+import { colors } from '../design-system/tokens.stylex'
+import { shared } from '../design-system/shared.stylex'
+
+const styles = stylex.create({
+  main: {
+    maxWidth: '42rem',
+  },
+  hello: {
+    margin: '2rem 0 1rem',
+  },
+  accent: {
+    color: colors.accent,
+  },
+  updated: {
+    marginBottom: '2.5rem',
+  },
+})
+
+export default function XiaorichangPrivacyPage() {
+  return (
+    <main lang="zh-CN" {...stylex.props(styles.main)}>
+      <h1 {...stylex.props(shared.pageTitle, styles.hello)}>
+        <span {...stylex.props(styles.accent)}>校日常</span> 隐私政策
+      </h1>
+      <p {...stylex.props(shared.regLabel, styles.updated)}>
+        更新与生效日期：2026年11月4日
+      </p>
+
+      <article className="md-reader" style={{ fontSize: '16px' }}>
+        <h2>适用范围</h2>
+
+        <p>
+          这份政策适用于校日常 iPhone 版，包括通过 TestFlight 分发的测试版，不适用于 Android 版。校日常是广东工商职业技术大学的非官方校园工具，不代表学校或服务商。下文说明 App 使用哪些信息、交给谁处理，以及怎样停止使用或清除数据。
+        </p>
+
+        <h2>学校账号、热水与洗衣</h2>
+
+        <p>
+          登录学校时，你填写的学校账号和密码交给学校的登录服务验证；密码按学校登录页提供的方式加密。App 使用学校返回的登录状态，查询校园卡余额、消费记录、宿舍和电量。开发者没有集中保存这些学校账号和密码的后台。
+        </p>
+
+        <p>
+          使用热水时，App 向热水服务商发送学校提供的身份信息、学号、选定的宿舍和水控标识，以及授权出水、结算所需的水控数据。蓝牙用于连接附近的水控，不等于这些交易数据只留在手机上。
+        </p>
+
+        <p>
+          登录 U净 时，手机号和验证码交给 U净 验证。查询机器、下单和查看订单时，会发送登录状态、机器二维码内容、机器与订单标识。请求还包含随机生成的安装标识、App 版本和手机系统等技术信息。洗衣付款使用 U净 提供的支付信息，进入支付宝官方应用或页面处理；充值使用学校提供的网页。开发者不代收这些款项。
+        </p>
+
+        <h2>保存在手机上的数据</h2>
+
+        <p>
+          App 在本机保存登录状态、宿舍与电表资料、水控绑定、洗衣机和交易状态等信息。默认不保存学校密码；你选择保存后，密码用于学校登录和续期，包括前台、后台和小组件刷新。
+        </p>
+
+        <p>
+          学校登录凭据和相关资料保存在 iOS 钥匙串中，供 App 与小组件共享；热水、U净 的凭据和交易状态使用 App 自己的存储范围。钥匙串项不通过 iCloud 钥匙串同步到其他设备。洗衣机、最近订单摘要和提醒设置等偏好数据可能随设备备份保存。导入热水配置时，App 会保存一份本机副本，不会删除你在「文件」里选择的原文件。
+        </p>
+
+        <h2>相机、照片、蓝牙与通知</h2>
+
+        <p>
+          相机用于识别洗衣机二维码；从照片识别时，只读取你选择的图片，在手机上识别，再把识别出的二维码内容交给 U净 查询。识别用的原照片不会因此上传。你另外选来提交反馈的截图则会上传，见下一节。
+        </p>
+
+        <p>
+          蓝牙用于查找和连接水控。通知用于余额、电量、洗澡和洗衣提醒；锁屏上可能显示相关提醒内容。你可以在 iOS 设置中关闭相机、蓝牙或通知权限；对应功能会受限。不选择照片、不发送反馈，也不会影响其他功能。
+        </p>
+
+        <h2>你主动提交的反馈</h2>
+
+        <p>
+          只有在设置里的「反馈问题」点「发送」时，App 才提交这一次反馈：你写的文字、自己选择的截图（默认不带，最多 4 张），以及 App 版本和构建号、手机型号、系统版本、语言和地区。截图会重新编码为 JPEG，不附带原照片里的拍摄地点等信息。
+        </p>
+
+        <p>
+          反馈交给 AirBuild 的 AirFeedback 保存，开发者可以在那里查看和处理问题。App 不会自动附上学号、账号、余额、日志或唯一设备标识。但你写的内容和截图本身可能包含个人信息，发送前请检查并遮住不想提供的内容；不要发送密码、验证码或登录凭据。
+        </p>
+
+        <h2>第三方服务</h2>
+
+        <p>
+          学校系统、热水服务商、<a href="https://wx.zhinengxiyifang.cn/static/user-agreement/app2.0/20260804/ujing_privacy_policy.html" target="_blank" rel="noopener noreferrer">U净</a> 和支付宝分别处理你使用相应功能所需的数据；这些请求并非都发送给校日常开发者。它们保存的账号、账单和订单受各自规则约束。在校日常里清除数据，不等于删除服务商那边的记录。
+        </p>
+
+        <p>
+          App 没有另外接入广告或使用分析服务。通过 TestFlight 安装和测试时，Apple 会自动收集并向开发者提供安装、使用信息和崩溃日志；你通过 TestFlight 提交的反馈也会交给开发者，按邀请方式可能带有姓名和邮箱。具体见 <a href="https://www.apple.com/legal/privacy/data/en/test-flight/" target="_blank" rel="noopener noreferrer">TestFlight 的隐私说明</a>。这与 App 内的 AirFeedback 是不同的渠道。
+        </p>
+
+        <h2>保留、清除与撤回</h2>
+
+        <p>
+          你可以在设置里关闭「保存密码」或退出学校登录，清除相应的本机凭据；也可以退出 U净。退出 U净 不会删除保存的洗衣机。需要清除 App 的本机资料时，使用「重置校日常」，并确认操作成功；如果还有未完成或结果未确认的交易，应先处理交易。单独卸载 App 不保证清除钥匙串数据，也不会删除已存在的设备备份或你保留的原配置文件。
+        </p>
+
+        <p>
+          你可以随时不再使用某项功能、不再发送反馈，或在 iOS 设置中撤回对应权限。停止使用不会自动删除已经发出的反馈。
+        </p>
+
+        <p>
+          目前没有设定反馈的自动删除期限。想删除某条反馈，请发邮件到 <a href="mailto:i@xingbest.fun">i@xingbest.fun</a>，提供大概发送时间和能定位该条反馈的内容。反馈没有自动附上学号、账号或唯一设备标识，我们不能只凭你的账号查出对应记录，会联系平台尽力删除，但不能承诺完成时间。请不要为了定位反馈再发送密码或完整账号资料。
+        </p>
+
+        <h2>本隐私网页</h2>
+
+        <p>
+          本网页托管在 Cloudflare，沿用 zaxh.org 的网站设置，包括 <a href="https://www.cloudflare.com/web-analytics/" target="_blank" rel="noopener noreferrer">Cloudflare Web Analytics</a> 的网页访问量和性能统计。网站共用字体通过 <a href="https://developers.google.com/fonts/faq/privacy" target="_blank" rel="noopener noreferrer">Google Fonts</a> 加载。打开网页时，这些服务会处理相应的网络请求，包括 IP 地址、浏览器和请求页面等技术信息；本网页不会读取校日常 App 内保存的学校账号、余额或交易记录。
+        </p>
+
+        <h2>更新与联系</h2>
+
+        <p>
+          政策变更时，这里会更新日期。隐私问题或反馈删除请求，请联系 <a href="mailto:i@xingbest.fun">i@xingbest.fun</a>。
+        </p>
+      </article>
+    </main>
+  )
+}

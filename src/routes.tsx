@@ -3,6 +3,7 @@ import { Outlet, ScrollRestoration, type RouteObject } from 'react-router'
 import RootLayout from './pages/layout'
 import RootPage from './pages/index'
 import MitoriPrivacyPage from './pages/mitori-privacy'
+import XiaorichangPrivacyPage from './pages/xiaorichang-privacy'
 import NotFound from './pages/not-found'
 import ErrorBoundary from './pages/error'
 import type { RouteObjectWithMetadata } from './metadata/types'
@@ -42,6 +43,16 @@ const routes: RouteObject[] = [
             description:
               'How Mitori handles Apple ID credentials, account data, network requests, and website analytics.',
             url: 'https://zaxh.org/mitori/privacy',
+          },
+        } as RouteObjectWithMetadata,
+        {
+          path: 'xiaorichang/privacy',
+          Component: XiaorichangPrivacyPage,
+          metadata: {
+            title: '校日常隐私政策',
+            description:
+              '了解校日常 iPhone 版如何处理学校账号、热水与洗衣数据、本机存储和主动提交的反馈，以及第三方服务、数据清除和本网页的统计与字体服务。',
+            url: 'https://zaxh.org/xiaorichang/privacy',
           },
         } as RouteObjectWithMetadata,
         ],
