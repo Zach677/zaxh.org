@@ -4,6 +4,8 @@ import RootLayout from './pages/layout'
 import RootPage from './pages/index'
 import MitoriPrivacyPage from './pages/mitori-privacy'
 import XiaorichangPrivacyPage from './pages/xiaorichang-privacy'
+import SoonerPrivacyPage from './pages/sooner-privacy'
+import { soonerPrivacyMetadata } from './pages/sooner-privacy-content'
 import NotFound from './pages/not-found'
 import ErrorBoundary from './pages/error'
 import type { RouteObjectWithMetadata } from './metadata/types'
@@ -44,6 +46,11 @@ const routes: RouteObject[] = [
               'How Mitori handles Apple ID credentials, account data, network requests, and website analytics.',
             url: 'https://zaxh.org/mitori/privacy',
           },
+        } as RouteObjectWithMetadata,
+        {
+          path: 'sooner/privacy',
+          Component: SoonerPrivacyPage,
+          metadata: soonerPrivacyMetadata,
         } as RouteObjectWithMetadata,
         {
           path: 'xiaorichang/privacy',

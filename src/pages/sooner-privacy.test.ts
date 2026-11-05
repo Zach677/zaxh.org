@@ -1,0 +1,141 @@
+import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
+import { test } from 'node:test'
+
+import { soonerPrivacyContent, soonerPrivacyMetadata } from './sooner-privacy-content.ts'
+
+const page = readFileSync(new URL('./sooner-privacy.tsx', import.meta.url), 'utf8')
+const routes = readFileSync(new URL('../routes.tsx', import.meta.url), 'utf8')
+const textOf = (locale: typeof soonerPrivacyContent[number]) => [
+  locale.intro,
+  ...locale.sections.flatMap((section) => section.paragraphs.map((paragraph) => (
+    paragraph.map((segment) => typeof segment === 'string' ? segment : segment.text).join('')
+  ))),
+].join('\n')
+
+const zh = textOf(soonerPrivacyContent[0])
+const en = textOf(soonerPrivacyContent[1])
+
+test('one static route uses RootLayout and stable bilingual metadata', () => {
+  assert.equal(soonerPrivacyMetadata.url, 'https://zaxh.org/sooner/privacy')
+  assert.match(soonerPrivacyMetadata.title, /趁鲜.*Sooner Privacy Policy/)
+  assert.match(soonerPrivacyMetadata.description, /预览.*privacy preview/)
+  assert.equal((routes.match(/path: 'sooner\/privacy'/g) ?? []).length, 1)
+  assert.match(routes, /Component: RootLayout,[\s\S]*path: 'sooner\/privacy',\s*Component: SoonerPrivacyPage,\s*metadata: soonerPrivacyMetadata/)
+  assert.doesNotMatch(routes, /path: ['"]sooner\/privacy\//)
+})
+
+test('both complete locales are rendered unconditionally with a consistent heading hierarchy', () => {
+  assert.deepEqual(soonerPrivacyContent.map(({ id, lang }) => ({ id, lang })), [
+    { id: 'zh', lang: 'zh-CN' }, { id: 'en', lang: 'en' },
+  ])
+  assert.deepEqual(soonerPrivacyContent.map(({ title }) => title), [
+    '趁鲜隐私政策', 'Sooner Privacy Policy',
+  ])
+  assert.equal((page.match(/<h1\b/g) ?? []).length, 1)
+  assert.match(page, /soonerPrivacyContent\.map/)
+  assert.match(page, /id=\{locale.id\}[\s\S]*lang=\{locale.lang\}[\s\S]*aria-labelledby=/)
+  assert.match(page, /<h2[^>]*>\{locale.title\}<\/h2>/)
+  assert.match(page, /<h3>\{section.heading\}<\/h3>/)
+  assert.match(page, /section\.paragraphs\.map/)
+  assert.doesNotMatch(page, /useState|useEffect|hidden=|display: 'none'|dangerouslySetInnerHTML/)
+  for (const locale of soonerPrivacyContent) {
+    assert.equal(locale.sections.length, 11)
+    assert.equal(new Set(locale.sections.map(({ heading }) => heading)).size, 11)
+    assert.ok(locale.intro.length > 100)
+    assert.ok(locale.sections.every(({ paragraphs }) => paragraphs.length > 0))
+    assert.ok(textOf(locale).length > 2500)
+  }
+})
+
+test('native locale links, scroll offsets, and visible keyboard focus remain available', () => {
+  assert.match(page, /<nav aria-label=/)
+  assert.match(page, /<a href="#zh" lang="zh-CN"/)
+  assert.match(page, /<a href="#en" lang="en"/)
+  assert.match(page, /scrollMarginTop: '2rem'/)
+  assert.match(page, /':focus-visible': `2px solid \$\{colors.accent\}`/)
+  assert.match(page, /outlineOffset: '4px'/)
+  assert.doesNotMatch(page, /onClick|preventDefault/)
+})
+
+test('preview is explicitly not effective and has no invented effective date', () => {
+  assert.equal(soonerPrivacyContent.map(({ preview }) => preview).join(' / '),
+    '预览稿 · 尚未生效 / Preview · Not yet effective')
+  assert.match(page, /soonerPrivacyContent\[0\]\.preview/)
+  assert.match(page, /soonerPrivacyContent\[1\]\.preview/)
+  assert.doesNotMatch(zh + en, /\b20\d{2}[-年/]\d|Effective date:|生效日期：/)
+  assert.doesNotMatch(zh + en, /内部发布前核对|五行设计计划|Pluso2807|Camo2810/)
+})
+
+test('each locale includes the actual provider, website, and contact links', () => {
+  const expected = [
+    'https://world.openfoodfacts.org/privacy',
+    'https://air.build/privacy/',
+    'https://openrouter.ai/privacy',
+    'https://openrouter.ai/docs/guides/privacy/data-collection',
+    'https://openrouter.ai/docs/guides/privacy/provider-logging',
+    'https://openrouter.ai/docs/guides/features/zdr',
+    'https://docs.cloud.google.com/vertex-ai/generative-ai/docs/data-governance',
+    'https://www.apple.com/legal/privacy/',
+    'https://www.apple.com/legal/privacy/data/en/test-flight/',
+    'https://www.cloudflare.com/web-analytics/',
+    'https://developers.google.com/fonts/faq/privacy',
+    'mailto:i@xingbest.fun',
+  ].sort()
+  for (const locale of soonerPrivacyContent) {
+    const links = locale.sections.flatMap(({ paragraphs }) => paragraphs.flat())
+      .filter((segment) => typeof segment !== 'string')
+    assert.deepEqual([...new Set(links.map(({ href }) => href))].sort(), expected)
+    assert.ok(links.every(({ text }) => text.trim().length > 0))
+  }
+  assert.match(page, /href=\{segment.href\}/)
+})
+
+test('retention states 90-day device cleanup and provider-specific limits', () => {
+  assert.match(zh, /连续 90 天没有使用的设备密钥及相关记录会被自动删除/)
+  assert.match(zh, /每天检查一次/)
+  assert.match(en, /unused for 90 days are deleted automatically/)
+  assert.match(en, /checks once a day/)
+  assert.doesNotMatch(zh, /验证记录；目前尚未设自动删除期限/)
+  assert.doesNotMatch(en, /These records currently have no automatic deletion period/)
+  assert.match(zh, /两天前及更早/)
+  assert.match(en, /two days ago and earlier/)
+  for (const text of [zh, en]) {
+    assert.doesNotMatch(text, /AI Studio/)
+    assert.match(text, /Google Vertex AI/)
+    assert.match(text, /90/)
+    assert.match(text, /24/)
+  }
+  assert.match(zh, /不主动记录内容日志/)
+  assert.match(en, /Our server does not save[\s\S]*server-side database or actively record content logs/)
+  assert.match(en, /hosting infrastructure may process request and error logs/)
+  assert.match(en, /AirBuild records usage and cost for each AI call/)
+  assert.match(en, /optional logging settings and safety processing affect retention/)
+  assert.match(en, /Google may keep some data for a limited time/)
+  assert.doesNotMatch(zh, /设备.{0,20}90\s*天.{0,10}(自动|删除|清理)/)
+  assert.doesNotMatch(en, /(?:device|verification) records[^.]*delet(?:ed|ion)[^.]*90 days/i)
+  assert.doesNotMatch(en, /all (?:AI )?providers (?:never|do not) (?:store|retain)/i)
+})
+
+test('copy preserves opt-in, local data, actual AI chain, and deletion limitations', () => {
+  assert.match(zh, /「用 AI」默认关闭/)
+  assert.match(en, /Use AI is off by default/)
+  assert.match(zh, /第一次使用「问趁鲜」时会再征求一次同意/)
+  assert.match(en, /asks again before you first use Ask Sooner/)
+  assert.match(en, /AI services only when you consent to using AI/)
+  assert.match(zh, /本机数据库/)
+  assert.match(en, /local database/)
+  assert.match(en, /AirBuild-hosted server, AirBuild's AirRouter AI relay, and OpenRouter/)
+  assert.match(zh, /目前没有设定反馈的自动删除期限/)
+  assert.match(en, /Feedback currently has no automatic deletion period/)
+  assert.match(en, /cannot guarantee that the platform can delete it/)
+  assert.match(en, /no clear-all-data control/)
+  assert.match(en, /Cloudflare Web Analytics/)
+  assert.match(en, /Google Fonts/)
+  assert.match(zh, /自己选择的图片（最多 4 张）/)
+  assert.match(en, /images you select \(up to four\)/)
+  assert.match(zh, /设备标识/)
+  assert.match(en, /device ID/)
+  assert.match(en, /eaten or thrown away/)
+  assert.doesNotMatch(zh + en, /安装标识|installation ID|订单截图|order-screenshot|server code we wrote|我们没有核实/)
+})
