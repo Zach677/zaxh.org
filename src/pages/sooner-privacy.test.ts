@@ -120,8 +120,8 @@ test('retention states 90-day device cleanup and provider-specific limits', () =
 test('copy preserves opt-in, local data, actual AI chain, and deletion limitations', () => {
   assert.match(zh, /「用 AI」默认关闭/)
   assert.match(en, /Use AI is off by default/)
-  assert.match(zh, /旧版本里同意过，下次拍照用 AI 或使用「问趁鲜」前[\s\S]*再次同意/)
-  assert.match(en, /agreed in an earlier version[\s\S]*asks again before your next AI photo read or Ask Sooner question/)
+  assert.match(zh, /第一次使用「问趁鲜」时会再征求一次同意/)
+  assert.match(en, /asks again before you first use Ask Sooner/)
   assert.match(en, /AI services only when you consent to using AI/)
   assert.match(zh, /本机数据库/)
   assert.match(en, /local database/)
