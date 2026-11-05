@@ -72,10 +72,10 @@ export const soonerPrivacyContent: PrivacyLocale[] = [
         heading: '你选择使用的 AI',
         paragraphs: [
           [
-            '「用 AI」默认关闭，App 会先征求同意，同一张同意页说明照片、问题和相关食物清单会怎样发送。你可以选择「先不用」，或随时在 App 设置中关闭；关闭后首页不显示「问趁鲜」，也不再发送新的 AI 请求。不使用 AI 不影响手动添加和手机上的识别。如果你在旧版本里只同意过发送照片，第一次使用「问趁鲜」时会再征求一次同意。',
+            '「用 AI」默认关闭，App 会先征求同意，同一张同意页说明照片、问题和你的食物清单会怎样发送。你可以选择「先不用」，或随时在 App 设置中关闭；关闭后首页不显示「问趁鲜」，也不再发送新的 AI 请求。不使用 AI 不影响手动添加和手机上的识别。如果你在旧版本里只同意过发送照片，第一次使用「问趁鲜」时会再征求一次同意。',
           ],
           [
-            '开着「用 AI」时，你拍摄并提交的照片（包括小票）会发给 AI 识别。使用「问趁鲜」时，会发送问题、相关食物的名字、份数、存放位置、到期日和日期是否待确认、最近几轮对话及手机上的当天日期，用来识别和回答。「用 AI」关闭时，照片只在手机上识别，不会发出。当天次数用完时，我们的服务器不会再把照片转给 AI，App 改在手机上识别。AI 没有及时回复时，App 也会改在手机上识别，但已经发出的照片仍可能由相关服务处理。',
+            '开着「用 AI」时，你拍摄并提交的照片（包括小票）会发给 AI 识别；这次拍摄中扫到的条码数字和对应名称也会作为提示一起发送，名称可能来自手机上记住的名称，不一定出现在照片里。每次使用「问趁鲜」，会发送问题和你当前的食物清单（最多 200 项），而不只是问题提到的食物，包括名字、份数、存放位置、到期日和日期是否待确认，以及最近几轮对话和手机上的当天日期，用来识别和回答。「用 AI」关闭时，照片只在手机上识别，不会发出。当天次数用完时，我们的服务器不会再把照片转给 AI，App 改在手机上识别。AI 没有及时回复时，App 也会改在手机上识别，但已经发出的照片仍可能由相关服务处理。',
           ],
           [
             'AI 照片发送前缩到最长边 1024 像素并重新压成 JPEG，不保留照片中的拍摄地点等元数据；图片里直接可见的信息仍会一起发送，拍的时候避开不想给人看的东西。',
@@ -84,7 +84,7 @@ export const soonerPrivacyContent: PrivacyLocale[] = [
             '这些内容经过我们由 AirBuild 托管的服务器、AirBuild 的 AI 转发服务 AirRouter、OpenRouter，再交给 Google Vertex AI 上的 Gemini 模型处理，不会改走其他通道；不是手机直接发给 Google。设备标识不会随 AI 内容发给 Google。',
           ],
           [
-            '我们的服务器不会把这些照片、问题、相关清单和回答写入服务器数据库，也不主动记录内容日志。这不代表经由的服务商完全不留存；托管平台可能处理请求和错误日志。服务商的处理范围与规则见下一节。',
+            '我们的服务器不会把这些照片、条码提示、问题、食物清单和回答写入服务器数据库，也不主动记录内容日志。这不代表经由的服务商完全不留存；托管平台可能处理请求和错误日志。服务商的处理范围与规则见下一节。',
           ],
         ],
       },
@@ -273,10 +273,10 @@ export const soonerPrivacyContent: PrivacyLocale[] = [
         heading: 'AI you choose to use',
         paragraphs: [
           [
-            'Use AI is off by default, and the app asks for your consent first. One consent screen explains how photos, questions, and the related food list are sent. You can choose Not Now, or turn it off at any time in the app\'s settings. Turning it off hides Ask Sooner on the home screen and stops new AI requests. You can still add food manually and use on-device recognition. If you agreed only to sending photos in an earlier version, the app asks again before you first use Ask Sooner.',
+            'Use AI is off by default, and the app asks for your consent first. One consent screen explains how photos, questions, and your food list are sent. You can choose Not Now, or turn it off at any time in the app\'s settings. Turning it off hides Ask Sooner on the home screen and stops new AI requests. You can still add food manually and use on-device recognition. If you agreed only to sending photos in an earlier version, the app asks again before you first use Ask Sooner.',
           ],
           [
-            'With Use AI on, photos you take and submit, including receipts, are sent to AI to read. Using Ask Sooner sends the question, relevant food names, quantities, storage locations, expiry dates and whether dates need confirmation, recent conversation turns, and the current date on your phone to read and answer. When Use AI is off, photos are read on your phone only and are not sent. When today\'s AI reads are used up, our server no longer passes photos to AI, and the app reads them on your phone. If AI does not answer in time, the app also reads them on your phone, but photos already sent may still be processed by the services involved.',
+            'With Use AI on, photos you take and submit, including receipts, are sent to AI to read. Barcode numbers scanned during the session and their names are sent with them as hints; names may come from names remembered on your phone and may not appear in the photo. Each Ask Sooner question sends the question and your current food list (up to 200 items), not only foods mentioned in the question, including names, quantities, storage locations, expiry dates, and whether dates need confirmation, plus recent conversation turns and the current date on your phone. When Use AI is off, photos are read on your phone only and are not sent. When today\'s AI reads are used up, our server no longer passes photos to AI, and the app reads them on your phone. If AI does not answer in time, the app also reads them on your phone, but photos already sent may still be processed by the services involved.',
           ],
           [
             'Before upload, AI photos are resized to a maximum dimension of 1024 pixels and re-encoded as JPEG without metadata such as the capture location. Information visible in the image is still sent. Keep anything you don\'t want to share out of the shot.',
@@ -285,7 +285,7 @@ export const soonerPrivacyContent: PrivacyLocale[] = [
             'This content passes through our AirBuild-hosted server, AirBuild\'s AirRouter AI relay, and OpenRouter before reaching Google\'s Gemini models on Google Vertex AI. Requests are not routed to any other provider. It is not sent directly from your phone to Google. The device ID is not sent to Google with AI content.',
           ],
           [
-            'Our server does not save these photos, questions, relevant food lists, or answers in a server-side database or actively record content logs. This does not mean every service in the chain retains nothing; hosting infrastructure may process request and error logs. The next section describes the providers\' rules.',
+            'Our server does not save these photos, barcode hints, questions, food lists, or answers in a server-side database or actively record content logs. This does not mean every service in the chain retains nothing; hosting infrastructure may process request and error logs. The next section describes the providers\' rules.',
           ],
         ],
       },
