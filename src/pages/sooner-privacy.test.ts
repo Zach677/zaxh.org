@@ -139,3 +139,12 @@ test('copy preserves opt-in, local data, actual AI chain, and deletion limitatio
   assert.match(en, /eaten or thrown away/)
   assert.doesNotMatch(zh + en, /安装标识|installation ID|订单截图|order-screenshot|server code we wrote|我们没有核实/)
 })
+
+test('discloses full food list for Ask Sooner and barcode hints with remembered names', () => {
+  assert.match(zh, /当前的食物清单（最多 200 项）/)
+  assert.match(zh, /而不只是问题提到的食物/)
+  assert.match(en, /current food list \(up to 200 items\), not only foods mentioned/)
+  assert.match(zh, /条码数字和对应名称[\s\S]*手机上记住的名称[\s\S]*不一定出现在照片里/)
+  assert.match(en, /Barcode numbers scanned[\s\S]*remembered on your phone[\s\S]*may not appear in the photo/)
+  for (const text of [zh, en]) assert.doesNotMatch(text, /相关食物|相关清单|relevant food|related food list/)
+})
