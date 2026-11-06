@@ -60,7 +60,7 @@ export default function XiaorichangPrivacyPage() {
         </p>
 
         <p>
-          从 App Store 安装的正式版不记录诊断信息，也不写诊断文件。从 TestFlight 安装的测试版另有一份调试记录，见下一节。
+          从 App Store 安装的正式版不记录诊断日志，也不写诊断文件。从 TestFlight 安装的测试版另有一份调试记录；App 崩溃时还会发一份崩溃报告，都见下文。
         </p>
 
         <h2>测试版调试记录</h2>
@@ -105,6 +105,20 @@ export default function XiaorichangPrivacyPage() {
           反馈交给 AirBuild 的 AirFeedback 保存，开发者可以在那里查看和处理问题。App 不会自动附上学号、账号、余额、日志或唯一设备标识；只有在测试版里自己打开「附上调试记录」时才带上调试记录，见上一节。但你写的内容和截图本身可能包含个人信息，发送前请检查并遮住不想提供的内容；不要发送密码、验证码或登录凭据。
         </p>
 
+        <h2>崩溃报告</h2>
+
+        <p>
+          App 崩溃（闪退，或卡住被系统结束）后，iOS 会在之后某次打开 App 时（通常在一天之内）把这次崩溃的记录交给 App，App 再把它发给 AirBuild 的 AirFeedback。开发者在那里查看，用来找到崩溃的位置并修复。
+        </p>
+
+        <p>
+          一份报告包括 App 版本和构建号、手机型号、系统版本、处理器类型、语言和地区、崩溃的类型和原因，以及崩溃时代码运行到了哪些函数（调用栈）。另有一个在这台手机上随机生成的编号，只用来统计有几台手机遇到同一个崩溃，与学号和账号没有关联，重置校日常后会换成新的编号。报告不包括学号、账号、密码、余额和宿舍，也不包括页面内容和你输入的任何文字。
+        </p>
+
+        <p>
+          暂时发不出去的报告先存在 App 自己的文件夹里，不进入 iCloud 或电脑备份，最多 20 份，下次打开 App 时再发。App 里的密钥只能提交报告，不能读取。
+        </p>
+
         <h2>第三方服务</h2>
 
         <p>
@@ -112,7 +126,7 @@ export default function XiaorichangPrivacyPage() {
         </p>
 
         <p>
-          App 没有另外接入广告或使用分析服务。通过 TestFlight 安装和测试时，Apple 会自动收集并向开发者提供安装、使用信息和崩溃日志；你通过 TestFlight 提交的反馈也会交给开发者，按邀请方式可能带有姓名和邮箱。具体见 <a href="https://www.apple.com/legal/privacy/data/en/test-flight/" target="_blank" rel="noopener noreferrer">TestFlight 的隐私说明</a>。这与 App 内的 AirFeedback 是不同的渠道。
+          App 没有另外接入广告或使用分析服务；崩溃报告也交给 AirFeedback，见上文。通过 TestFlight 安装和测试时，Apple 会自动收集并向开发者提供安装、使用信息和崩溃日志；你通过 TestFlight 提交的反馈也会交给开发者，按邀请方式可能带有姓名和邮箱。具体见 <a href="https://www.apple.com/legal/privacy/data/en/test-flight/" target="_blank" rel="noopener noreferrer">TestFlight 的隐私说明</a>。这与 App 内的 AirFeedback 是不同的渠道。
         </p>
 
         <h2>保留、清除与撤回</h2>
