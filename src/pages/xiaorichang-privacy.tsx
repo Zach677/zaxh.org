@@ -25,7 +25,7 @@ export default function XiaorichangPrivacyPage() {
         <span {...stylex.props(styles.accent)}>校日常</span> 隐私政策
       </h1>
       <p {...stylex.props(shared.regLabel, styles.updated)}>
-        更新与生效日期：2026年11月4日
+        更新与生效日期：2026年11月10日
       </p>
 
       <article className="md-reader" style={{ fontSize: '16px' }}>
