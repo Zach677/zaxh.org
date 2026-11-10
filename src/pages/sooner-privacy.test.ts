@@ -148,3 +148,12 @@ test('discloses full food list for Ask Sooner and barcode hints with remembered 
   assert.match(en, /Barcode numbers scanned[\s\S]*remembered on your phone[\s\S]*may not appear in the photo/)
   for (const text of [zh, en]) assert.doesNotMatch(text, /相关食物|相关清单|relevant food|related food list/)
 })
+
+test('barcode cache periods are reuse limits, not deletion promises', () => {
+  assert.match(zh, /缓存有效期为 180 天，查不到的为 14 天/)
+  assert.match(zh, /过期不代表记录已经删除，目前没有为这类缓存设置自动删除期限/)
+  assert.doesNotMatch(zh, /保存 180 天|保存 14 天/)
+  assert.match(en, /reused for up to 180 days, and unsuccessful results for 14 days/)
+  assert.match(en, /Expiry does not delete the stored entry; these cache records currently have no automatic deletion period/)
+  assert.doesNotMatch(en, /results for 180 days, or an unsuccessful lookup for 14 days/)
+})

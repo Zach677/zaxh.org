@@ -59,7 +59,7 @@ export const soonerPrivacyContent: PrivacyLocale[] = [
             '查询商品名时，App 把条码数字发送给我们的服务器；这次查询不附上食物清单或设备标识。服务器先查缓存，未命中时查询极速数据（阿里云市场），必要时再查询 Open Food Facts，只取得商品名称和品牌。我们发给这两家服务的查询内容是条码数字，不是你的照片或清单。',
           ],
           [
-            '服务器缓存条码对应的名称和品牌：查到结果保存 180 天，查不到的结果保存 14 天；这些缓存不与某个人或设备关联。网络请求本身也会产生 IP 地址等连接信息，见下方服务商说明。',
+            '服务器缓存条码对应的名称和品牌：查到结果的缓存有效期为 180 天，查不到的为 14 天；过期后再次查询会重新获取结果。过期不代表记录已经删除，目前没有为这类缓存设置自动删除期限。这些缓存不与某个人或设备关联。网络请求本身也会产生 IP 地址等连接信息，见下方服务商说明。',
             {
               text: 'Open Food Facts 隐私政策',
               href: 'https://world.openfoodfacts.org/privacy',
@@ -260,7 +260,7 @@ export const soonerPrivacyContent: PrivacyLocale[] = [
             'To look up a product name, the app sends the barcode number to our server without your food list or device ID. The server checks its cache, then queries 极速数据 (Jisu Data, through Alibaba Cloud Marketplace) and, when needed, Open Food Facts for the product name and brand. The query content we send to these two services is the barcode number, not your photos or food list.',
           ],
           [
-            'The server caches barcode-to-name and brand results for 180 days, or an unsuccessful lookup for 14 days. These cache entries are not linked to a person or device. Network connections also expose technical information such as IP addresses, as explained below. ',
+            'The server caches barcode-to-name and brand results. Successful lookup results are reused for up to 180 days, and unsuccessful results for 14 days. After that, a new lookup fetches a fresh result. Expiry does not delete the stored entry; these cache records currently have no automatic deletion period. They are not linked to a person or device. Network connections also expose technical information such as IP addresses, as explained below. ',
             {
               text: 'Open Food Facts Privacy Policy',
               href: 'https://world.openfoodfacts.org/privacy',
