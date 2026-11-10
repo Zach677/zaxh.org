@@ -158,3 +158,16 @@ test('barcode cache periods are reuse limits, not deletion promises', () => {
   assert.match(en, /Expiry does not delete the stored entry; these cache records currently have no automatic deletion period/)
   assert.doesNotMatch(en, /results for 180 days, or an unsuccessful lookup for 14 days/)
 })
+
+test('daily limits: separate, Beijing time, used-up request reached the server, last 3 rounds', () => {
+  assert.match(zh, /分开计算，一样用完不影响另一样；「每天」按北京时间算/)
+  assert.match(zh, /这一次的照片或问题已经到了我们的服务器，但不会再转给 AI/)
+  assert.match(zh, /包括用掉最后一次时），到北京时间当天 24 点前不再发出这一类内容/)
+  assert.equal((zh.match(/最近 3 轮对话/g) ?? []).length, 2)
+  assert.doesNotMatch(zh, /最近几轮对话|当天次数用完时，我们的服务器不会再把照片转给 AI/)
+  assert.match(en, /counted separately, so running out of one doesn't affect the other\. Days are counted in Beijing time\./)
+  assert.match(en, /that photo or question has already reached our server, but it isn't passed on to AI/)
+  assert.match(en, /including when the last use is spent\), it stops sending that kind of content until midnight Beijing time/)
+  assert.equal((en.match(/the last 3 rounds of conversation/g) ?? []).length, 2)
+  assert.doesNotMatch(en, /recent conversation turns|our server no longer passes photos to AI/)
+})
