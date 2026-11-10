@@ -19,7 +19,7 @@ const en = textOf(soonerPrivacyContent[1])
 test('one static route uses RootLayout and stable bilingual metadata', () => {
   assert.equal(soonerPrivacyMetadata.url, 'https://zaxh.org/sooner/privacy')
   assert.match(soonerPrivacyMetadata.title, /趁鲜.*Sooner Privacy Policy/)
-  assert.match(soonerPrivacyMetadata.description, /预览.*privacy preview/)
+  assert.match(soonerPrivacyMetadata.description, /趁鲜隐私政策：.*Sooner privacy policy:/)
   assert.equal((routes.match(/path: 'sooner\/privacy'/g) ?? []).length, 1)
   assert.match(routes, /Component: RootLayout,[\s\S]*path: 'sooner\/privacy',\s*Component: SoonerPrivacyPage,\s*metadata: soonerPrivacyMetadata/)
   assert.doesNotMatch(routes, /path: ['"]sooner\/privacy\//)
@@ -58,11 +58,12 @@ test('native locale links, scroll offsets, and visible keyboard focus remain ava
   assert.doesNotMatch(page, /onClick|preventDefault/)
 })
 
-test('preview is explicitly not effective and has no invented effective date', () => {
-  assert.equal(soonerPrivacyContent.map(({ preview }) => preview).join(' / '),
-    '预览稿 · 尚未生效 / Preview · Not yet effective')
-  assert.match(page, /soonerPrivacyContent\[0\]\.preview/)
-  assert.match(page, /soonerPrivacyContent\[1\]\.preview/)
+test('both locales show the same publish-day effective date, outside the body copy', () => {
+  assert.equal(soonerPrivacyContent.map(({ effective }) => effective).join(' / '),
+    '更新与生效日期：2026年11月10日 / Updated and effective: November 10, 2026')
+  assert.match(page, /soonerPrivacyContent\[0\]\.effective/)
+  assert.match(page, /soonerPrivacyContent\[1\]\.effective/)
+  assert.doesNotMatch(zh + en + soonerPrivacyMetadata.description, /预览|尚未生效|[Pp]review|[Nn]ot yet effective/)
   assert.doesNotMatch(zh + en, /\b20\d{2}[-年/]\d|Effective date:|生效日期：/)
   assert.doesNotMatch(zh + en, /内部发布前核对|五行设计计划|Pluso2807|Camo2810/)
 })

@@ -14,7 +14,7 @@ const styles = stylex.create({
   accent: {
     color: colors.accent,
   },
-  preview: {
+  effective: {
     marginBottom: '1.5rem',
   },
   languages: {
@@ -42,9 +42,9 @@ export default function SoonerPrivacyPage() {
         <span {...stylex.props(styles.accent)}>趁鲜 / Sooner</span>{' '}
         <span lang="zh-CN">隐私政策</span> / <span lang="en">Privacy Policy</span>
       </h1>
-      <p {...stylex.props(shared.regLabel, styles.preview)}>
-        <span lang="zh-CN">{soonerPrivacyContent[0].preview}</span> /{' '}
-        <span lang="en">{soonerPrivacyContent[1].preview}</span>
+      <p {...stylex.props(shared.regLabel, styles.effective)}>
+        <span lang="zh-CN">{soonerPrivacyContent[0].effective}</span> /{' '}
+        <span lang="en">{soonerPrivacyContent[1].effective}</span>
       </p>
 
       <article className="md-reader" style={{ fontSize: '16px' }}>

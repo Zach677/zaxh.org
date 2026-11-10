@@ -1,11 +1,11 @@
-// Complete preview copy, rendered in both languages without client-side selection.
+// Complete policy copy, rendered in both languages without client-side selection.
 export type PrivacySegment = string | { text: string; href: string }
 
 interface PrivacyLocale {
   id: 'zh' | 'en'
   lang: 'zh-CN' | 'en'
   title: string
-  preview: string
+  effective: string
   intro: string
   sections: { heading: string; paragraphs: PrivacySegment[][] }[]
 }
@@ -13,7 +13,7 @@ interface PrivacyLocale {
 export const soonerPrivacyMetadata = {
   title: '趁鲜隐私政策 / Sooner Privacy Policy',
   description:
-    '趁鲜隐私政策预览：本机数据、条码查询、可选 AI、反馈与服务商保留。Sooner privacy preview: local data, barcode lookup, optional AI, feedback, and provider retention.',
+    '趁鲜隐私政策：本机数据、条码查询、可选 AI、反馈与服务商保留。Sooner privacy policy: local data, barcode lookup, optional AI, feedback, and provider retention.',
   url: 'https://zaxh.org/sooner/privacy',
 }
 
@@ -22,7 +22,7 @@ export const soonerPrivacyContent: PrivacyLocale[] = [
     id: 'zh',
     lang: 'zh-CN',
     title: '趁鲜隐私政策',
-    preview: '预览稿 · 尚未生效',
+    effective: '更新与生效日期：2026年11月10日',
     intro: '简单说：趁鲜不需要账号。食物清单和历史保存在手机上；条码查询会联网；只有你同意使用 AI 时，照片或提问所需的内容才会交给 AI 服务。你主动发送的反馈也会上传。下面分别说明这些数据去哪里、用来做什么，以及怎样停止发送或清除。',
     sections: [
       {
@@ -223,7 +223,7 @@ export const soonerPrivacyContent: PrivacyLocale[] = [
     id: 'en',
     lang: 'en',
     title: 'Sooner Privacy Policy',
-    preview: 'Preview · Not yet effective',
+    effective: 'Updated and effective: November 10, 2026',
     intro: 'In short: Sooner does not require an account. Your food list and history stay on your phone. Barcode lookup uses the internet. Photos or information needed for a question go to AI services only when you consent to using AI. Feedback you choose to send is also uploaded. This policy explains where that information goes, why it is used, and how to stop sending or remove it.',
     sections: [
       {
