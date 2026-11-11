@@ -64,7 +64,7 @@ export const soonerSupportContent: SupportLocale[] = [
         heading: '我的数据存在哪？',
         paragraphs: [
           [
-            '食物清单和历史只存在这台手机上。趁鲜没有账号，也不做云同步。离开手机的只有：查商品名时的条码数字，你打开「用 AI」后的照片和问题（连同当前的食物清单），以及你主动发送的反馈。详见',
+            '食物清单和历史只存在这台手机上。趁鲜没有账号，也不做云同步。查商品名、使用 AI 和发送反馈时会联网；发出什么、保存多久，见',
             { text: '隐私政策', href: '/sooner/privacy' },
             '。',
           ],
@@ -138,7 +138,7 @@ export const soonerSupportContent: SupportLocale[] = [
         heading: 'Where is my data?',
         paragraphs: [
           [
-            'Your food list and history stay on this iPhone. Sooner has no account and no cloud sync. Only these leave your phone: barcode numbers when looking up a product name, photos and questions (with your current food list) when Use AI is on, and feedback you choose to send. See the ',
+            'Your food list and history stay on this iPhone. Sooner has no account and no cloud sync. Looking up product names, using AI, and sending feedback go online. For what is sent and how long it is kept, see the ',
             { text: 'privacy policy', href: '/sooner/privacy' },
             '.',
           ],
