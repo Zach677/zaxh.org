@@ -28,7 +28,7 @@ export const soonerSupportContent: SupportLocale[] = [
     lang: 'zh-CN',
     title: '趁鲜支持',
     intro: [
-      '遇到问题或有建议，请发邮件到 ',
+      '遇到问题或有建议，发邮件到 ',
       email,
       '。写上 iPhone 型号、iOS 版本、趁鲜版本（在 App「设置」最下面），以及你做了什么、看到了什么，附截图更好。不要发来密码或验证码。也可以在 App 的「设置」里点「反馈问题」直接发给我们。',
     ],
@@ -37,7 +37,7 @@ export const soonerSupportContent: SupportLocale[] = [
         heading: 'AI 每天能用几次？',
         paragraphs: [
           [
-            '照片识别和「问趁鲜」每天各有次数，分开计算，一样用完不影响另一样；「每天」按北京时间算，北京时间 24 点后恢复。照片识别用完后，App 改在手机上识别；「问趁鲜」用完后，要过了北京时间 24 点才能再问。',
+            'AI 识别照片和「问趁鲜」每天各有次数，分开计算，一样用完不影响另一样；「每天」按北京时间算，北京时间 24 点后恢复。AI 识别照片用完后，App 改在手机上识别；「问趁鲜」用完后，要过了北京时间 24 点才能再问。',
           ],
           [
             '「用 AI」默认关闭，在「设置」里打开或关闭。不用 AI，手动添加和手机上的识别照常可用。',
@@ -48,7 +48,7 @@ export const soonerSupportContent: SupportLocale[] = [
         heading: '到期提醒什么时候来？',
         paragraphs: [
           [
-            '填了到期日的食物，到期前一天早上 9 点、到期当天下午 6 点各提醒一次，按手机的时区；同一天到期的合在一条里。没填到期日的，加入 3 天后早上 9 点问你还在不在。在通知上可以直接标记吃完、扔掉，或明天再提醒。',
+            '填了到期日的食物，到期前一天 9:00、到期当天 18:00 各提醒一次，按手机的时区；同一天到期的合在一条里。没写日期的，记下 3 天后 9:00 问你还在不在。在通知上可以直接标记吃完、扔掉，或明天再提醒。',
           ],
         ],
       },
@@ -87,7 +87,7 @@ export const soonerSupportContent: SupportLocale[] = [
         heading: '扫了条码没出名字？',
         paragraphs: [
           [
-            '查商品名需要联网，查不到时 App 不会提示。拍照识别和手动输入照样能用。查到过的名字会记在手机上，下次扫同一个条码不用联网。',
+            '查商品名需要联网。查不到时相机不会提示，照常拍一张包装，照样能记下来；也可以手动输入。查到过的名字会记在手机上，下次扫同一个条码不用联网。',
           ],
         ],
       },
@@ -111,7 +111,7 @@ export const soonerSupportContent: SupportLocale[] = [
         heading: 'How often can I use AI?',
         paragraphs: [
           [
-            'Photos and Ask Sooner each have their own daily limit, counted separately, so running out of one doesn\'t affect the other. Days are counted in Beijing time, and limits reset at midnight Beijing time. When photo reads run out, the app reads photos on your phone instead. When questions run out, Ask Sooner can be used again after midnight Beijing time.',
+            'AI photo reads and Ask Sooner each have their own daily limit, counted separately, so running out of one doesn\'t affect the other. Days are counted in Beijing time, and limits reset at midnight Beijing time. When AI photo reads run out, the app reads photos on your phone instead. When questions run out, Ask Sooner can be used again after midnight Beijing time.',
           ],
           [
             'Use AI is off by default. Turn it on or off in Settings. Without AI, adding food by hand and on-phone reading still work.',
@@ -122,7 +122,7 @@ export const soonerSupportContent: SupportLocale[] = [
         heading: 'When do expiry reminders arrive?',
         paragraphs: [
           [
-            'For food with an expiry date, you get one reminder at 9 AM the day before and one at 6 PM on the day, in your phone\'s time zone. Food expiring on the same day shares one reminder. For food without a date, the app asks whether you still have it at 9 AM, three days after you add it. From the notification you can mark food as eaten or tossed, or be reminded tomorrow.',
+            'For food with an expiry date, you get one reminder at 9:00 the day before and one at 18:00 on the day, in your phone\'s time zone. Food expiring on the same day shares one reminder. For food without a date, the app asks whether you still have it at 9:00, three days after you add it. From the notification you can mark food as eaten or tossed, or be reminded tomorrow.',
           ],
         ],
       },
@@ -161,7 +161,7 @@ export const soonerSupportContent: SupportLocale[] = [
         heading: 'I scanned a barcode and no name appeared',
         paragraphs: [
           [
-            'Looking up a product name needs the internet, and the app stays quiet when no name is found. Photo reading and typing still work. Names found before are remembered on your phone, so scanning the same barcode again works offline.',
+            'Looking up a product name needs the internet. If no name is found, the camera doesn\'t say so; take a photo of the package as usual and you can still add it, or type it in. Names found before are remembered on your phone, so scanning the same barcode again works offline.',
           ],
         ],
       },
