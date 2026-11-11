@@ -6,6 +6,8 @@ import MitoriPrivacyPage from './pages/mitori-privacy'
 import XiaorichangPrivacyPage from './pages/xiaorichang-privacy'
 import SoonerPrivacyPage from './pages/sooner-privacy'
 import { soonerPrivacyMetadata } from './pages/sooner-privacy-content'
+import SoonerSupportPage from './pages/sooner-support'
+import { soonerSupportMetadata } from './pages/sooner-support-content'
 import NotFound from './pages/not-found'
 import ErrorBoundary from './pages/error'
 import type { RouteObjectWithMetadata } from './metadata/types'
@@ -51,6 +53,11 @@ const routes: RouteObject[] = [
           path: 'sooner/privacy',
           Component: SoonerPrivacyPage,
           metadata: soonerPrivacyMetadata,
+        } as RouteObjectWithMetadata,
+        {
+          path: 'sooner/support',
+          Component: SoonerSupportPage,
+          metadata: soonerSupportMetadata,
         } as RouteObjectWithMetadata,
         {
           path: 'xiaorichang/privacy',
