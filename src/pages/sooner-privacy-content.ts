@@ -22,7 +22,7 @@ export const soonerPrivacyContent: PrivacyLocale[] = [
     id: 'zh',
     lang: 'zh-CN',
     title: '趁鲜隐私政策',
-    effective: '更新与生效日期：2026年11月10日',
+    effective: '更新与生效日期：2026年11月11日',
     intro: '简单说：趁鲜不需要账号。食物清单和历史保存在手机上；条码查询会联网；只有你同意使用 AI 时，照片或提问所需的内容才会交给 AI 服务。你主动发送的反馈也会上传。下面分别说明这些数据去哪里、用来做什么，以及怎样停止发送或清除。',
     sections: [
       {
@@ -56,7 +56,7 @@ export const soonerPrivacyContent: PrivacyLocale[] = [
         heading: '条码查询',
         paragraphs: [
           [
-            '查询商品名时，App 把条码数字发送给我们的服务器；这次查询不附上食物清单或设备标识。服务器先查缓存，未命中时查询极速数据（阿里云市场），必要时再查询 Open Food Facts，只取得商品名称和品牌。我们发给这两家服务的查询内容是条码数字，不是你的照片或清单。',
+            '查询商品名时，App 把条码数字发送给我们的服务器，不附上食物清单。查询手机上没有记住的条码时，还会附上下方「设备验证与每日次数」所说的设备验证；服务器据此按设备统计每天查询了几个新条码，但不记录是哪些条码。服务器先查缓存，未命中时查询极速数据（阿里云市场），必要时再查询 Open Food Facts，只取得商品名称和品牌。我们发给这两家服务的查询内容是条码数字，不是你的照片或清单。',
           ],
           [
             '服务器缓存条码对应的名称和品牌：查到结果的缓存有效期为 180 天，查不到的为 14 天；过期后再次查询会重新获取结果。过期不代表记录已经删除，目前没有为这类缓存设置自动删除期限。这些缓存不与某个人或设备关联。网络请求本身也会产生 IP 地址等连接信息，见下方服务商说明。',
@@ -75,7 +75,7 @@ export const soonerPrivacyContent: PrivacyLocale[] = [
             '「用 AI」默认关闭，App 会先征求同意，同一张同意页说明照片、问题和你的食物清单会怎样发送。你可以选择「先不用」，或随时在 App 设置中关闭；关闭后首页不显示「问趁鲜」，也不再发送新的 AI 请求。不使用 AI 不影响手动添加和手机上的识别。如果你在旧版本里只同意过发送照片，第一次使用「问趁鲜」时会再征求一次同意。',
           ],
           [
-            '开着「用 AI」时，你拍摄并提交的照片（包括小票）会发给 AI 识别；这次拍摄中扫到的条码数字和对应名称也会作为提示一起发送，名称可能来自手机上记住的名称，不一定出现在照片里。每次使用「问趁鲜」，会发送问题和你当前的食物清单（最多 200 项），而不只是问题提到的食物，包括名字、份数、存放位置、到期日和日期是否待确认，以及最近 3 轮对话和手机上的当天日期，用来识别和回答。「用 AI」关闭时，照片只在手机上识别，不会发出。照片和「问趁鲜」每天各有次数，分开计算，一样用完不影响另一样；「每天」按北京时间算。每问一次，问题、当前的食物清单和最近 3 轮对话都会先发到我们的服务器，再由它转给 AI；服务器不保存这些内容，回答只显示在你的手机上。如果某一次被告知次数已用完，这一次的照片或问题已经到了我们的服务器，但不会再转给 AI。App 一旦得知当天次数用完（包括用掉最后一次时），到北京时间当天 24 点前不再发出这一类内容：照片改在手机上识别，「问趁鲜」要过了北京时间 24 点才能再问。AI 没有及时回复时，App 也会改在手机上识别，但已经发出的照片仍可能由相关服务处理。',
+            '开着「用 AI」时，你拍摄并提交的照片（包括小票）会发给 AI 识别；这次拍摄中扫到的条码数字和对应名称也会作为提示一起发送，名称可能来自手机上记住的名称，不一定出现在照片里。每次使用「问趁鲜」，会发送问题和你当前的食物清单（最多 200 项），而不只是问题提到的食物，包括名字、份数、存放位置、到期日和日期是否待确认，以及最近 3 轮对话和手机上的当天日期，用来识别和回答。「用 AI」关闭时，照片只在手机上识别，不会发出。照片和「问趁鲜」每天各有次数，分开计算，一样用完不影响另一样；「每天」按北京时间算。每问一次，问题、当前的食物清单和最近 3 轮对话都会先发到我们的服务器，再由它转给 AI；服务器不保存这些内容，回答只显示在你的手机上。如果某一次被告知次数已用完，这一次的照片或问题已经到了我们的服务器，但不会再转给 AI。App 一旦得知当天次数用完（包括用掉最后一次时），到北京时间当天 24 点前不再发出这一类内容：照片改在手机上识别，「问趁鲜」要过了北京时间 24 点才能再问。回答太慢时，我们的服务器会把同一份照片或问题再发一次给同一家 AI 服务，最多一次，用先回来的结果。AI 没有及时回复时，App 也会改在手机上识别，但已经发出的照片仍可能由相关服务处理。',
           ],
           [
             'AI 照片发送前缩到最长边 1024 像素并重新压成 JPEG，不保留照片中的拍摄地点等元数据；图片里直接可见的信息仍会一起发送，拍的时候避开不想给人看的东西。',
@@ -136,7 +136,7 @@ export const soonerPrivacyContent: PrivacyLocale[] = [
         heading: '设备验证与每日次数',
         paragraphs: [
           [
-            '使用 AI 时，App 使用 Apple 的 App Attest 验证请求来自真正的趁鲜和真实设备，防止重复请求及滥用，并计算每天的使用次数。每次安装会生成一把验证密钥；它的编号不是手机序列号，重新安装会更换。请求还带有一次性校验码和 Apple 签名。',
+            '使用 AI，或查询手机上没有记住的条码时，App 使用 Apple 的 App Attest 验证请求来自真正的趁鲜和真实设备，防止重复请求及滥用，并计算每天的使用次数。每次安装会生成一把验证密钥，没开「用 AI」时，第一次联网查条码也会生成；它的编号不是手机序列号，重新安装会更换。请求还带有一次性校验码和 Apple 签名。',
           ],
           [
             '服务器保存密钥编号、公钥、校验计数器、运行环境和创建时间等验证记录。连续 90 天没有使用的设备密钥及相关记录会被自动删除；服务器每天检查一次，所以实际删除最多可能比满 90 天晚一天左右。按天统计的次数记录会自动清理两天前及更早的记录。停止使用后，验证记录要到上述期限才会删除；若想提前删除，请用下方邮箱联系我们，我们会说明可处理的范围。只凭邮箱地址，我们通常找不到对应的设备记录。',
@@ -223,7 +223,7 @@ export const soonerPrivacyContent: PrivacyLocale[] = [
     id: 'en',
     lang: 'en',
     title: 'Sooner Privacy Policy',
-    effective: 'Updated and effective: November 10, 2026',
+    effective: 'Updated and effective: November 11, 2026',
     intro: 'In short: Sooner does not require an account. Your food list and history stay on your phone. Barcode lookup uses the internet. Photos or information needed for a question go to AI services only when you consent to using AI. Feedback you choose to send is also uploaded. This policy explains where that information goes, why it is used, and how to stop sending or remove it.',
     sections: [
       {
@@ -257,7 +257,7 @@ export const soonerPrivacyContent: PrivacyLocale[] = [
         heading: 'Barcode lookup',
         paragraphs: [
           [
-            'To look up a product name, the app sends the barcode number to our server without your food list or device ID. The server checks its cache, then queries 极速数据 (Jisu Data, through Alibaba Cloud Marketplace) and, when needed, Open Food Facts for the product name and brand. The query content we send to these two services is the barcode number, not your photos or food list.',
+            'To look up a product name, the app sends the barcode number to our server without your food list. For a barcode not remembered on your phone, the request also carries the device verification described under "Device verification and daily limits" below; the server uses it to count how many new barcodes each device looks up per day, but does not record which barcodes. The server checks its cache, then queries 极速数据 (Jisu Data, through Alibaba Cloud Marketplace) and, when needed, Open Food Facts for the product name and brand. The query content we send to these two services is the barcode number, not your photos or food list.',
           ],
           [
             'The server caches barcode-to-name and brand results. Successful lookup results are reused for up to 180 days, and unsuccessful results for 14 days. After that, a new lookup fetches a fresh result. Expiry does not delete the stored entry; these cache records currently have no automatic deletion period. They are not linked to a person or device. Network connections also expose technical information such as IP addresses, as explained below. ',
@@ -276,7 +276,7 @@ export const soonerPrivacyContent: PrivacyLocale[] = [
             'Use AI is off by default, and the app asks for your consent first. One consent screen explains how photos, questions, and your food list are sent. You can choose Not Now, or turn it off at any time in the app\'s settings. Turning it off hides Ask Sooner on the home screen and stops new AI requests. You can still add food manually and use on-device recognition. If you agreed only to sending photos in an earlier version, the app asks again before you first use Ask Sooner.',
           ],
           [
-            'With Use AI on, photos you take and submit, including receipts, are sent to AI to read. Barcode numbers scanned during the session and their names are sent with them as hints; names may come from names remembered on your phone and may not appear in the photo. Each Ask Sooner question sends the question and your current food list (up to 200 items), not only foods mentioned in the question, including names, quantities, storage locations, expiry dates, and whether dates need confirmation, plus the last 3 rounds of conversation and the current date on your phone. When Use AI is off, photos are read on your phone only and are not sent. Photos and Ask Sooner each have their own daily limit, counted separately, so running out of one doesn\'t affect the other. Days are counted in Beijing time. Each question first goes to our server along with your current food list and the last 3 rounds of conversation, and the server passes it on to AI. The server doesn\'t save this content, and the answer is shown only on your phone. If a request is told the limit has run out, that photo or question has already reached our server, but it isn\'t passed on to AI. Once the app learns today\'s limit is used up (including when the last use is spent), it stops sending that kind of content until midnight Beijing time: photos are read on your phone, and Ask Sooner can be used again after midnight Beijing time. If AI does not answer in time, the app also reads them on your phone, but photos already sent may still be processed by the services involved.',
+            'With Use AI on, photos you take and submit, including receipts, are sent to AI to read. Barcode numbers scanned during the session and their names are sent with them as hints; names may come from names remembered on your phone and may not appear in the photo. Each Ask Sooner question sends the question and your current food list (up to 200 items), not only foods mentioned in the question, including names, quantities, storage locations, expiry dates, and whether dates need confirmation, plus the last 3 rounds of conversation and the current date on your phone. When Use AI is off, photos are read on your phone only and are not sent. Photos and Ask Sooner each have their own daily limit, counted separately, so running out of one doesn\'t affect the other. Days are counted in Beijing time. Each question first goes to our server along with your current food list and the last 3 rounds of conversation, and the server passes it on to AI. The server doesn\'t save this content, and the answer is shown only on your phone. If a request is told the limit has run out, that photo or question has already reached our server, but it isn\'t passed on to AI. Once the app learns today\'s limit is used up (including when the last use is spent), it stops sending that kind of content until midnight Beijing time: photos are read on your phone, and Ask Sooner can be used again after midnight Beijing time. If an answer is slow, our server sends the same photos or question once more to the same AI service, at most once, and uses whichever answer comes back first. If AI does not answer in time, the app also reads them on your phone, but photos already sent may still be processed by the services involved.',
           ],
           [
             'Before upload, AI photos are resized to a maximum dimension of 1024 pixels and re-encoded as JPEG without metadata such as the capture location. Information visible in the image is still sent. Keep anything you don\'t want to share out of the shot.',
@@ -337,7 +337,7 @@ export const soonerPrivacyContent: PrivacyLocale[] = [
         heading: 'Device verification and daily limits',
         paragraphs: [
           [
-            'For AI requests, the app uses Apple\'s App Attest to verify that requests come from the genuine Sooner app and a real device, prevent replay and abuse, and count daily uses. Each installation creates a verification key. Its ID is not your phone\'s serial number and changes if you reinstall. Requests also include a one-time challenge and an Apple signature.',
+            'For AI requests, and for barcode lookups not remembered on your phone, the app uses Apple\'s App Attest to verify that requests come from the genuine Sooner app and a real device, prevent replay and abuse, and count daily uses. Each installation creates a verification key; with Use AI off, it is created the first time you look up a barcode online. Its ID is not your phone\'s serial number and changes if you reinstall. Requests also include a one-time challenge and an Apple signature.',
           ],
           [
             'The server stores verification records including the key ID, public key, verification counter, environment, and creation time. Device keys and related records that go unused for 90 days are deleted automatically. The server checks once a day, so deletion may happen up to about a day after the 90 days are up. Daily usage records from two days ago and earlier are cleaned up automatically. If you stop using the app, these records are deleted on that schedule. To ask for earlier deletion, email us; we will explain what we can process. An email address alone usually isn\'t enough for us to find your device record.',
