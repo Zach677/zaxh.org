@@ -60,7 +60,7 @@ test('native locale links, scroll offsets, and visible keyboard focus remain ava
 
 test('both locales show the same publish-day effective date, outside the body copy', () => {
   assert.equal(soonerPrivacyContent.map(({ effective }) => effective).join(' / '),
-    '更新与生效日期：2026年11月10日 / Updated and effective: November 10, 2026')
+    '更新与生效日期：2026年11月11日 / Updated and effective: November 11, 2026')
   assert.match(page, /soonerPrivacyContent\[0\]\.effective/)
   assert.match(page, /soonerPrivacyContent\[1\]\.effective/)
   assert.doesNotMatch(zh + en + soonerPrivacyMetadata.description, /预览|尚未生效|[Pp]review|[Nn]ot yet effective/)
@@ -170,4 +170,18 @@ test('daily limits: separate, Beijing time, used-up request reached the server, 
   assert.match(en, /including when the last use is spent\), it stops sending that kind of content until midnight Beijing time/)
   assert.equal((en.match(/the last 3 rounds of conversation/g) ?? []).length, 2)
   assert.doesNotMatch(en, /recent conversation turns|our server no longer passes photos to AI/)
+})
+
+test('TF13: barcode device verification, hedged AI request, no device-ID-free barcode claim', () => {
+  assert.doesNotMatch(zh, /不附上食物清单或设备标识/)
+  assert.doesNotMatch(en, /without your food list or device ID/)
+  assert.match(zh, /查询手机上没有记住的条码时，还会附上[\s\S]*设备验证[\s\S]*但不记录是哪些条码/)
+  assert.match(en, /barcode not remembered on your phone, the request also carries the device verification[\s\S]*does not record which barcodes/)
+  assert.match(zh, /AI 和条码查询共用设备验证密钥，首次使用其中一项时生成；密钥失效时可能重新生成/)
+  assert.match(en, /share a device verification key, created when you first use either feature\. It may be regenerated if it becomes invalid/)
+  assert.match(zh, /再发一次给同一家 AI 服务，最多一次/)
+  assert.match(en, /once more to the same AI service, at most once/)
+  assert.match(zh, /识别或回答太慢时/)
+  assert.doesNotMatch(zh + en, /只生成一把|creates one verification key/)
+  assert.doesNotMatch(zh, /App 也会改在手机上识别/)
 })
