@@ -150,7 +150,7 @@ export const soonerPrivacyContent: PrivacyLocale[] = [
             '只有在 App 设置中点「发送」时，反馈才会交给 AirBuild 的 AirFeedback 保存，供开发者处理问题。反馈包括你写的文字、自己选择的图片（最多 4 张）、App 版本、机型、系统版本、语言和地区。图片会重新压缩，不附带原照片的拍摄地点等元数据。',
           ],
           [
-            'App 不自动附上食物清单、设备标识或联系方式，但文字和图片里可能有你自行提供的个人信息。发送前请检查，不要提供密码、验证码或不想分享的内容。若你通过邮件联系，我们也会收到你主动发送的邮件地址和正文。',
+            '发送反馈时，支持的手机还会向 AirFeedback 发一份设备验证，用来确认反馈来自真的趁鲜 App。它不含手机序列号；拿不到验证时，反馈照样能发出。App 不自动附上食物清单或联系方式，但文字和图片里可能有你自行提供的个人信息。发送前请检查，不要提供密码、验证码或不想分享的内容。若你通过邮件联系，我们也会收到你主动发送的邮件地址和正文。',
           ],
           [
             '目前没有设定反馈的自动删除期限。想删除某条反馈，请发邮件到 ',
@@ -351,7 +351,7 @@ export const soonerPrivacyContent: PrivacyLocale[] = [
             'Feedback is uploaded only when you tap Send in the app\'s settings. AirBuild\'s AirFeedback stores it for the developer to investigate problems. It includes your message, images you select (up to four), app version, device model, OS version, language, and region. Images are re-encoded without metadata such as their original capture location.',
           ],
           [
-            'The app does not automatically attach your food list, device ID, or contact details. Your message or images may still contain personal information you include. Review them before sending, and do not send passwords, verification codes, or anything you do not want to share. If you contact us by email, we also receive the email address and message you choose to send.',
+            'When you send feedback, supported phones also send AirFeedback a device check that confirms it came from the real Sooner app. It doesn\'t include your phone\'s serial number. If the check isn\'t available, your feedback still sends. The app does not automatically attach your food list or contact details. Your message or images may still contain personal information you include. Review them before sending, and do not send passwords, verification codes, or anything you do not want to share. If you contact us by email, we also receive the email address and message you choose to send.',
           ],
           [
             'Feedback currently has no automatic deletion period. To request deletion of an item, email ',
