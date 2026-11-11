@@ -136,7 +136,7 @@ export const soonerPrivacyContent: PrivacyLocale[] = [
         heading: '设备验证与每日次数',
         paragraphs: [
           [
-            '使用 AI，或查询手机上没有记住的条码时，App 使用 Apple 的 App Attest 验证请求来自真正的趁鲜和真实设备，防止重复请求及滥用，并计算每天的使用次数。每次安装只生成一把验证密钥，在你第一次用 AI 或第一次联网查条码时生成，以先到的为准；它的编号不是手机序列号，重新安装会更换。请求还带有一次性校验码和 Apple 签名。',
+            '使用 AI，或查询手机上没有记住的条码时，App 使用 Apple 的 App Attest 验证请求来自真正的趁鲜和真实设备，防止重复请求及滥用，并计算每天的使用次数。AI 和条码查询共用设备验证密钥，首次使用其中一项时生成；密钥失效时可能重新生成。它的编号不是手机序列号，重新安装会更换。请求还带有一次性校验码和 Apple 签名。',
           ],
           [
             '服务器保存密钥编号、公钥、校验计数器、运行环境和创建时间等验证记录。连续 90 天没有使用的设备密钥及相关记录会被自动删除；服务器每天检查一次，所以实际删除最多可能比满 90 天晚一天左右。按天统计的次数记录会自动清理两天前及更早的记录。停止使用后，验证记录要到上述期限才会删除；若想提前删除，请用下方邮箱联系我们，我们会说明可处理的范围。只凭邮箱地址，我们通常找不到对应的设备记录。',
@@ -337,7 +337,7 @@ export const soonerPrivacyContent: PrivacyLocale[] = [
         heading: 'Device verification and daily limits',
         paragraphs: [
           [
-            'For AI requests, and for barcode lookups not remembered on your phone, the app uses Apple\'s App Attest to verify that requests come from the genuine Sooner app and a real device, prevent replay and abuse, and count daily uses. Each installation creates one verification key, the first time you use AI or look up a barcode online, whichever comes first. Its ID is not your phone\'s serial number and changes if you reinstall. Requests also include a one-time challenge and an Apple signature.',
+            'For AI requests, and for barcode lookups not remembered on your phone, the app uses Apple\'s App Attest to verify that requests come from the genuine Sooner app and a real device, prevent replay and abuse, and count daily uses. AI requests and barcode lookups share a device verification key, created when you first use either feature. It may be regenerated if it becomes invalid. Its ID is not your phone\'s serial number and changes if you reinstall. Requests also include a one-time challenge and an Apple signature.',
           ],
           [
             'The server stores verification records including the key ID, public key, verification counter, environment, and creation time. Device keys and related records that go unused for 90 days are deleted automatically. The server checks once a day, so deletion may happen up to about a day after the 90 days are up. Daily usage records from two days ago and earlier are cleaned up automatically. If you stop using the app, these records are deleted on that schedule. To ask for earlier deletion, email us; we will explain what we can process. An email address alone usually isn\'t enough for us to find your device record.',
