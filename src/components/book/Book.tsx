@@ -4,15 +4,15 @@ import {
   useContext,
   useEffect,
   useLayoutEffect,
-  useState,
+  useReducer,
   useSyncExternalStore,
   type ReactNode,
 } from 'react'
 import * as stylex from '@stylexjs/stylex'
-import { useLocation } from 'react-router'
 
 import { colors, fonts } from '../../design-system/tokens.stylex'
 import { shared } from '../../design-system/shared.stylex'
+import { PRERENDERED, reduce } from './turn'
 
 // Below this size there is no room for a two-page spread: the cover lifts
 // off once and the pages stack in reading order.
@@ -20,8 +20,9 @@ const NARROW_QUERY = '(max-width: 860px), (max-height: 540px)'
 const NARROW = `@media ${NARROW_QUERY}`
 const REDUCE = '@media (prefers-reduced-motion: reduce)'
 const SEEN_KEY = 'book-open'
-const TURN_MS = 1000
-const AUTO_OPEN_MS = 700
+// A page is light; the cover is a board, and takes longer.
+const TURN_MS = 750
+const COVER_MS = 1000
 // A critically damped spring sampled into linear(): it moves at once and
 // lands softly, with no overshoot (a hard cover cannot pass flat).
 const SPRING =
@@ -32,8 +33,12 @@ const FLAT = 'perspective(2400px) rotateY(0deg)'
 // are in em; this is the page's 14px base at the design height.
 const PAGE_TYPE = {
   default: 'calc(100cqh * 14 / 680)',
-  [NARROW]: '14px',
+  [NARROW]: '1rem',
 }
+// Narrow screens show the closed book in its own proportions (0.71), with
+// the desk around it. This is its height.
+const PHONE_COVER = 'min(100svh - 9rem, 80vw / 0.71)'
+const SPREAD_WIDTH = 'min(94vw, min(100svh - 7rem, 680px) * 1.42)'
 const TURNED = 'perspective(2400px) rotateY(-180deg)'
 
 const TurnContext = createContext<(by: number) => void>(() => {})
@@ -46,15 +51,11 @@ function subscribeNarrow(onChange: () => void) {
 
 const subscribeNothing = () => () => {}
 
-// The prerendered book is open, so it reads without JavaScript. index.html
-// sets html[data-book="closed"] when this visit should play the opening.
-function startsOpen() {
-  return typeof document === 'undefined' || document.documentElement.dataset.book !== 'closed'
-}
-
+// SPRING stands the leaf upright at about 27% of the turn; the shade is
+// darkest there and clears as the leaf settles.
 const shade = stylex.keyframes({
   '0%': { opacity: 0 },
-  '50%': { opacity: 1 },
+  '27%': { opacity: 1 },
   '100%': { opacity: 0 },
 })
 
@@ -66,8 +67,18 @@ const motion = {
   transitionTimingFunction: SPRING,
 } as const
 
+const coverMotion = {
+  transitionDuration: {
+    default: `${COVER_MS}ms`,
+    [REDUCE]: '0s',
+  },
+  transitionTimingFunction: SPRING,
+} as const
+
 const styles = stylex.create({
   desk: {
+    // Positioned, so its overflow also clips the screen-reader-only status.
+    position: 'relative',
     minHeight: '100svh',
     display: {
       default: 'grid',
@@ -85,14 +96,47 @@ const styles = stylex.create({
       [NARROW]: 'visible',
     },
   },
+  // Narrow: the pages do not scroll under the closed cover.
+  deskClosed: {
+    height: {
+      default: null,
+      [NARROW]: '100svh',
+    },
+    overflow: {
+      default: 'clip',
+      [NARROW]: 'hidden',
+    },
+  },
+  // Narrow: the desk, drawn over the stacked pages until the cover opens.
+  veil: {
+    display: {
+      default: 'none',
+      [NARROW]: 'block',
+    },
+    position: 'fixed',
+    inset: 0,
+    zIndex: 9,
+    backgroundColor: colors.paper,
+    transitionProperty: 'opacity',
+    transitionDuration: {
+      default: `${COVER_MS / 2}ms`,
+      [REDUCE]: '0s',
+    },
+  },
+  veilGone: {
+    opacity: 0,
+    pointerEvents: 'none',
+  },
   book: {
     position: 'relative',
     width: {
-      default: 'min(94vw, calc(min(100svh - 7rem, 680px) * 1.42))',
+      default: SPREAD_WIDTH,
       [NARROW]: 'auto',
     },
+    // The width limit is in the height too, so the spread keeps its
+    // proportions and PAGE_TYPE follows whichever limit applies.
     height: {
-      default: 'min(100svh - 7rem, 680px)',
+      default: 'min(100svh - 7rem, 680px, 94vw / 1.42)',
       [NARROW]: 'auto',
     },
     // Size container for PAGE_TYPE. Off when narrow: containment would trap
@@ -102,7 +146,7 @@ const styles = stylex.create({
       [NARROW]: 'normal',
     },
     transitionProperty: 'transform',
-    ...motion,
+    ...coverMotion,
   },
   // Closed, the cover (the right half) sits in the middle of the desk.
   closed: {
@@ -137,7 +181,7 @@ const styles = stylex.create({
   },
   blockLeftOpen: {
     opacity: 1,
-    transitionDelay: `${TURN_MS * 0.4}ms`,
+    transitionDelay: `${COVER_MS * 0.4}ms`,
   },
   blockRight: {
     position: 'absolute',
@@ -194,6 +238,14 @@ const styles = stylex.create({
       [NARROW]: 'none',
     },
   },
+  // Leaf 0 carries the cover, and its shade keeps the same time.
+  coverPace: {
+    transitionDuration: {
+      default: `${COVER_MS}ms`,
+      [REDUCE]: '0s',
+    },
+    animationDuration: `${COVER_MS}ms`,
+  },
   face: {
     position: {
       default: 'absolute',
@@ -225,8 +277,8 @@ const styles = stylex.create({
       default: shade,
       [REDUCE]: 'none',
     },
-    animationDuration: `${TURN_MS * 0.8}ms`,
-    animationTimingFunction: 'ease-in-out',
+    animationDuration: `${TURN_MS}ms`,
+    animationTimingFunction: 'ease-out',
   },
   lastPage: {
     position: {
@@ -254,15 +306,25 @@ const styles = stylex.create({
       default: null,
       [NARROW]: 10,
     },
-    display: 'grid',
-    placeItems: 'center',
-    textAlign: 'center',
-    fontSize: PAGE_TYPE,
-    color: colors.foil,
-    borderRadius: {
-      default: '0 6px 6px 0',
-      [NARROW]: 0,
+    margin: {
+      default: null,
+      [NARROW]: 'auto',
     },
+    width: {
+      default: null,
+      [NARROW]: `calc(${PHONE_COVER} * 0.71)`,
+    },
+    height: {
+      default: null,
+      [NARROW]: PHONE_COVER,
+    },
+    // A phone holds the cover closer: its type is set for a 520px cover.
+    fontSize: {
+      default: 'calc(100cqh * 14 / 680)',
+      [NARROW]: `calc(${PHONE_COVER} * 14 / 520)`,
+    },
+    color: colors.foil,
+    borderRadius: '0 6px 6px 0',
     // Spine shadow, the hinge groove of a hardcover, then a linen weave.
     backgroundImage:
       'linear-gradient(90deg, rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0) 5%), ' +
@@ -275,32 +337,20 @@ const styles = stylex.create({
     boxShadow:
       'inset 0 0 0 1px rgba(255, 255, 255, 0.05), 0 30px 60px -30px rgba(20, 19, 18, 0.6)',
     transformOrigin: 'left center',
-    transitionProperty: 'transform, opacity',
-    ...motion,
+    transitionProperty: 'transform',
+    ...coverMotion,
   },
-  // Narrow screens have no leaf to turn: the cover itself swings away.
+  // Narrow screens have no leaf to turn: the cover itself swings away. It
+  // stays solid and ends past edge-on, where its hidden back faces the reader.
   coverAway: {
     transform: {
       default: null,
       [NARROW]: 'perspective(1400px) rotateY(-100deg)',
     },
-    opacity: {
-      default: null,
-      [NARROW]: 0,
-    },
     pointerEvents: {
       default: null,
       [NARROW]: 'none',
     },
-  },
-  coverFrame: {
-    position: 'absolute',
-    inset: '1.6em 1.6em 1.6em calc(9% + 1em)',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: `color-mix(in oklab, ${colors.foil} 55%, transparent)`,
-    borderRadius: '2px',
-    pointerEvents: 'none',
   },
   coverButton: {
     position: 'absolute',
@@ -315,13 +365,24 @@ const styles = stylex.create({
   },
   hint: {
     position: 'fixed',
+    zIndex: 11,
     left: '50%',
     bottom: '1.25rem',
     transform: 'translateX(-50%)',
     margin: 0,
     fontFamily: fonts.mono,
-    fontSize: '12px',
+    fontSize: '0.857rem',
+    whiteSpace: 'nowrap',
     color: colors.secondary,
+    transitionProperty: 'opacity',
+    transitionDuration: '0.4s',
+  },
+  // Open, the hint sits under the left page, clear of the ribbon.
+  hintOpen: {
+    left: `calc(50% - ${SPREAD_WIDTH} / 4)`,
+  },
+  hintGone: {
+    opacity: 0,
   },
   corner: {
     position: {
@@ -340,24 +401,24 @@ const styles = stylex.create({
 })
 
 /**
- * A book of spreads. The cover opens onto the first spread; each further
- * leaf turns to the next. `pages` is in reading order and must be even:
- * page 0 is printed on the back of the cover, the last page lies under all
- * leaves. `sections` maps a URL hash (without #) to a spread index.
+ * A book of spreads. The cover waits for the reader and opens onto the first
+ * spread; each further leaf turns to the next. `pages` is in reading order
+ * and must be even: page 0 is printed on the back of the cover, the last page
+ * lies under all leaves. `sections` maps a URL hash (without #) to a spread
+ * index.
  */
 export function Book({
   cover,
   pages,
-  sections = {},
+  sections,
   corner,
 }: {
   cover: ReactNode
   pages: ReactNode[]
-  sections?: Record<string, number>
+  sections: Record<string, number>
   corner?: ReactNode
 }) {
   const spreads = pages.length / 2
-  const { hash } = useLocation()
   const narrow = useSyncExternalStore(
     subscribeNarrow,
     () => matchMedia(NARROW_QUERY).matches,
@@ -365,39 +426,27 @@ export function Book({
   )
   // Prerendered HTML has no inert pages, so it reads in full without JS.
   const mounted = useSyncExternalStore(subscribeNothing, () => true, () => false)
-  const [open, setOpen] = useState(startsOpen)
-  // Skip transitions for the first frame when the book starts open.
-  const [instant, setInstant] = useState(open)
-  const [spread, setSpread] = useState(() => sections[hash.slice(1)] ?? 0)
-  // The leaf in motion rides above both stacks until it lands.
-  const [moving, setMoving] = useState<number | null>(null)
-
-  const openBook = useCallback(() => {
-    if (open) return
-    setOpen(true)
-    setMoving(0)
-    sessionStorage.setItem(SEEN_KEY, '1')
-  }, [open])
+  const [{ open, spread, moving, instant, turned }, dispatch] = useReducer(reduce, PRERENDERED)
 
   const turn = useCallback(
     (by: number) => {
-      if (!open) {
-        openBook()
-        return
-      }
-      const to = Math.min(Math.max(spread + by, 0), spreads - 1)
-      if (to === spread) return
-      // Forward lifts the next leaf; back lowers the current one.
-      setMoving(to > spread ? to : spread)
-      setSpread(to)
+      // The cover waits once per session; index.html reads this.
+      if (!open && by > 0) sessionStorage.setItem(SEEN_KEY, '1')
+      dispatch({ type: 'turn', by, spreads })
     },
-    [open, openBook, spread, spreads],
+    [open, spreads],
   )
 
-  // React owns the book now; drop the pre-paint flag from index.html.
+  // The first paint is the prerendered, open book. Before the next paint,
+  // close it if index.html asked for the cover, or go to the URL's section.
+  // After that React owns the book, so drop the flag.
   useLayoutEffect(() => {
-    delete document.documentElement.dataset.book
-  }, [])
+    const root = document.documentElement
+    const section = sections[location.hash.slice(1)]
+    if (root.dataset.book === 'closed') dispatch({ type: 'jump', open: false })
+    else if (section !== undefined) dispatch({ type: 'jump', open: true, spread: section })
+    delete root.dataset.book
+  }, [sections])
 
   // A layout switch (rotation, resize) jumps to the new layout. The media
   // query has already started the turns between the two; land them. Only
@@ -411,40 +460,32 @@ export function Book({
 
   useEffect(() => {
     if (!instant) return undefined
-    const id = requestAnimationFrame(() => setInstant(false))
+    const id = requestAnimationFrame(() => dispatch({ type: 'settle' }))
     return () => cancelAnimationFrame(id)
   }, [instant])
 
   useEffect(() => {
-    if (open) return undefined
-    const id = setTimeout(openBook, AUTO_OPEN_MS)
-    return () => clearTimeout(id)
-  }, [open, openBook])
-
-  useEffect(() => {
     if (moving === null) return undefined
-    const id = setTimeout(() => setMoving(null), TURN_MS)
+    const id = setTimeout(() => dispatch({ type: 'land' }), moving === 0 ? COVER_MS : TURN_MS)
     return () => clearTimeout(id)
   }, [moving, spread])
 
-  // Section links jump straight to their spread, without a turn.
-  useEffect(() => {
-    const target = sections[hash.slice(1)]
-    if (target === undefined) return
-    setInstant(true)
-    setOpen(true)
-    setSpread(target)
-  }, [hash, sections])
-
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.metaKey || e.ctrlKey || e.altKey || narrow) return
+      // A focused control that used the key (the theme switcher) keeps it.
+      if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey) return
+      if (!open) {
+        // Enter opens the cover only when no control has the focus.
+        if (e.key === 'ArrowRight' || (e.key === 'Enter' && e.target === document.body)) turn(1)
+        return
+      }
+      if (narrow) return
       if (e.key === 'ArrowRight') turn(1)
       if (e.key === 'ArrowLeft') turn(-1)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [turn, narrow])
+  }, [turn, open, narrow])
 
   // Leaf 0 is the cover. A leaf is turned once the book is open past it.
   const isTurned = (leaf: number) => (leaf === 0 ? open : leaf <= spread)
@@ -462,14 +503,23 @@ export function Book({
 
   const shading = (leaf: number) => (
     <div
-      {...stylex.props(styles.shade, styles.wide, leaf === moving && styles.shading)}
+      {...stylex.props(
+        styles.shade,
+        styles.wide,
+        leaf === moving && styles.shading,
+        leaf === 0 && styles.coverPace,
+      )}
       aria-hidden="true"
     />
   )
 
   return (
     <TurnContext value={turn}>
-      <div {...stylex.props(styles.desk)}>
+      <div {...stylex.props(styles.desk, !open && styles.deskClosed)}>
+        <div
+          {...stylex.props(styles.veil, open && styles.veilGone, instant && styles.instant)}
+          aria-hidden="true"
+        />
         <div
           id="book"
           {...stylex.props(styles.book, !open && styles.closed, instant && styles.instant)}
@@ -492,6 +542,7 @@ export function Book({
               {...stylex.props(
                 styles.leaf,
                 isTurned(leaf) && styles.turned,
+                leaf === 0 && styles.coverPace,
                 instant && styles.instant,
               )}
               style={{ zIndex: zIndex(leaf) }}
@@ -507,11 +558,10 @@ export function Book({
                   inert={mounted && open}
                 >
                   {cover}
-                  <div {...stylex.props(styles.coverFrame)} aria-hidden="true" />
                   <button
                     type="button"
                     aria-label="Open the book"
-                    onClick={openBook}
+                    onClick={() => turn(1)}
                     {...stylex.props(styles.coverButton)}
                   />
                 </div>
@@ -536,11 +586,16 @@ export function Book({
         <p {...stylex.props(shared.srOnly)} aria-live="polite">
           {open ? `Spread ${spread + 1} of ${spreads}` : 'The book is closed'}
         </p>
-        {open ? null : (
-          <p {...stylex.props(styles.hint, styles.wide)}>
-            click the cover to open · ← → to turn pages
+        {/* Stays until the reader has done what it says. Not prerendered:
+            without JavaScript there is nothing to click. */}
+        {mounted ? (
+          <p
+            {...stylex.props(styles.hint, open && styles.wide, open && styles.hintOpen, open && turned && styles.hintGone)}
+            aria-hidden={open && turned}
+          >
+            {open ? '← → to turn pages' : 'click or tap the cover to open'}
           </p>
-        )}
+        ) : null}
         {corner ? <div {...stylex.props(styles.corner)}>{corner}</div> : null}
       </div>
     </TurnContext>

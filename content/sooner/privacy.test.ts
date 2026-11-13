@@ -2,68 +2,52 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { test } from 'node:test'
 
-import { soonerPrivacyContent, soonerPrivacyMetadata } from './sooner-privacy-content.ts'
+import { readPage } from './page.ts'
 
-const page = readFileSync(new URL('./sooner-privacy.tsx', import.meta.url), 'utf8')
-const routes = readFileSync(new URL('../routes.tsx', import.meta.url), 'utf8')
-const textOf = (locale: typeof soonerPrivacyContent[number]) => [
-  locale.intro,
-  ...locale.sections.flatMap((section) => section.paragraphs.map((paragraph) => (
-    paragraph.map((segment) => typeof segment === 'string' ? segment : segment.text).join('')
-  ))),
-].join('\n')
+// The file's path is the page's address: content/sooner/privacy.md is
+// /sooner/privacy, and scripts/ssg.ts fails the build if it is gone.
+const page = readPage('./privacy.md')
+const css = readFileSync(new URL('../../src/styles/components.css', import.meta.url), 'utf8')
+const zh = page.text('zh')
+const en = page.text('en')
 
-const zh = textOf(soonerPrivacyContent[0])
-const en = textOf(soonerPrivacyContent[1])
-
-test('one static route uses RootLayout and stable bilingual metadata', () => {
-  assert.equal(soonerPrivacyMetadata.url, 'https://zaxh.org/sooner/privacy')
-  assert.match(soonerPrivacyMetadata.title, /趁鲜.*Sooner Privacy Policy/)
-  assert.match(soonerPrivacyMetadata.description, /趁鲜隐私政策：.*Sooner privacy policy:/)
-  assert.equal((routes.match(/path: 'sooner\/privacy'/g) ?? []).length, 1)
-  assert.match(routes, /Component: RootLayout,[\s\S]*path: 'sooner\/privacy',\s*Component: SoonerPrivacyPage,\s*metadata: soonerPrivacyMetadata/)
-  assert.doesNotMatch(routes, /path: ['"]sooner\/privacy\//)
+test('stable bilingual title and description', () => {
+  assert.match(page.title, /趁鲜.*Sooner Privacy Policy/)
+  assert.match(page.description, /趁鲜隐私政策：.*Sooner privacy policy:/)
 })
 
-test('both complete locales are rendered unconditionally with a consistent heading hierarchy', () => {
-  assert.deepEqual(soonerPrivacyContent.map(({ id, lang }) => ({ id, lang })), [
-    { id: 'zh', lang: 'zh-CN' }, { id: 'en', lang: 'en' },
+test('both complete locales are on the page with a consistent heading hierarchy', () => {
+  assert.deepEqual(page.locales, [
+    { id: 'zh', lang: 'zh-CN', title: '趁鲜隐私政策' },
+    { id: 'en', lang: 'en', title: 'Sooner Privacy Policy' },
   ])
-  assert.deepEqual(soonerPrivacyContent.map(({ title }) => title), [
-    '趁鲜隐私政策', 'Sooner Privacy Policy',
-  ])
-  assert.equal((page.match(/<h1\b/g) ?? []).length, 1)
-  assert.match(page, /soonerPrivacyContent\.map/)
-  assert.match(page, /id=\{locale.id\}[\s\S]*lang=\{locale.lang\}[\s\S]*aria-labelledby=/)
-  assert.match(page, /<h2[^>]*>\{locale.title\}<\/h2>/)
-  assert.match(page, /<h3>\{section.heading\}<\/h3>/)
-  assert.match(page, /section\.paragraphs\.map/)
-  assert.doesNotMatch(page, /useState|useEffect|hidden=|display: 'none'|dangerouslySetInnerHTML/)
-  for (const locale of soonerPrivacyContent) {
-    assert.equal(locale.sections.length, 11)
-    assert.equal(new Set(locale.sections.map(({ heading }) => heading)).size, 11)
-    assert.ok(locale.intro.length > 100)
-    assert.ok(locale.sections.every(({ paragraphs }) => paragraphs.length > 0))
-    assert.ok(textOf(locale).length > 2500)
+  assert.equal((page.body.match(/^# /gm) ?? []).length, 1)
+  assert.equal((page.body.match(/<h2\b/g) ?? []).length, 2)
+  assert.doesNotMatch(page.body, /^## /m)
+  // Nothing on the page selects a language or hides one.
+  assert.doesNotMatch(page.body, /<script|hidden|style=|onclick/i)
+  for (const id of ['zh', 'en']) {
+    const text = page.text(id)
+    assert.equal(page.headings(id).length, 11)
+    assert.equal(new Set(page.headings(id)).size, 11)
+    assert.ok(text.split('\n')[0].length > 100)
+    assert.ok(text.length > 2500)
   }
 })
 
 test('native locale links, scroll offsets, and visible keyboard focus remain available', () => {
-  assert.match(page, /<nav aria-label=/)
-  assert.match(page, /<a href="#zh" lang="zh-CN"/)
-  assert.match(page, /<a href="#en" lang="en"/)
-  assert.match(page, /scrollMarginTop: '2rem'/)
-  assert.match(page, /':focus-visible': `2px solid \$\{colors.accent\}`/)
-  assert.match(page, /outlineOffset: '4px'/)
-  assert.doesNotMatch(page, /onClick|preventDefault/)
+  assert.match(page.header, /<nav aria-label=/)
+  assert.match(page.header, /<a href="#zh" lang="zh-CN">/)
+  assert.match(page.header, /<a href="#en" lang="en">/)
+  assert.match(css, /section\[id\] \{\s*scroll-margin-top: 2rem;/)
+  assert.match(css, /a:focus-visible \{\s*outline: 2px solid var\(--color-accent\);\s*outline-offset: 4px;/)
 })
 
 test('both locales show the same publish-day effective date, outside the body copy', () => {
-  assert.equal(soonerPrivacyContent.map(({ effective }) => effective).join(' / '),
-    '更新与生效日期：2026年11月11日 / Updated and effective: November 11, 2026')
-  assert.match(page, /soonerPrivacyContent\[0\]\.effective/)
-  assert.match(page, /soonerPrivacyContent\[1\]\.effective/)
-  assert.doesNotMatch(zh + en + soonerPrivacyMetadata.description, /预览|尚未生效|[Pp]review|[Nn]ot yet effective/)
+  assert.ok(page.header.split('\n').includes(
+    '<span lang="zh-CN">更新与生效日期：2026年11月13日</span> / <span lang="en">Updated and effective: November 13, 2026</span>',
+  ))
+  assert.doesNotMatch(zh + en + page.description, /预览|尚未生效|[Pp]review|[Nn]ot yet effective/)
   assert.doesNotMatch(zh + en, /\b20\d{2}[-年/]\d|Effective date:|生效日期：/)
   assert.doesNotMatch(zh + en, /内部发布前核对|五行设计计划|Pluso2807|Camo2810/)
 })
@@ -80,16 +64,13 @@ test('each locale includes the actual provider, website, and contact links', () 
     'https://www.apple.com/legal/privacy/',
     'https://www.apple.com/legal/privacy/data/en/test-flight/',
     'https://www.cloudflare.com/web-analytics/',
-    'https://developers.google.com/fonts/faq/privacy',
     'mailto:i@xingbest.fun',
   ].sort()
-  for (const locale of soonerPrivacyContent) {
-    const links = locale.sections.flatMap(({ paragraphs }) => paragraphs.flat())
-      .filter((segment) => typeof segment !== 'string')
+  for (const id of ['zh', 'en']) {
+    const links = page.links(id)
     assert.deepEqual([...new Set(links.map(({ href }) => href))].sort(), expected)
     assert.ok(links.every(({ text }) => text.trim().length > 0))
   }
-  assert.match(page, /href=\{segment.href\}/)
 })
 
 test('retention states 90-day device cleanup and provider-specific limits', () => {
@@ -132,7 +113,7 @@ test('copy preserves opt-in, local data, actual AI chain, and deletion limitatio
   assert.match(en, /cannot guarantee that the platform can delete it/)
   assert.match(en, /no clear-all-data control/)
   assert.match(en, /Cloudflare Web Analytics/)
-  assert.match(en, /Google Fonts/)
+  assert.doesNotMatch(zh + en, /Google Fonts|字体/)
   assert.match(zh, /自己选择的图片（最多 4 张）/)
   assert.match(en, /images you select \(up to four\)/)
   assert.match(zh, /支持的手机还会向 AirFeedback 发一份设备验证，用来确认反馈来自真的趁鲜 App。它带一个这次安装用的编号，不是手机序列号，也和 AI、查条码用的那个不同；重装后会换，失效时也可能换新的。拿不到验证时，反馈照样能发出/)

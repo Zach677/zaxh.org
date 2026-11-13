@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import * as stylex from '@stylexjs/stylex'
 
 import { ago, viewDesk, type Desk, type Ledger } from '../live/desk'
@@ -7,6 +7,7 @@ import { colors, fonts } from '../design-system/tokens.stylex'
 // App icons by display name, the set Yohaku uses for its live desk.
 const ICONS = 'https://fastly.jsdelivr.net/gh/Innei/reporter-assets@main'
 const RETRY_MS = 5_000
+const MAX_RETRY_MS = 60_000
 const TICK_MS = 30_000
 
 const breathe = stylex.keyframes({
@@ -21,24 +22,41 @@ function useDesk() {
   useEffect(() => {
     let socket: WebSocket | undefined
     let retry: ReturnType<typeof setTimeout> | undefined
+    let wait = RETRY_MS
     let stopped = false
     function connect() {
+      clearTimeout(retry)
       socket = new WebSocket(`${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/api/desk`)
-      socket.onmessage = (event) => setDesk(JSON.parse(event.data))
+      socket.onmessage = (event) => {
+        wait = RETRY_MS
+        setDesk(JSON.parse(event.data))
+      }
       socket.onclose = () => {
         setDesk((last) => last ?? null)
-        if (!stopped) retry = setTimeout(connect, RETRY_MS)
+        // A hidden tab does not retry: it connects again when it shows.
+        if (stopped || document.hidden) return
+        retry = setTimeout(connect, wait)
+        wait = Math.min(wait * 2, MAX_RETRY_MS)
       }
     }
+    function onShow() {
+      if (!document.hidden && socket?.readyState === WebSocket.CLOSED) connect()
+    }
     connect()
+    document.addEventListener('visibilitychange', onShow)
     return () => {
       stopped = true
       clearTimeout(retry)
+      document.removeEventListener('visibilitychange', onShow)
       socket?.close()
     }
   }, [])
   return desk
 }
+
+const DeskContext = createContext<Desk | null | undefined>(undefined)
+// undefined until tokens.ci answers; null when the ledger is closed.
+const LedgerContext = createContext<Ledger | null | undefined>(undefined)
 
 // The clock that moves "here" to "away" when reports stop.
 function useNow() {
@@ -60,6 +78,19 @@ function useJSON<T>(url: string | null) {
   }, [url])
   return data
 }
+
+/** One socket and one ledger request for every live note: the cover and the frontispiece. */
+export function LiveProvider({ children }: { children: ReactNode }) {
+  return (
+    <DeskContext value={useDesk()}>
+      <LedgerContext value={useJSON<Ledger>('/api/ledger')}>{children}</LedgerContext>
+    </DeskContext>
+  )
+}
+
+const rise = stylex.keyframes({
+  from: { transform: 'scaleY(0)' },
+})
 
 const styles = stylex.create({
   notes: {
@@ -194,6 +225,25 @@ const styles = stylex.create({
     borderRadius: '2px',
     backgroundColor: colors.inkWash,
   },
+  // The cover's ledger: a year of weeks stamped in foil, standing on the band.
+  foilStrip: {
+    display: 'flex',
+    alignItems: 'flex-end',
+    gap: '0.15em',
+    transformOrigin: 'bottom',
+    animationName: {
+      default: rise,
+      '@media (prefers-reduced-motion: reduce)': 'none',
+    },
+    animationDuration: '0.7s',
+    animationTimingFunction: 'var(--ease)',
+  },
+  foilWeek: {
+    flex: 1,
+    minHeight: '1px',
+    backgroundColor: colors.foil,
+    opacity: 0.82,
+  },
 })
 
 function AppIcon({ name }: { name: string }) {
@@ -204,7 +254,7 @@ function AppIcon({ name }: { name: string }) {
 }
 
 function Now() {
-  const desk = useDesk()
+  const desk = useContext(DeskContext)
   const now = useNow()
   if (desk === undefined) {
     return (
@@ -254,7 +304,7 @@ function today() {
 }
 
 function LedgerNote() {
-  const ledger = useJSON<Ledger>('/api/ledger')
+  const ledger = useContext(LedgerContext)
   return (
     <div>
       <div {...stylex.props(styles.label)}>
@@ -285,6 +335,40 @@ function LedgerNote() {
       </div>
     </div>
   )
+}
+
+/** The cover's live line. It holds its place until the desk reports. */
+export function CoverNote() {
+  const desk = useContext(DeskContext)
+  const now = useNow()
+  const view = desk === undefined ? null : viewDesk(desk, now)
+  if (!view) return <span>{'\u00a0'}</span>
+  return (
+    <span>
+      <span {...stylex.props(styles.dot, !view.here && styles.away)} />
+      {view.here ? `at the desk${view.app ? ` · ${view.app}` : ''}` : 'away from the desk'}
+    </span>
+  )
+}
+
+/** The cover's ledger bars. Empty until the ledger answers, and while it is closed. */
+export function CoverLedger({ style }: { style: stylex.StyleXStyles }) {
+  const ledger = useContext(LedgerContext)
+  if (!ledger) return null
+  return (
+    <div {...stylex.props(styles.foilStrip, style)} aria-hidden="true">
+      {ledger.weeks.map((week, index) => (
+        <i key={index} {...stylex.props(styles.foilWeek)} style={{ height: `${week * 100}%` }} />
+      ))}
+    </div>
+  )
+}
+
+/** The cover's ledger totals, beside the live line. */
+export function CoverTotals() {
+  const ledger = useContext(LedgerContext)
+  if (!ledger) return null
+  return <span>{compact.format(ledger.tokens)} tokens · {ledger.days} days</span>
 }
 
 /** The frontispiece notes: where Zach is now, and the token ledger. */

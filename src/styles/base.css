@@ -65,17 +65,16 @@
   }
 
   html {
-    font-size: 14px;
+    /* 14px at the default size, and it follows the reader's setting. */
+    font-size: 87.5%;
     letter-spacing: 0.01em;
-    scroll-padding-top: 100px;
     -webkit-font-smoothing: antialiased;
   }
 
   body {
     color: var(--color-neutral-9);
     font-family: var(--font-sans);
-    font-size: var(--text-copy-14);
-    line-height: var(--text-copy-14--line-height);
+    line-height: 1.57;
     text-rendering: optimizeLegibility;
     font-synthesis: none;
 

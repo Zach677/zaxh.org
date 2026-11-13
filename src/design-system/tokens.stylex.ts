@@ -22,6 +22,8 @@ export const colors = stylex.defineVars({
   page: 'var(--color-page)',
   cloth: 'var(--color-cloth)',
   foil: 'var(--color-foil)',
+  band: 'var(--color-band)',
+  bandInk: 'var(--color-band-ink)',
   gutter: 'var(--color-gutter)',
   info: 'var(--color-info)',
   success: 'var(--color-success)',
@@ -30,48 +32,10 @@ export const colors = stylex.defineVars({
   inkWash: 'var(--color-ink-wash)',
   separator: 'var(--color-separator)',
   separatorSoft: 'var(--color-separator-soft)',
-  codePlate: 'var(--color-code-plate)',
-  codeInk: 'var(--color-code-ink)',
-  codeMuted: 'var(--color-code-muted)',
 })
 
 export const fonts = stylex.defineVars({
   sans: 'var(--font-sans)',
   serif: 'var(--font-serif)',
   mono: 'var(--font-mono)',
-})
-
-/** Type roles — size + line-height bundled (Yohaku role+px). */
-export const typeScale = stylex.defineVars({
-  caption10: '10px',
-  caption10Lh: '1.4',
-  label12: '12px',
-  label12Lh: '1.5',
-  copy13: '13px',
-  copy13Lh: '1.54',
-  copy14: '14px',
-  copy14Lh: '1.57',
-  copy15: '15px',
-  copy15Lh: '1.6',
-  copy16: '16px',
-  copy16Lh: '1.625',
-  title20: '20px',
-  title20Lh: '1.4',
-  title24: '24px',
-  title24Lh: '1.33',
-  title28: '28px',
-  title28Lh: '1.29',
-  display36: '36px',
-  display36Lh: '1.22',
-  display48: '48px',
-  display48Lh: '1.17',
-  iconSm: '14px',
-  iconMd: '16px',
-  iconLg: '18px',
-})
-
-export const motion = stylex.defineVars({
-  ease: 'var(--ease)',
-  easeSpring: 'var(--ease-spring)',
-  easeOutCubic: 'var(--ease-out-cubic)',
 })

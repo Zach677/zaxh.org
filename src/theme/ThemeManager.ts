@@ -3,7 +3,7 @@ import type { Theme } from './types'
 interface ThemeManager {
   init(): void
   getTheme(): Theme
-  setTheme(theme: Theme): void
+  setTheme(theme: Theme, origin?: { x: number; y: number }): void
   registerListener(listener: () => void): () => void
 }
 
@@ -14,7 +14,12 @@ const LIGHT_THEME_COLOR = '#f9f8f5'
 const DARK_THEME_COLOR = '#141312'
 
 const listeners = new Set<() => void>()
-let currentTheme: Theme = 'system'
+// index.html sets data-theme before the first paint. Start from it, so the
+// switcher does not slide into place on load.
+let currentTheme: Theme =
+  typeof document === 'undefined'
+    ? 'system'
+    : (document.documentElement.dataset.theme as Theme | undefined) ?? 'system'
 
 let lightThemeColorMeta: HTMLMetaElement | null = null
 let darkThemeColorMeta: HTMLMetaElement | null = null
@@ -60,10 +65,13 @@ const themeManager: ThemeManager = {
   getTheme() {
     return currentTheme
   },
-  setTheme(theme: Theme) {
+  setTheme(theme, origin = { x: 0, y: 0 }) {
     localStorage.setItem(LOCAL_STORAGE_KEY, theme)
 
-    if (!('startViewTransition' in document)) {
+    if (
+      !('startViewTransition' in document) ||
+      matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
       applyTheme(theme)
       return
     }
@@ -73,8 +81,8 @@ const themeManager: ThemeManager = {
     })
 
     transition.ready.then(() => {
-      const x = 0
-      const y = 0
+      // The new theme spreads from where it was picked.
+      const { x, y } = origin
       const endRadius = Math.hypot(
         Math.max(x, window.innerWidth - x),
         Math.max(y, window.innerHeight - y),

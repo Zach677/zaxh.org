@@ -84,12 +84,6 @@ const THEME_OPTIONS: { theme: Theme; icon: IconType; title: string }[] = [
   { theme: 'light', icon: 'sun', title: 'Light' },
 ]
 
-const INDICATOR_OFFSET_MAP: Record<Theme, number> = {
-  dark: 2,
-  system: 32,
-  light: 62,
-}
-
 function ThemeRadioButton({
   active,
   icon,
@@ -133,10 +127,15 @@ export function ThemeSwitcher() {
     () => 'system',
   )
 
+  const rootRef = useRef<HTMLDivElement>(null)
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([])
 
   function changeTheme(theme: Theme) {
-    themeManager.setTheme(theme)
+    const rect = rootRef.current?.getBoundingClientRect()
+    themeManager.setTheme(
+      theme,
+      rect && { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 },
+    )
   }
 
   function focusOption(index: number) {
@@ -177,14 +176,13 @@ export function ThemeSwitcher() {
 
   return (
     <div
+      ref={rootRef}
       {...stylex.props(styles.root)}
       role="radiogroup"
       aria-label="Theme Switcher"
     >
-      <div
-        {...stylex.props(styles.thumb)}
-        style={{ left: INDICATOR_OFFSET_MAP[currentTheme] }}
-      />
+      {/* components.css places the thumb from html[data-theme]. */}
+      <div className={`${stylex.props(styles.thumb).className} theme-thumb`} />
 
       <div {...stylex.props(styles.row)}>
         {THEME_OPTIONS.map((opt, index) => (

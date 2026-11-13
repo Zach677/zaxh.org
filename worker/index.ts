@@ -48,11 +48,17 @@ async function postReport(request: Request, env: Env) {
 async function getLedger() {
   // shortcut: tokens.ci has no documented API; if it changes, the page shows
   // the ledger as closed.
-  const response = await fetch(TOKENS_PROFILE, { cf: { cacheTtl: 300, cacheEverything: true } })
-  if (!response.ok) return new Response('Ledger closed', { status: 502 })
-  return Response.json(readLedger(await response.json()), {
-    headers: { 'cache-control': 'public, max-age=300' },
-  })
+  try {
+    const response = await fetch(TOKENS_PROFILE, { cf: { cacheTtl: 300, cacheEverything: true } })
+    if (response.ok) {
+      return Response.json(readLedger(await response.json()), {
+        headers: { 'cache-control': 'public, max-age=300' },
+      })
+    }
+  } catch {
+    // Unreachable or reshaped: closed, the same as a bad status.
+  }
+  return new Response('Ledger closed', { status: 502 })
 }
 
 export default {

@@ -27,7 +27,13 @@ pnpm deploy           # Build, then deploy to Cloudflare
 
 Two-phase build process:
 1. **Client build**: Standard Vite build → `dist/`
-2. **SSG build**: Compiles `src/main.ssg.tsx` → runs `scripts/ssg.ts` (pre-renders HTML)
+2. **SSG build**: Compiles `src/main.ssg.tsx` → runs `scripts/ssg.ts`, which writes every page
+
+Only the book at `/` runs React. The build prerenders it, and `src/main.tsx` hydrates it, so the first client render must equal the prerendered open book (`PRERENDERED` in `src/components/book/turn.ts`). The inline script in `index.html` sets the theme and `html[data-book="closed"]` before the first paint; the book then closes or goes to a section in a layout effect.
+
+The app pages and the 404 are plain HTML with no script. `scripts/ssg.ts` fails the build if a stable URL is missing, if a page does not have exactly one h1, or if a plain page keeps the module script. The app pages do not exist under `pnpm dev`; use `pnpm preview`.
+
+Fonts are self-hosted Latin subsets (`src/styles/fonts.css`). The app pages use system fonts and download no font file.
 
 ### Hosting
 
@@ -40,18 +46,20 @@ One Cloudflare Worker (`worker/index.ts`, `wrangler.jsonc`) serves `dist/` as st
 
 ### Content
 
-The home page is a small book. The frontispiece ends with live notes (`src/components/LiveNotes.tsx`): where Zach is now, and the token ledger. `src/components/book/Book.tsx` owns the cover, the turning leaves, and the narrow-screen fallback; `src/pages/index.tsx` lists the pages in reading order (frontispiece, contents, about, appendix). Contents continues onto more pages as projects grow (`ENTRIES_PER_PAGE`), and a blank page keeps the spreads paired. Page sizes are em of a base that scales with the book, so a page holds the same content at every viewport. Project copy lives in `data/projects.ts`. The site also has `/mitori/privacy`.
+The home page is a small book. The frontispiece ends with live notes (`src/components/LiveNotes.tsx`): where Zach is now, and the token ledger. The paper band on the cover shows the same two; `LiveProvider` opens one socket and makes one ledger request for both. `src/components/book/Book.tsx` owns the cover, the turning leaves, and the narrow-screen fallback; `src/pages/index.tsx` lists the pages in reading order (frontispiece, contents, about, appendix). Contents continues onto more pages as projects grow (`ENTRIES_PER_PAGE`), and a blank page keeps the spreads paired. Page sizes are em of a base that scales with the book, so a page holds the same content at every viewport. Project copy lives in `data/projects.ts`.
 
-### Routing
+The book's state (open, spread, the leaf in motion) is one reducer in `src/components/book/turn.ts`. The cover waits for the reader once per session (`sessionStorage`). `/#work` and `/#about` open the book at contents or about.
 
-Routes in `src/routes.tsx` are static. The book has its own chrome; other pages share `RootLayout` (nav, a centered column, the footer). The nav links `/#work` and `/#about` open the book at contents or about. Quiet `/mitori/privacy` is kept for App Store.
+App pages live beside the book: `/mitori/privacy`, `/xiaorichang/privacy`, `/sooner/privacy`, and `/sooner/support`. The App Store and the apps link to these URLs, so keep them stable. Each page is one Markdown file in `content/`: the file path is the URL, and the front matter gives `title`, `description`, and `lang`. The `.reader` class in `src/styles/components.css` styles them. The Sooner pages have tests in `content/sooner/` that pin the facts they state.
 
 ### Key Files
 
 | File | Purpose |
 |------|---------|
-| `src/main.tsx` | Client entry point |
+| `src/main.tsx` | Client entry point (hydrates the book) |
 | `src/main.ssg.tsx` | SSG entry with `render()` export |
-| `src/routes.tsx` | Route definitions |
+| `scripts/ssg.ts` | Writes the book, the app pages, and the 404 |
+| `content/` | App pages in Markdown |
+| `public/_headers` | Security and cache headers |
 | `data/projects.ts` | Project index |
 | `src/theme/ThemeManager.ts` | Dark/light theme with View Transitions API |

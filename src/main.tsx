@@ -1,13 +1,15 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import { createBrowserRouter } from 'react-router'
+import { createRoot, hydrateRoot } from 'react-dom/client'
+
 import { App } from './App'
-import routes from './routes'
 
-const router = createBrowserRouter(routes)
-
-createRoot(document.getElementById('root')!).render(
+const root = document.getElementById('root')!
+const app = (
   <StrictMode>
-    <App router={router} />
-  </StrictMode>,
+    <App />
+  </StrictMode>
 )
+
+// The build prerenders the book into #root; the dev server leaves it empty.
+if (root.hasChildNodes()) hydrateRoot(root, app)
+else createRoot(root).render(app)

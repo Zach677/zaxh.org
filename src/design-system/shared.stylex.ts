@@ -1,16 +1,7 @@
 import * as stylex from '@stylexjs/stylex'
-import { colors, fonts, typeScale } from './tokens.stylex'
 
-/** Shared decorative / typography pieces used across pages. */
+/** Shared pieces of the book's pages. */
 export const shared = stylex.create({
-  /** The one mono style: metadata only (dates, status, labels). */
-  regLabel: {
-    fontFamily: fonts.mono,
-    fontSize: typeScale.label12,
-    lineHeight: typeScale.label12Lh,
-    letterSpacing: '0.02em',
-    color: colors.secondary,
-  },
   /** Underline wipe only — callers own color via stylex.props order. */
   inkLink: {
     textDecoration: 'none',
@@ -33,15 +24,5 @@ export const shared = stylex.create({
     clip: 'rect(0, 0, 0, 0)',
     whiteSpace: 'nowrap',
     borderWidth: 0,
-  },
-  /** Article-page title — italic serif at title28. */
-  pageTitle: {
-    fontFamily: fonts.serif,
-    fontStyle: 'italic',
-    fontWeight: 500,
-    fontSize: typeScale.title28,
-    lineHeight: typeScale.title28Lh,
-    letterSpacing: '-0.01em',
-    color: colors.heading,
   },
 })

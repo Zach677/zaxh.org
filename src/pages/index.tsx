@@ -1,9 +1,8 @@
 import type { ReactNode } from 'react'
 import * as stylex from '@stylexjs/stylex'
-import { Link } from 'react-router'
 
 import { Book, Page, TurnButton } from '@/components/book/Book'
-import { LiveNotes } from '@/components/LiveNotes'
+import { CoverLedger, CoverNote, CoverTotals, LiveNotes, LiveProvider } from '@/components/LiveNotes'
 import { SocialLinks } from '@/components/SocialLinks'
 import { ThemeSwitcher } from '@/components/ThemeSwitcher'
 import { colors, fonts } from '../design-system/tokens.stylex'
@@ -29,6 +28,8 @@ const DEVICES: { what: string; retired?: boolean; note?: string }[] = [
 // most (about 80 characters). More projects continue on the next page, and
 // the rest of the book moves along.
 const ENTRIES_PER_PAGE = 5
+// The height of the cover's paper band.
+const BAND = '31%'
 
 const ACTIVE = projects.filter((p) => p.status === 'active')
 const SHELVED = projects.filter((p) => p.status === 'paused')
@@ -36,43 +37,113 @@ const SHELVED = projects.filter((p) => p.status === 'paused')
 // Book sizes are em of the page's 14px base, which scales with the book
 // (see PAGE_TYPE in Book.tsx). Nested sizes note their parent.
 const styles = stylex.create({
-  // Cover: title above, a foil device in the middle, the author below.
+  // Cover: the cloth carries what stays (title, author); a paper band
+  // around the foot carries what changes (the live line, the ledger).
   coverLayout: {
     position: 'absolute',
     inset: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '24% 2em 14% calc(9% + 2em)',
   },
+  // Offsets are em of the title's own size.
   title: {
+    position: 'absolute',
+    top: '0.42em',
+    left: 'calc(9% + 0.3em)',
     fontFamily: fonts.serif,
     fontStyle: 'italic',
     fontWeight: 500,
-    fontSize: '4.5em',
+    fontSize: '7.4em',
     lineHeight: 1,
-    letterSpacing: '-0.02em',
-  },
-  subtitle: {
-    marginTop: '1.4em',
-    fontFamily: fonts.mono,
-    fontSize: '0.7857em',
-    letterSpacing: '0.22em',
-    textTransform: 'uppercase',
-    opacity: 0.8,
-  },
-  emblem: {
-    width: '3.4em',
-    height: '3.4em',
-    opacity: 0.9,
+    letterSpacing: '-0.03em',
   },
   author: {
+    position: 'absolute',
+    top: '13.4em',
+    left: 'calc(9% + 2.4em)',
     fontFamily: fonts.serif,
     fontWeight: 500,
-    fontSize: '1.15em',
-    letterSpacing: '0.32em',
+    fontSize: '1.05em',
+    lineHeight: 1,
+    letterSpacing: '0.34em',
     textTransform: 'uppercase',
+    '::before': {
+      content: '""',
+      display: 'block',
+      width: '2em',
+      height: '1px',
+      marginBottom: '1.3em',
+      backgroundColor: 'currentColor',
+      opacity: 0.7,
+    },
+  },
+  // The bars stand on the band, from the hinge to the seal: the newest
+  // week ends at the paw. On a phone the type is larger for the cover, so
+  // the height also stops below the author (who ends at about 16.5em).
+  coverBars: {
+    position: 'absolute',
+    left: '9.2%',
+    right: '7.8em',
+    bottom: BAND,
+    height: `min(10.5em, 100% - ${BAND} - 17.5em)`,
+  },
+  band: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: BAND,
+    padding: '1.8em 2.4em 0 calc(9% + 2.4em)',
+    borderRadius: '0 0 6px 0',
+    // The band bends over the spine and the hinge with the cloth.
+    backgroundImage:
+      'linear-gradient(90deg, rgba(60, 40, 10, 0.2), rgba(0, 0, 0, 0) 4%), ' +
+      'linear-gradient(90deg, transparent 7.4%, rgba(60, 40, 10, 0.2) 7.9%, rgba(255, 255, 255, 0.5) 8.5%, transparent 9.2%)',
+    backgroundColor: colors.band,
+    boxShadow: '0 -1px 0 rgba(0, 0, 0, 0.25), 0 -6px 10px -6px rgba(0, 0, 0, 0.45)',
+    color: colors.bandInk,
+    // Ink on paper, not foil pressed in cloth.
+    textShadow: 'none',
+  },
+  // A paw sticker across the band's edge: for the cat and the dog.
+  seal: {
+    position: 'absolute',
+    top: '-1.9em',
+    right: '2.2em',
+    width: '5em',
+    height: '5em',
+    padding: '1.05em',
+    borderRadius: '50%',
+    backgroundColor: colors.accent,
+    color: '#fbf6ea',
+    rotate: '9deg',
+    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.3)',
+  },
+  bandLine: {
+    fontFamily: fonts.serif,
+    fontStyle: 'italic',
+    fontWeight: 500,
+    fontSize: '2.15em',
+    lineHeight: 1.18,
+    letterSpacing: '-0.01em',
+  },
+  ampersand: {
+    color: colors.accent,
+  },
+  // Lined up with the band's text. The two notes share a row when they fit
+  // (a phone, or a long app name, stacks them).
+  bandFoot: {
+    position: 'absolute',
+    left: 'calc(9% + 2.4em / 0.78)',
+    right: 'calc(2.4em / 0.78)',
+    bottom: '1.9em',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    gap: '0.5em 1.5em',
+    fontFamily: fonts.mono,
+    fontSize: '0.78em',
+    lineHeight: 1,
+    letterSpacing: '0.06em',
+    color: `color-mix(in oklab, ${colors.bandInk} 68%, transparent)`,
   },
   // Frontispiece: the title sits high, so the live notes get the foot of
   // the page.
@@ -279,15 +350,9 @@ function ProjectLinks({ project }: { project: Project }) {
   return project.links.slice(1).map((link) => (
     <span key={link.label}>
       {' · '}
-      {link.url.startsWith('/') ? (
-        <Link to={link.url} {...stylex.props(shared.inkLink, styles.inlineLink)}>
-          {link.label}
-        </Link>
-      ) : (
-        <a href={link.url} {...stylex.props(shared.inkLink, styles.inlineLink)}>
-          {link.label}
-        </a>
-      )}
+      <a href={link.url} {...stylex.props(shared.inkLink, styles.inlineLink)}>
+        {link.label}
+      </a>
     </span>
   ))
 }
@@ -306,22 +371,27 @@ function ProjectTitle({ project }: { project: Project }) {
 
 const cover = (
   <div {...stylex.props(styles.coverLayout)}>
-    <div>
-      <div {...stylex.props(styles.title)}>zaxh</div>
-      <div {...stylex.props(styles.subtitle)}>Tools &amp; Notes</div>
-    </div>
-    {/* A paw in a ring: for the cat and the dog. */}
-    <svg viewBox="0 0 40 40" {...stylex.props(styles.emblem)} aria-hidden="true">
-      <circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" strokeWidth="1" />
-      <g fill="currentColor">
+    <div {...stylex.props(styles.title)}>zaxh</div>
+    <div {...stylex.props(styles.author)}>Zach</div>
+    <CoverLedger style={styles.coverBars} />
+    <div {...stylex.props(styles.band)}>
+      <svg viewBox="8 7 24 24" fill="currentColor" {...stylex.props(styles.seal)} aria-hidden="true">
         <ellipse cx="20" cy="24.5" rx="6" ry="5" />
         <ellipse cx="12.4" cy="17.6" rx="2.4" ry="3" transform="rotate(-22 12.4 17.6)" />
         <ellipse cx="17" cy="12.8" rx="2.4" ry="3.1" />
         <ellipse cx="23" cy="12.8" rx="2.4" ry="3.1" />
         <ellipse cx="27.6" cy="17.6" rx="2.4" ry="3" transform="rotate(22 27.6 17.6)" />
-      </g>
-    </svg>
-    <div {...stylex.props(styles.author)}>Zach</div>
+      </svg>
+      <div {...stylex.props(styles.bandLine)}>
+        Code for the cat
+        <br />
+        <span {...stylex.props(styles.ampersand)}>&amp;</span> the dog.
+      </div>
+      <div {...stylex.props(styles.bandFoot)}>
+        <CoverNote />
+        <CoverTotals />
+      </div>
+    </div>
   </div>
 )
 
@@ -418,8 +488,9 @@ const appendix = (
       ))}
     </ul>
     <p {...stylex.props(styles.colophon)}>
-      Set in Source Serif and Inter. Built with React, Vite, and StyleX. ©{' '}
-      {new Date().getFullYear()} Zach.
+        Set in Source Serif and Inter. Built with React, Vite, and StyleX. ©{' '}
+      {/* The prerendered year stays if a new year starts before the next build. */}
+      <span suppressHydrationWarning>{new Date().getFullYear()}</span> Zach.
     </p>
   </>
 )
@@ -451,7 +522,7 @@ const SHEETS: Sheet[] = (() => {
   return sheets
 })()
 
-// Hash targets for the nav links: #work opens on contents, #about on about.
+// Deep links: /#work opens on contents, /#about on about.
 const SECTIONS = {
   work: 0,
   about: Math.floor(SHEETS.findIndex((s) => s.title === 'About') / 2),
@@ -491,5 +562,9 @@ const PAGES = SHEETS.map((sheet, index) => {
 })
 
 export default function RootPage() {
-  return <Book cover={cover} pages={PAGES} sections={SECTIONS} corner={<ThemeSwitcher />} />
+  return (
+    <LiveProvider>
+      <Book cover={cover} pages={PAGES} sections={SECTIONS} corner={<ThemeSwitcher />} />
+    </LiveProvider>
+  )
 }
