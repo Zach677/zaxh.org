@@ -122,6 +122,11 @@ const styles = stylex.create({
       default: `${COVER_MS / 2}ms`,
       [REDUCE]: '0s',
     },
+    // The pages show after the cover has lifted, not around a closed cover.
+    transitionDelay: {
+      default: `${COVER_MS / 5}ms`,
+      [REDUCE]: '0s',
+    },
   },
   veilGone: {
     opacity: 0,
@@ -342,10 +347,12 @@ const styles = stylex.create({
   },
   // Narrow screens have no leaf to turn: the cover itself swings away. It
   // stays solid and ends past edge-on, where its hidden back faces the reader.
+  // Its hinge moves left and is at the screen's edge when the cover is edge-on
+  // (90 of the 100 degrees), so the cover leaves there and not across the page.
   coverAway: {
     transform: {
       default: null,
-      [NARROW]: 'perspective(1400px) rotateY(-100deg)',
+      [NARROW]: `translateX(calc((${PHONE_COVER} * 0.71 - 100vw) / 2 * 100 / 90)) perspective(1400px) rotateY(-100deg)`,
     },
     pointerEvents: {
       default: null,
