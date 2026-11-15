@@ -6,7 +6,7 @@ lang: en
 
 # *Mitori* Privacy Policy
 
-Last updated: October 13, 2026
+Last updated: November 15, 2026
 
 ## Scope
 
@@ -14,13 +14,15 @@ This policy describes how the Mitori macOS app handles information. It also expl
 
 ## Information handled by Mitori
 
-Mitori processes the Apple ID email address, password, and two-factor authentication code you provide. It also handles cookies and session tokens returned by Apple, along with the device identifier and probe app bundle identifier used for balance requests.
+Mitori processes the Apple ID email address, password, and two-factor authentication code you provide. It also handles cookies and session tokens returned by Apple, along with a device identifier and, if you add one, the bundle identifier of a probe app.
+
+Apple receives the device identifier with each sign-in and balance request. For a new account, the device identifier is the permanent hardware address (MAC address) of the primary network interface of your Mac. If Mitori cannot read that address, it makes one random identifier and keeps it on your Mac. An account keeps the identifier that it had when you added it.
 
 The two-factor authentication code is used for sign-in and is not stored. Account metadata stored on your Mac may include your name, email address, storefront, balance snapshot, refresh history, and error state.
 
 ## Local storage
 
-Passwords, cookies, and session tokens are stored in the macOS Keychain and are not synchronized to iCloud. Development-signed builds use the Data Protection Keychain. Ad hoc community builds use the local file-based macOS Keychain because Data Protection Keychain access requires Apple provisioning.
+Passwords, cookies, and session tokens are stored in the macOS Data Protection Keychain. They stay on your Mac and are not synchronized to iCloud.
 
 Account metadata is stored locally in `~/Library/Application Support/Mitori/accounts.json`.
 
