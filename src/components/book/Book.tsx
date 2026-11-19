@@ -444,9 +444,10 @@ export function Book({
     [open, spreads],
   )
 
-  // The first paint is the prerendered, open book. Before the next paint,
-  // close it if index.html asked for the cover, or go to the URL's section.
-  // After that React owns the book, so drop the flag.
+  // The prerendered book is open; when index.html asks for the cover,
+  // components.css draws it closed until here. Before the next paint, close
+  // it in state too, or go to the URL's section. After that React owns the
+  // book, so drop the flag.
   useLayoutEffect(() => {
     const root = document.documentElement
     const section = sections[location.hash.slice(1)]
@@ -522,8 +523,10 @@ export function Book({
 
   return (
     <TurnContext value={turn}>
-      <div {...stylex.props(styles.desk, !open && styles.deskClosed)}>
+      {/* data-book-part: components.css closes the prerendered book with these. */}
+      <div data-book-part="desk" {...stylex.props(styles.desk, !open && styles.deskClosed)}>
         <div
+          data-book-part="veil"
           {...stylex.props(styles.veil, open && styles.veilGone, instant && styles.instant)}
           aria-hidden="true"
         />
@@ -533,6 +536,7 @@ export function Book({
         >
           <div {...stylex.props(styles.ribbon, styles.wide)} aria-hidden="true" />
           <div
+            data-book-part="block-left"
             {...stylex.props(
               styles.blockLeft,
               styles.wide,
@@ -546,6 +550,7 @@ export function Book({
           {Array.from({ length: spreads }, (_, leaf) => (
             <div
               key={leaf}
+              data-book-part={leaf === 0 ? 'cover-leaf' : undefined}
               {...stylex.props(
                 styles.leaf,
                 isTurned(leaf) && styles.turned,
@@ -556,6 +561,7 @@ export function Book({
             >
               {leaf === 0 ? (
                 <div
+                  data-book-part="cover"
                   {...stylex.props(
                     styles.face,
                     styles.cover,

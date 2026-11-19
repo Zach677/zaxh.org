@@ -14,10 +14,11 @@ const SITE = 'https://zaxh.org'
 const STABLE = ['/mitori/privacy', '/sooner/privacy', '/sooner/support', '/xiaorichang/privacy']
 
 const template = readFileSync(path.join(root, 'dist/index.html'), 'utf8')
-// Only the book runs script.
+// Only the book runs script. Only the book preloads a font (the cover's
+// titles, so they do not swap in after the cover is on screen).
 const plain = template
   .replace(/\s*<script type="module"[^>]*><\/script>/, '')
-  .replace(/\s*<link rel="modulepreload"[^>]*>/g, '')
+  .replace(/\s*<link\s+rel="(module)?preload"[^>]*>/g, '')
 
 type Page = { title: string; description: string; lang?: string; body: string }
 

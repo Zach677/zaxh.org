@@ -2,9 +2,37 @@
    pages, which load no script. */
 @layer components {
   /* The prerendered book is open, so it reads without JavaScript. When this
-     visit starts at the cover, hide it until React renders it closed. */
-  :root[data-book='closed'] #book {
-    visibility: hidden;
+     visit starts at the cover, close it here, so the cover is in the first
+     paint and does not wait for the script. These rules must draw the same
+     closed book as Book.tsx; React takes over when it hydrates. !important
+     wins over the StyleX layers and the inline z-index. */
+  :root[data-book='closed'] {
+    #book {
+      transform: translateX(-25%) !important;
+    }
+    [data-book-part='cover-leaf'] {
+      z-index: 99 !important;
+      transform: perspective(2400px) rotateY(0deg) !important;
+    }
+    [data-book-part='block-left'] {
+      opacity: 0 !important;
+    }
+
+    /* NARROW_QUERY in Book.tsx */
+    @media (max-width: 860px), (max-height: 540px) {
+      [data-book-part='desk'] {
+        height: 100svh !important;
+        overflow: hidden !important;
+      }
+      [data-book-part='veil'] {
+        opacity: 1 !important;
+      }
+      #book,
+      [data-book-part='cover-leaf'],
+      [data-book-part='cover'] {
+        transform: none !important;
+      }
+    }
   }
 
   /* index.html sets data-theme before the first paint, so the switcher's

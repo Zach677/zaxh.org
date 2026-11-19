@@ -29,11 +29,11 @@ Two-phase build process:
 1. **Client build**: Standard Vite build → `dist/`
 2. **SSG build**: Compiles `src/main.ssg.tsx` → runs `scripts/ssg.ts`, which writes every page
 
-Only the book at `/` runs React. The build prerenders it, and `src/main.tsx` hydrates it, so the first client render must equal the prerendered open book (`PRERENDERED` in `src/components/book/turn.ts`). The inline script in `index.html` sets the theme and `html[data-book="closed"]` before the first paint; the book then closes or goes to a section in a layout effect.
+Only the book at `/` runs React. The build prerenders it, and `src/main.tsx` hydrates it, so the first client render must equal the prerendered open book (`PRERENDERED` in `src/components/book/turn.ts`). The inline script in `index.html` sets the theme and `html[data-book="closed"]` before the first paint. With that flag, `src/styles/components.css` draws the prerendered book closed, so the cover does not wait for the script; keep those rules equal to the closed book in `Book.tsx`. The book then closes in state, or goes to a section, in a layout effect.
 
 The app pages and the 404 are plain HTML with no script. `scripts/ssg.ts` fails the build if a stable URL is missing, if a page does not have exactly one h1, or if a plain page keeps the module script. The app pages do not exist under `pnpm dev`; use `pnpm preview`.
 
-Fonts are self-hosted Latin subsets (`src/styles/fonts.css`). The app pages use system fonts and download no font file.
+Fonts are self-hosted Latin subsets (`src/styles/fonts.css`). The book preloads the italic serif of the cover's titles (`index.html`). The app pages use system fonts and download no font file; `scripts/ssg.ts` removes the preload from them.
 
 ### Hosting
 
