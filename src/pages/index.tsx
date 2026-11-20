@@ -14,7 +14,8 @@ const DEVICES: { what: string; retired?: boolean; note?: string }[] = [
   { what: 'iPhone 12', retired: true },
   { what: 'MacBook Pro 2023' },
   { what: 'Apple Watch Series 4' },
-  { what: 'Fitbit Air' },
+  { what: 'COROS PACE 4' },
+  { what: 'Fitbit Air', retired: true },
   { what: 'iPad Pro 11" (2022)' },
   { what: 'AirPods Pro 2', retired: true, note: 'lost… fuck!' },
   { what: 'EarPods' },
@@ -400,7 +401,7 @@ const frontispiece = (
     <h1 {...stylex.props(styles.name)}>Zach</h1>
     <div {...stylex.props(styles.rule)} aria-hidden="true" />
     <p {...stylex.props(styles.lede)}>
-      Writes code so the cat and dog can have a better life.
+      Building small tools for iOS and macOS.
     </p>
     <SocialLinks style={styles.social} />
   </div>
@@ -467,9 +468,9 @@ const about = (
     </h2>
     <div {...stylex.props(styles.prose)}>
       <p {...stylex.props(styles.paragraph, styles.lead)}>
-        I&apos;m passionate about building elegant and efficient software. I
-        believe in clean code, simple design, and the power of{' '}
-        <span {...stylex.props(styles.nowrap)}>open-source</span>.
+        I build small <span {...stylex.props(styles.nowrap)}>open-source</span>{' '}
+        tools for iOS and macOS. I care about clear code, quiet design, and
+        software that holds up over time.
       </p>
     </div>
     <p {...stylex.props(styles.motto)}>Slow is fast.</p>

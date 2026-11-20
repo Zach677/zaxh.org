@@ -19,9 +19,8 @@ export interface Project {
 export const projects: Project[] = [
   {
     slug: 'mitori',
-    name: 'mitori',
-    oneLiner:
-      'Native macOS menu bar app for checking Apple ID store credit across accounts.',
+    name: 'Mitori',
+    oneLiner: 'Check Apple ID store credit across accounts from the menu bar.',
     status: 'active',
     kind: 'macOS',
     links: [
@@ -32,7 +31,7 @@ export const projects: Project[] = [
   {
     slug: 'modern-uikit',
     name: 'Modern.UIKit',
-    oneLiner: 'Agent-native UIKit starter for shipping iOS apps faster.',
+    oneLiner: 'Agent-native, programmatic UIKit starter for iOS 26 and Swift 6.',
     status: 'active',
     kind: 'iOS',
     links: [{ label: 'GitHub', url: 'https://github.com/Zach677/Modern.UIKit' }],
@@ -40,7 +39,7 @@ export const projects: Project[] = [
   {
     slug: 'homebrew-star',
     name: 'homebrew-star',
-    oneLiner: 'Casks and formulae not in the official Homebrew records.',
+    oneLiner: 'Casks and formulae outside the official Homebrew taps.',
     status: 'active',
     kind: 'Homebrew',
     links: [{ label: 'GitHub', url: 'https://github.com/Zach677/homebrew-star' }],

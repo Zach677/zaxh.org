@@ -98,7 +98,7 @@ const { render }: typeof book = await import(path.join(server, 'main.ssg.js'))
 write('/', template, {
   title: 'zaxh',
   description:
-    'Zach builds small tools for iOS and macOS. A small book of projects, notes, and devices.',
+    'Zach builds small tools for iOS and macOS. A pocket book of projects, notes, and devices.',
   body: await render(),
 })
 const content = path.join(root, 'content')
